@@ -10,3 +10,7 @@
 - name: Install MetalLB
   ansible.builtin.import_tasks: metallb.yml
   when: addons_metallb_enabled | bool
+
+- name: Install metrics-server
+  ansible.builtin.import_tasks: metrics-server.yml
+  when: addons_metrics_server_enabled | bool

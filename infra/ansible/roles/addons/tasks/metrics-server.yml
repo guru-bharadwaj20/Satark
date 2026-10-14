@@ -1,0 +1,28 @@
+---
+- name: Install or upgrade metrics-server
+  kubernetes.core.helm:
+    name: metrics-server
+    chart_ref: metrics-server
+    chart_repo_url: "{{ addons_metrics_server_chart_repo }}"
+    chart_version: "{{ addons_metrics_server_chart_version }}"
+    release_namespace: "{{ addons_metrics_server_namespace }}"
+    kubeconfig: "{{ addons_kubeconfig }}"
+    values:
+      args: "{{ ['--kubelet-insecure-tls'] if addons_metrics_server_insecure_tls | bool else [] }}"
+      defaultArgs:
+        - --cert-dir=/tmp
+        - --kubelet-preferred-address-types=InternalIP,Hostname
+        - --kubelet-use-node-status-port
+        - --metric-resolution=15s
+    wait: true
+    wait_timeout: 5m
+
+- name: Wait until the metrics API serves node metrics
+  ansible.builtin.command: kubectl top nodes
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  register: addons_metrics_top
+  changed_when: false
+  retries: 12
+  delay: 10
+  until: addons_metrics_top.rc == 0
