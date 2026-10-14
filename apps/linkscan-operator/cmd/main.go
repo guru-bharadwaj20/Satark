@@ -70,9 +70,10 @@ func main() {
 	}
 
 	if err := (&controller.LinkScanReconciler{
-		Client:  mgr.GetClient(),
-		Scheme:  mgr.GetScheme(),
-		Sandbox: sandbox,
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Sandbox:  sandbox,
+		Recorder: mgr.GetEventRecorderFor("linkscan-operator"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "LinkScan")
 		os.Exit(1)
