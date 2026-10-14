@@ -1,0 +1,31 @@
+# Helm values for Envoy Gateway (oci://docker.io/envoyproxy/gateway-helm).
+deployment:
+  replicas: 2
+  envoyGateway:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+  pod:
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  control-plane: envoy-gateway
+
+config:
+  envoyGateway:
+    logging:
+      level:
+        default: info
+    gateway:
+      controllerName: gateway.envoyproxy.io/gatewayclass-controller
+
+podDisruptionBudget:
+  minAvailable: 1
