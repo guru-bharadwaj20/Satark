@@ -8,3 +8,9 @@ k8s_upgrade_repo_keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 k8s_upgrade_repo_file: /etc/apt/sources.list.d/kubernetes.list
 k8s_upgrade_drain_timeout: 300s
 k8s_upgrade_ready_timeout: 600
+k8s_upgrade_cp_group: control_plane
+k8s_upgrade_worker_group: workers
+k8s_upgrade_first_cp: "{{ groups[k8s_upgrade_cp_group] | first }}"
+k8s_upgrade_kubeconfig: /etc/kubernetes/admin.conf
+# Name of this host's Node object.
+k8s_node_name: "{{ ansible_hostname }}"
