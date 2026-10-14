@@ -1,0 +1,87 @@
+# Kyverno admission controller (task 9.2), installed by Argo CD from the
+# upstream Helm chart. Policies live in policies/kyverno and are synced by
+# the separate `kyverno-policies` Application after the CRDs exist.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kyverno
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kyverno
+  source:
+    repoURL: https://kyverno.github.io/kyverno/
+    chart: kyverno
+    targetRevision: 3.3.4
+    helm:
+      valuesObject:
+        admissionController:
+          replicas: 3
+          serviceMonitor:
+            enabled: true
+          container:
+            resources:
+              requests: {cpu: 100m, memory: 128Mi}
+              limits: {memory: 384Mi}
+        backgroundController:
+          replicas: 1
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 128Mi}
+        cleanupController:
+          replicas: 1
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 128Mi}
+        reportsController:
+          replicas: 1
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 256Mi}
+        config:
+          # Never let Kyverno block system or its own namespaces.
+          resourceFiltersExcludeNamespaces:
+            - kube-system
+            - kyverno
+        features:
+          policyExceptions:
+            enabled: true
+            namespace: kyverno
+        grafana:
+          enabled: true
+          namespace: monitoring
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kyverno-policies
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    path: policies/kyverno
+    directory:
+      recurse: false
+      include: "*.yaml"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
