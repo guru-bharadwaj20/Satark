@@ -1,0 +1,37 @@
+# Brands commonly impersonated in Indian scam messages.
+# Format: <brand label> <official domain>[,<official domain>...]
+# The label is what a typosquat imitates; official domains are never flagged.
+# Keep sorted by label. Verify every domain against the brand's own website.
+airtel        airtel.in,airtel.com
+amazon        amazon.in,amazon.com,amazonpay.in
+axisbank      axisbank.com,axisbank.co.in
+bankofbaroda  bankofbaroda.in,bankofbaroda.com
+canarabank    canarabank.com,canarabank.in
+facebook      facebook.com,fb.com
+flipkart      flipkart.com
+google        google.com,google.co.in
+hdfcbank      hdfcbank.com,hdfc.com
+icicibank     icicibank.com
+idfcfirstbank idfcfirstbank.com
+incometax     incometax.gov.in
+indiapost     indiapost.gov.in
+indusind      indusind.com
+instagram     instagram.com
+irctc         irctc.co.in
+jio           jio.com
+kotak         kotak.com,kotak.bank.in
+licindia      licindia.in
+microsoft     microsoft.com,live.com,outlook.com
+myntra        myntra.com
+netflix       netflix.com
+npci          npci.org.in
+onlinesbi     onlinesbi.sbi,sbi.co.in
+paytm         paytm.com,paytm.in
+phonepe       phonepe.com
+pnbindia      pnbindia.in,pnb.co.in
+rbi           rbi.org.in
+sbi           sbi.co.in,onlinesbi.sbi,sbicard.com,sbilife.co.in
+uidai         uidai.gov.in
+unionbankofindia unionbankofindia.co.in
+whatsapp      whatsapp.com,wa.me
+yesbank       yesbank.in
