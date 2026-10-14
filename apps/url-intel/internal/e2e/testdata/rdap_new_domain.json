@@ -1,0 +1,15 @@
+{
+  "objectClassName": "domain",
+  "handle": "D000000001-EXAMPLE",
+  "ldhName": "HDFCBANK-KYC-UPDATE.EXAMPLE",
+  "status": ["client transfer prohibited"],
+  "events": [
+    {"eventAction": "registration", "eventDate": "2026-09-28T06:12:44Z"},
+    {"eventAction": "expiration", "eventDate": "2027-09-28T06:12:44Z"},
+    {"eventAction": "last update of RDAP database", "eventDate": "2026-10-01T00:00:00Z"}
+  ],
+  "entities": [
+    {"objectClassName": "entity", "roles": ["registrar"], "vcardArray": ["vcard", [["fn", {}, "text", "Example Registrar"]]]}
+  ],
+  "nameservers": [{"objectClassName": "nameserver", "ldhName": "NS1.FREE-DNS.EXAMPLE"}]
+}

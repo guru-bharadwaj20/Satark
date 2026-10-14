@@ -1,0 +1,8 @@
+{
+  "objectClassName": "domain",
+  "ldhName": "WIKIPEDIA.ORG",
+  "events": [
+    {"eventAction": "registration", "eventDate": "2001-01-13T00:12:14Z"},
+    {"eventAction": "expiration", "eventDate": "2027-01-13T00:12:14Z"}
+  ]
+}
