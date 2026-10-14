@@ -1,0 +1,300 @@
+{"id": "syn-001", "label": "investment", "is_scam": true, "lang": "kn", "text": "ನಮ್ಮ ಷೇರು ಸಲಹಾ ಗುಂಪಿಗೆ ಸೇರಿ, 30 ದಿನದಲ್ಲಿ ಖಚಿತ 300% ಲಾಭ. https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-002", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX54 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-003", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Your debit card is blocked due to incomplete KYC. Call our KYC officer on 63XXXXXX12 immediately.", "source": "synthetic"}
+{"id": "syn-004", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX45 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-005", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 4,999 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-006", "label": "investment", "is_scam": true, "lang": "en", "text": "Daily 5% fixed return on USDT, no risk. Contact mentor 70XXXXXX39", "source": "synthetic"}
+{"id": "syn-007", "label": "task_job", "is_scam": true, "lang": "kn", "text": "ಮನೆಯಿಂದಲೇ ಕೆಲಸ, ಮೊದಲು Rs 12,500 ನೋಂದಣಿ ಶುಲ್ಕ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-008", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಿಮ್ಮ ಖಾತೆ XX1234 ನಿಂದ UPI ಮೂಲಕ Rs 12,500 ಕಡಿತವಾಗಿದೆ. ನೀವಲ್ಲವೇ? ಕಾರ್ಡ್ ಹಿಂದಿನ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-009", "label": "investment", "is_scam": true, "lang": "en", "text": "Invest Rs 1,499 in our crypto plan and get double in 7 days. WhatsApp 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-010", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 1,499 credited to your A/c XX9876 by salary. Available balance updated. -Demo Bank", "source": "synthetic"}
+{"id": "syn-011", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Instant loan approved Rs 4,999, no documents. Pay Rs 999 processing fee at https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-012", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX88 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-013", "label": "utility_bill", "is_scam": true, "lang": "hi", "text": "Aaj raat 11 PM baje aapka bijli connection kaat diya jayega. Turant 91XXXXXX58 par call karein.", "source": "synthetic"}
+{"id": "syn-014", "label": "otp_pin", "is_scam": true, "lang": "hi", "text": "Galti se aapke number par OTP chala gaya, kripya 88XXXXXX67 par bhej dijiye.", "source": "synthetic"}
+{"id": "syn-015", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX30 is your OTP for login. Do not share it with anyone. XYZ Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-016", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "ALERT: Your Sample Co-op Bank reward points worth Rs 99,000 expire tonight. Redeem at https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-017", "label": "task_job", "is_scam": true, "lang": "hi", "text": "पार्ट टाइम जॉब! यूट्यूब वीडियो लाइक करके रोज़ Rs 5000 कमाएं। व्हाट्सऐप 91XXXXXX58", "source": "synthetic"}
+{"id": "syn-018", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Congratulations! Your number won Rs 8,750 in the KBC lucky draw. Call 70XXXXXX39 to claim. Processing fee applies.", "source": "synthetic"}
+{"id": "syn-019", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "Beta, khana kha liya? Ghar kab aaoge?", "source": "synthetic"}
+{"id": "syn-020", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 25,00,000 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-021", "label": "lottery_prize", "is_scam": true, "lang": "hi", "text": "बधाई हो! आपने KBC लकी ड्रॉ में Rs 25,00,000 जीते हैं। दावा करने के लिए 97XXXXXX04 पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-022", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX13 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-023", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 25,00,000 credited to your A/c XX9876 by salary. Available balance updated. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-024", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX47 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-025", "label": "task_job", "is_scam": true, "lang": "en", "text": "Work from home, rate hotels on maps and earn Rs 99,000. Prepaid task bonus 30%.", "source": "synthetic"}
+{"id": "syn-026", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your KYC is complete. No further action is needed. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-027", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "Kal shaam 7 baje milte hain, theek hai?", "source": "synthetic"}
+{"id": "syn-028", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "Income tax department: penalty pending, pay immediately at http://tinyurl.example/a9", "source": "synthetic"}
+{"id": "syn-029", "label": "otp_pin", "is_scam": true, "lang": "hi", "text": "Paise receive karne ke liye apna UPI PIN daalein. Sender: xy***@examplebank", "source": "synthetic"}
+{"id": "syn-030", "label": "remote_access", "is_scam": true, "lang": "en", "text": "To process your refund please install TeamViewer QuickSupport and share the 9 digit code with our executive.", "source": "synthetic"}
+{"id": "syn-031", "label": "other_scam", "is_scam": true, "lang": "kn", "text": "ಅಮ್ಮ, ಇದು ನನ್ನ ಹೊಸ ಸಂಖ್ಯೆ. ತುರ್ತಾಗಿ Rs 8,750 ab***@okexample ಗೆ ಕಳುಹಿಸಿ.", "source": "synthetic"}
+{"id": "syn-032", "label": "task_job", "is_scam": true, "lang": "en", "text": "Earn daily by completing merchant tasks. Recharge Rs 1,499 to unlock VIP level.", "source": "synthetic"}
+{"id": "syn-033", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 99,000 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-034", "label": "delivery_parcel", "is_scam": true, "lang": "kn", "text": "ಅಪೂರ್ಣ ವಿಳಾಸದಿಂದ ನಿಮ್ಮ ಪಾರ್ಸೆಲ್ ತಡೆಹಿಡಿಯಲಾಗಿದೆ. ಇಲ್ಲಿ ನವೀಕರಿಸಿ: http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-035", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Reminder: your appointment with Dr. A. (example clinic) is tomorrow at 11 AM.", "source": "synthetic"}
+{"id": "syn-036", "label": "lottery_prize", "is_scam": true, "lang": "kn", "text": "ಅಭಿನಂದನೆಗಳು! ನೀವು ಲಕ್ಕಿ ಡ್ರಾದಲ್ಲಿ Rs 12,500 ಗೆದ್ದಿದ್ದೀರಿ. 63XXXXXX12 ಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-037", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Download Customer-Support.apk from https://bit.example/x7Kq to cancel the Rs 12,500 charge.", "source": "synthetic"}
+{"id": "syn-038", "label": "delivery_parcel", "is_scam": true, "lang": "hi", "text": "Aapka parcel customs mein ruka hai, Rs 1,499 fee xy***@examplebank par bhejein.", "source": "synthetic"}
+{"id": "syn-039", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Sir, for KYC verification install a screen-share app, our team will do it from your phone.", "source": "synthetic"}
+{"id": "syn-040", "label": "utility_bill", "is_scam": true, "lang": "hi", "text": "प्रिय उपभोक्ता, आज रात 11 PM बजे आपकी बिजली काट दी जाएगी क्योंकि पिछला बिल अपडेट नहीं हुआ। बिजली अधिकारी से संपर्क करें 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-041", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "International parcel held at customs. Pay duty Rs 8,750 to pq***@exampleupi to release.", "source": "synthetic"}
+{"id": "syn-042", "label": "lottery_prize", "is_scam": true, "lang": "hi", "text": "Aapka number lottery mein jeeta hai, Rs 25,00,000 paane ke liye https://refund-portal.example.test par jayein.", "source": "synthetic"}
+{"id": "syn-043", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX37 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-044", "label": "investment", "is_scam": true, "lang": "kn", "text": "Rs 8,750 ಹೂಡಿ, 7 ದಿನದಲ್ಲಿ ದುಪ್ಪಟ್ಟು ಪಡೆಯಿರಿ. 91XXXXXX58", "source": "synthetic"}
+{"id": "syn-045", "label": "impersonation_authority", "is_scam": true, "lang": "hi", "text": "TRAI: 2 ghante mein aapka number band ho jayega, 91XXXXXX58 par call karein.", "source": "synthetic"}
+{"id": "syn-046", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "ALERT: Your ExampleBank reward points worth Rs 12,500 expire tonight. Redeem at https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-047", "label": "kyc_banking", "is_scam": true, "lang": "hi", "text": "प्रिय ग्राहक, आपका Sample Co-op Bank खाता आज KYC अपडेट न होने के कारण बंद हो जाएगा। तुरंत अपडेट करें: https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-048", "label": "task_job", "is_scam": true, "lang": "hi", "text": "पार्ट टाइम जॉब! यूट्यूब वीडियो लाइक करके रोज़ Rs 5000 कमाएं। व्हाट्सऐप 98XXXXXX21", "source": "synthetic"}
+{"id": "syn-049", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपके खाते XX1234 से UPI द्वारा Rs 1,499 कटे। यह आप नहीं थे? कार्ड के पीछे दिए नंबर पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-050", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "Kal school band rahega, baarish ki wajah se.", "source": "synthetic"}
+{"id": "syn-051", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 1,499 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-052", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Lucky draw result: you won a car. Pay registration Rs 1,499 to ab***@okexample.", "source": "synthetic"}
+{"id": "syn-053", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX88 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-054", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "Your package could not be delivered. Pay Rs 25 redelivery fee at https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-055", "label": "investment", "is_scam": true, "lang": "en", "text": "Exclusive IPO allotment via our trading app, assured profit. Download http://tinyurl.example/a9", "source": "synthetic"}
+{"id": "syn-056", "label": "utility_bill", "is_scam": true, "lang": "kn", "text": "ವಿದ್ಯುತ್ ಬಿಲ್ Rs 25,00,000 ಬಾಕಿ ಇದೆ. ಕಡಿತ ತಪ್ಪಿಸಲು https://refund-portal.example.test ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-057", "label": "otp_pin", "is_scam": true, "lang": "kn", "text": "Rs 25,00,000 ಸ್ವೀಕರಿಸಲು ನಿಮ್ಮ UPI PIN ನಮೂದಿಸಿ. ಕಳುಹಿಸಿದವರು: pq***@exampleupi", "source": "synthetic"}
+{"id": "syn-058", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಾಳೆ ಬೆಳಿಗ್ಗೆ 10 ಕ್ಕೆ ಸಭೆ ಇದೆ, ಮರೆಯಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-059", "label": "delivery_parcel", "is_scam": true, "lang": "hi", "text": "आपका पार्सल अधूरे पते के कारण रुका है। 12 घंटे में अपडेट करें: https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-060", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your mobile recharge of Rs 299 was successful. Validity 28 days.", "source": "synthetic"}
+{"id": "syn-061", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Your water connection will be disconnected tonight. Update bill details with officer 63XXXXXX12.", "source": "synthetic"}
+{"id": "syn-062", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपका ऑर्डर भेज दिया गया है और शुक्रवार तक पहुँचेगा।", "source": "synthetic"}
+{"id": "syn-063", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX63 is your OTP for login. Do not share it with anyone. XYZ Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-064", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "This is Mumbai Cyber Police. Your Aadhaar is linked to money laundering. Stay on video call, you are under digital arrest.", "source": "synthetic"}
+{"id": "syn-065", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 8,750 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-066", "label": "other_scam", "is_scam": true, "lang": "en", "text": "I am an army officer transferring, selling my scooter cheap. Pay advance to ab***@okexample.", "source": "synthetic"}
+{"id": "syn-067", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX37 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-068", "label": "task_job", "is_scam": true, "lang": "kn", "text": "ಮನೆಯಿಂದಲೇ ಕೆಲಸ, ಮೊದಲು Rs 4,999 ನೋಂದಣಿ ಶುಲ್ಕ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-069", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 8,750 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-070", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your order from DemoMart has been shipped and will arrive by Friday.", "source": "synthetic"}
+{"id": "syn-071", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 99,000 credited to your A/c XX9876 by salary. Available balance updated. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-072", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Dear winner, claim your gift voucher of Rs 8,750 now: http://kyc-update.example.test", "source": "synthetic"}
+{"id": "syn-073", "label": "kyc_banking", "is_scam": true, "lang": "hi", "text": "आपके रिवॉर्ड पॉइंट Rs 99,000 आज रात समाप्त होंगे। अभी रिडीम करें https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-074", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "You have received Rs 1,499 from ab***@okexample. Enter your UPI PIN to accept the money.", "source": "synthetic"}
+{"id": "syn-075", "label": "delivery_parcel", "is_scam": true, "lang": "hi", "text": "आपका पार्सल अधूरे पते के कारण रुका है। 12 घंटे में अपडेट करें: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-076", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "City Power: Your connection will be cut today. Last bill not paid. Call 98XXXXXX21 immediately to avoid disconnection.", "source": "synthetic"}
+{"id": "syn-077", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 12,500 credited to your A/c XX9876 by salary. Available balance updated. -ExampleBank", "source": "synthetic"}
+{"id": "syn-078", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 8,750 credited to your A/c XX9876 by salary. Available balance updated. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-079", "label": "lottery_prize", "is_scam": true, "lang": "kn", "text": "ನಿಮ್ಮ ಸಂಖ್ಯೆಗೆ ಬಹುಮಾನ ಬಂದಿದೆ, ಶುಲ್ಕ Rs 25,00,000 ಅನ್ನು rk***@paytest ಗೆ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-080", "label": "other_scam", "is_scam": true, "lang": "hi", "text": "Mummy ye mera naya number hai, turant Rs 4,999 rk***@paytest par bhej do.", "source": "synthetic"}
+{"id": "syn-081", "label": "otp_pin", "is_scam": true, "lang": "hi", "text": "आपके खाते से Rs 99,000 का संदिग्ध लेनदेन रोकने के लिए अभी आया OTP बताएं।", "source": "synthetic"}
+{"id": "syn-082", "label": "other_scam", "is_scam": true, "lang": "hi", "text": "तुरंत लोन मंज़ूर Rs 99,000, प्रोसेसिंग फ़ीस http://kyc-update.example.test पर जमा करें।", "source": "synthetic"}
+{"id": "syn-083", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपके खाते XX1234 से UPI द्वारा Rs 25,00,000 कटे। यह आप नहीं थे? कार्ड के पीछे दिए नंबर पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-084", "label": "task_job", "is_scam": true, "lang": "en", "text": "Part time job! Earn Rs 3000-8000 daily by liking YouTube videos. WhatsApp 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-085", "label": "lottery_prize", "is_scam": true, "lang": "hi", "text": "बधाई हो! आपने KBC लकी ड्रॉ में Rs 99,000 जीते हैं। दावा करने के लिए 63XXXXXX12 पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-086", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 99,000 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -ExampleBank", "source": "synthetic"}
+{"id": "syn-087", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಿಮ್ಮ ಖಾತೆ XX1234 ನಿಂದ UPI ಮೂಲಕ Rs 25,00,000 ಕಡಿತವಾಗಿದೆ. ನೀವಲ್ಲವೇ? ಕಾರ್ಡ್ ಹಿಂದಿನ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-088", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "You are the lucky winner of an iPhone! Pay Rs 499 delivery charge at https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-089", "label": "task_job", "is_scam": true, "lang": "en", "text": "Part time job! Earn Rs 3000-8000 daily by liking YouTube videos. WhatsApp 91XXXXXX58", "source": "synthetic"}
+{"id": "syn-090", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Your mobile number has won 25 lakh in the international lottery. Send details to 91XXXXXX58.", "source": "synthetic"}
+{"id": "syn-091", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "TRAI notice: your mobile number will be disconnected in 2 hours due to illegal activity. Press 9 or call 98XXXXXX21.", "source": "synthetic"}
+{"id": "syn-092", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 12,500 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-093", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Sir, for KYC verification install the RustDesk app, our team will do it from your phone.", "source": "synthetic"}
+{"id": "syn-094", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Demo Bank: Your PAN is not linked, account suspended in 24 hrs. Click http://tinyurl.example/a9 to verify.", "source": "synthetic"}
+{"id": "syn-095", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ಸೆಪ್ಟೆಂಬರ್ ವಿದ್ಯುತ್ ಬಿಲ್ Rs 4,999 ರಚಿಸಲಾಗಿದೆ. ಅಧಿಕೃತ ಆ್ಯಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-096", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "सितंबर का बिजली बिल Rs 12,500 जारी हुआ है। अंतिम तिथि 25 अक्टूबर। आधिकारिक ऐप पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-097", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಿಮ್ಮ ಆರ್ಡರ್ ರವಾನೆಯಾಗಿದೆ, ಶುಕ್ರವಾರದೊಳಗೆ ತಲುಪುತ್ತದೆ.", "source": "synthetic"}
+{"id": "syn-098", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your gas cylinder booking is confirmed. Delivery expected in 2 days.", "source": "synthetic"}
+{"id": "syn-099", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Your bank app needs an update. Download the new APK from https://refund-portal.example.test and allow all permissions.", "source": "synthetic"}
+{"id": "syn-100", "label": "task_job", "is_scam": true, "lang": "en", "text": "Hello, I am HR from a digital agency. Simple online tasks, daily payout. Join telegram http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-101", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Amazon-style refund of Rs 1,499 pending. Reply with the 6 digit code sent to you.", "source": "synthetic"}
+{"id": "syn-102", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX46 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-103", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "सितंबर का बिजली बिल Rs 4,999 जारी हुआ है। अंतिम तिथि 25 अक्टूबर। आधिकारिक ऐप पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-104", "label": "remote_access", "is_scam": true, "lang": "kn", "text": "ಹೊಸ ಬ್ಯಾಂಕ್ ಆ್ಯಪ್ ಅನ್ನು https://refund-portal.example.test ನಿಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-105", "label": "utility_bill", "is_scam": true, "lang": "hi", "text": "बिजली बिल Rs 1,499 बकाया है। कनेक्शन कटने से बचने के लिए https://refund-portal.example.test पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-106", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your library book is due on 20-Oct. Renew at the counter.", "source": "synthetic"}
+{"id": "syn-107", "label": "investment", "is_scam": true, "lang": "kn", "text": "ನಮ್ಮ ಷೇರು ಸಲಹಾ ಗುಂಪಿಗೆ ಸೇರಿ, 30 ದಿನದಲ್ಲಿ ಖಚಿತ 300% ಲಾಭ. https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-108", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 1,499 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -ExampleBank", "source": "synthetic"}
+{"id": "syn-109", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX33 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-110", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "XYZ Bank security team: to stop an unauthorised transaction of Rs 4,999, share the OTP you just received.", "source": "synthetic"}
+{"id": "syn-111", "label": "remote_access", "is_scam": true, "lang": "hi", "text": "रिफंड पाने के लिए a screen-share app इंस्टॉल करें और कोड हमारे अधिकारी को बताएं।", "source": "synthetic"}
+{"id": "syn-112", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपके खाते XX1234 से UPI द्वारा Rs 8,750 कटे। यह आप नहीं थे? कार्ड के पीछे दिए नंबर पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-113", "label": "otp_pin", "is_scam": true, "lang": "kn", "text": "Rs 99,000 ಸ್ವೀಕರಿಸಲು ನಿಮ್ಮ UPI PIN ನಮೂದಿಸಿ. ಕಳುಹಿಸಿದವರು: pq***@exampleupi", "source": "synthetic"}
+{"id": "syn-114", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "CBI officer here. Transfer Rs 25,00,000 to the RBI verification account xy***@examplebank to clear your name.", "source": "synthetic"}
+{"id": "syn-115", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX47 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-116", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Happy birthday! Have a great year ahead.", "source": "synthetic"}
+{"id": "syn-117", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX60 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-118", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX68 is your OTP for login. Do not share it with anyone. XYZ Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-119", "label": "delivery_parcel", "is_scam": true, "lang": "hi", "text": "Aapka parcel customs mein ruka hai, Rs 4,999 fee xy***@examplebank par bhejein.", "source": "synthetic"}
+{"id": "syn-120", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Congratulations! Your number won Rs 1,499 in the KBC lucky draw. Call 88XXXXXX67 to claim. Processing fee applies.", "source": "synthetic"}
+{"id": "syn-121", "label": "kyc_banking", "is_scam": true, "lang": "kn", "text": "ಆತ್ಮೀಯ ಗ್ರಾಹಕರೇ, KYC ಬಾಕಿ ಇರುವುದರಿಂದ ನಿಮ್ಮ Demo Bank ಖಾತೆ ಇಂದು ಬ್ಲಾಕ್ ಆಗುತ್ತದೆ. ಈಗಲೇ ನವೀಕರಿಸಿ: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-122", "label": "remote_access", "is_scam": true, "lang": "hi", "text": "रिफंड पाने के लिए TeamViewer QuickSupport इंस्टॉल करें और कोड हमारे अधिकारी को बताएं।", "source": "synthetic"}
+{"id": "syn-123", "label": "remote_access", "is_scam": true, "lang": "kn", "text": "ನಿಮ್ಮ ರಿಫಂಡ್‌ಗಾಗಿ the RustDesk app ಸ್ಥಾಪಿಸಿ ಮತ್ತು ಕೋಡ್ ನಮ್ಮ ಅಧಿಕಾರಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ.", "source": "synthetic"}
+{"id": "syn-124", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "TRAI notice: your mobile number will be disconnected in 2 hours due to illegal activity. Press 9 or call 97XXXXXX04.", "source": "synthetic"}
+{"id": "syn-125", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX74 is your OTP for login. Do not share it with anyone. Demo Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-126", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX55 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-127", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "ExampleBank: Your PAN is not linked, account suspended in 24 hrs. Click https://win-prize.example.test to verify.", "source": "synthetic"}
+{"id": "syn-128", "label": "impersonation_authority", "is_scam": true, "lang": "kn", "text": "ನ್ಯಾಯಾಲಯದ ಸಮನ್ಸ್: ಬಂಧನ ತಪ್ಪಿಸಲು ಇಂದೇ Rs 1,499 ದಂಡ ಪಾವತಿಸಿ https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-129", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Demo Bank security team: to stop an unauthorised transaction of Rs 1,499, share the OTP you just received.", "source": "synthetic"}
+{"id": "syn-130", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಿಮ್ಮ ಖಾತೆ XX1234 ನಿಂದ UPI ಮೂಲಕ Rs 99,000 ಕಡಿತವಾಗಿದೆ. ನೀವಲ್ಲವೇ? ಕಾರ್ಡ್ ಹಿಂದಿನ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-131", "label": "otp_pin", "is_scam": true, "lang": "hi", "text": "आपके खाते से Rs 25,00,000 का संदिग्ध लेनदेन रोकने के लिए अभी आया OTP बताएं।", "source": "synthetic"}
+{"id": "syn-132", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Hi, I sent an OTP to your number by mistake, please forward it to me on 70XXXXXX39, urgent.", "source": "synthetic"}
+{"id": "syn-133", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Your SIM will be blocked. Install TeamViewer QuickSupport so our technician can fix it. Call 98XXXXXX21.", "source": "synthetic"}
+{"id": "syn-134", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ಸೆಪ್ಟೆಂಬರ್ ವಿದ್ಯುತ್ ಬಿಲ್ Rs 99,000 ರಚಿಸಲಾಗಿದೆ. ಅಧಿಕೃತ ಆ್ಯಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-135", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Your card will be blocked. Tell us the CVV and OTP to keep it active. Call 88XXXXXX67.", "source": "synthetic"}
+{"id": "syn-136", "label": "impersonation_authority", "is_scam": true, "lang": "hi", "text": "TRAI: 2 ghante mein aapka number band ho jayega, 70XXXXXX39 par call karein.", "source": "synthetic"}
+{"id": "syn-137", "label": "investment", "is_scam": true, "lang": "hi", "text": "हमारे VIP स्टॉक ग्रुप से जुड़ें, 30 दिन में 300% गारंटीड रिटर्न। https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-138", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Electricity bill pending Rs 1,499. Power cut at 10:00 PM. Pay now via http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-139", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 4,999 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Demo Bank", "source": "synthetic"}
+{"id": "syn-140", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Hi, the plumber will come at 10 tomorrow, please keep someone at home.", "source": "synthetic"}
+{"id": "syn-141", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Instant loan approved Rs 1,499, no documents. Pay Rs 999 processing fee at http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-142", "label": "investment", "is_scam": true, "lang": "en", "text": "Daily 5% fixed return on USDT, no risk. Contact mentor 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-143", "label": "legitimate", "is_scam": false, "lang": "en", "text": "ExampleExpress: your parcel was delivered today at 2:15 PM.", "source": "synthetic"}
+{"id": "syn-144", "label": "investment", "is_scam": true, "lang": "en", "text": "SEBI-registered expert (claimed): pay Rs 8,750 for sure-shot intraday calls.", "source": "synthetic"}
+{"id": "syn-145", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX18 is your OTP for login. Do not share it with anyone. Demo Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-146", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 12,500 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-147", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Customer care here. For your refund, approve the collect request and enter UPI PIN.", "source": "synthetic"}
+{"id": "syn-148", "label": "other_scam", "is_scam": true, "lang": "kn", "text": "ಅಮ್ಮ, ಇದು ನನ್ನ ಹೊಸ ಸಂಖ್ಯೆ. ತುರ್ತಾಗಿ Rs 1,499 xy***@examplebank ಗೆ ಕಳುಹಿಸಿ.", "source": "synthetic"}
+{"id": "syn-149", "label": "impersonation_authority", "is_scam": true, "lang": "kn", "text": "ನ್ಯಾಯಾಲಯದ ಸಮನ್ಸ್: ಬಂಧನ ತಪ್ಪಿಸಲು ಇಂದೇ Rs 99,000 ದಂಡ ಪಾವತಿಸಿ https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-150", "label": "investment", "is_scam": true, "lang": "en", "text": "Exclusive IPO allotment via our trading app, assured profit. Download https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-151", "label": "remote_access", "is_scam": true, "lang": "kn", "text": "ನಿಮ್ಮ ರಿಫಂಡ್‌ಗಾಗಿ AnyDesk ಸ್ಥಾಪಿಸಿ ಮತ್ತು ಕೋಡ್ ನಮ್ಮ ಅಧಿಕಾರಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ.", "source": "synthetic"}
+{"id": "syn-152", "label": "task_job", "is_scam": true, "lang": "hi", "text": "Ghar baithe kamaayein, sirf task complete karein. Pehle Rs 12,500 jama karein.", "source": "synthetic"}
+{"id": "syn-153", "label": "remote_access", "is_scam": true, "lang": "hi", "text": "Naya bank app https://refund-portal.example.test se download karein aur sabhi permission allow karein.", "source": "synthetic"}
+{"id": "syn-154", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 8,750 credited to your A/c XX9876 by salary. Available balance updated. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-155", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Sample Co-op Bank netbanking will be deactivated. Update your KYC at http://kyc-update.example.test to continue services.", "source": "synthetic"}
+{"id": "syn-156", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX71 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-157", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX11 is your OTP for login. Do not share it with anyone. XYZ Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-158", "label": "kyc_banking", "is_scam": true, "lang": "kn", "text": "ಆತ್ಮೀಯ ಗ್ರಾಹಕರೇ, KYC ಬಾಕಿ ಇರುವುದರಿಂದ ನಿಮ್ಮ Demo Bank ಖಾತೆ ಇಂದು ಬ್ಲಾಕ್ ಆಗುತ್ತದೆ. ಈಗಲೇ ನವೀಕರಿಸಿ: https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-159", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 4,999 credited to your A/c XX9876 by salary. Available balance updated. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-160", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "सितंबर का बिजली बिल Rs 99,000 जारी हुआ है। अंतिम तिथि 25 अक्टूबर। आधिकारिक ऐप पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-161", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Your electricity subsidy of Rs 4,999 is approved, pay small GST to pq***@exampleupi to receive.", "source": "synthetic"}
+{"id": "syn-162", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "Customs: a parcel in your name contains illegal items. Press 1 or call 63XXXXXX12.", "source": "synthetic"}
+{"id": "syn-163", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Lucky draw result: you won a car. Pay registration Rs 12,500 to pq***@exampleupi.", "source": "synthetic"}
+{"id": "syn-164", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Dear customer your gas connection will be stopped today, KYC of gas meter pending, call 97XXXXXX04.", "source": "synthetic"}
+{"id": "syn-165", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Meeting moved to 4 PM, same room. Please bring the slides.", "source": "synthetic"}
+{"id": "syn-166", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX63 is your OTP for login. Do not share it with anyone. Demo Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-167", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ನಿಮ್ಮ ಖಾತೆ XX1234 ನಿಂದ UPI ಮೂಲಕ Rs 8,750 ಕಡಿತವಾಗಿದೆ. ನೀವಲ್ಲವೇ? ಕಾರ್ಡ್ ಹಿಂದಿನ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-168", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 8,750 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -ExampleBank", "source": "synthetic"}
+{"id": "syn-169", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 1,499 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-170", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपके खाते XX1234 से UPI द्वारा Rs 12,500 कटे। यह आप नहीं थे? कार्ड के पीछे दिए नंबर पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-171", "label": "task_job", "is_scam": true, "lang": "hi", "text": "Ghar baithe kamaayein, sirf task complete karein. Pehle Rs 99,000 jama karein.", "source": "synthetic"}
+{"id": "syn-172", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ಸೆಪ್ಟೆಂಬರ್ ವಿದ್ಯುತ್ ಬಿಲ್ Rs 12,500 ರಚಿಸಲಾಗಿದೆ. ಅಧಿಕೃತ ಆ್ಯಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-173", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "ExampleExpress: Your parcel is on hold due to incomplete address. Update within 12 hrs: http://kyc-update.example.test", "source": "synthetic"}
+{"id": "syn-174", "label": "lottery_prize", "is_scam": true, "lang": "hi", "text": "बधाई हो! आपने KBC लकी ड्रॉ में Rs 8,750 जीते हैं। दावा करने के लिए 98XXXXXX21 पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-175", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX70 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-176", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "CBI officer here. Transfer Rs 1,499 to the RBI verification account pq***@exampleupi to clear your name.", "source": "synthetic"}
+{"id": "syn-177", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX65 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-178", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Your debit card is blocked due to incomplete KYC. Call our KYC officer on 88XXXXXX67 immediately.", "source": "synthetic"}
+{"id": "syn-179", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX60 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-180", "label": "lottery_prize", "is_scam": true, "lang": "kn", "text": "ಅಭಿನಂದನೆಗಳು! ನೀವು ಲಕ್ಕಿ ಡ್ರಾದಲ್ಲಿ Rs 25,00,000 ಗೆದ್ದಿದ್ದೀರಿ. 88XXXXXX67 ಗೆ ಕರೆ ಮಾಡಿ.", "source": "synthetic"}
+{"id": "syn-181", "label": "delivery_parcel", "is_scam": true, "lang": "kn", "text": "ಅಪೂರ್ಣ ವಿಳಾಸದಿಂದ ನಿಮ್ಮ ಪಾರ್ಸೆಲ್ ತಡೆಹಿಡಿಯಲಾಗಿದೆ. ಇಲ್ಲಿ ನವೀಕರಿಸಿ: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-182", "label": "legitimate", "is_scam": false, "lang": "en", "text": "School is closed tomorrow due to heavy rain. -Class teacher", "source": "synthetic"}
+{"id": "syn-183", "label": "utility_bill", "is_scam": true, "lang": "kn", "text": "ಆತ್ಮೀಯ ಗ್ರಾಹಕರೇ, ಹಿಂದಿನ ತಿಂಗಳ ಬಿಲ್ ಅಪ್‌ಡೇಟ್ ಆಗದ ಕಾರಣ ಇಂದು ರಾತ್ರಿ 9:30 PM ಕ್ಕೆ ನಿಮ್ಮ ವಿದ್ಯುತ್ ಸಂಪರ್ಕ ಕಡಿತಗೊಳ್ಳುತ್ತದೆ. ಅಧಿಕಾರಿಯನ್ನು 70XXXXXX39 ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಿ.", "source": "synthetic"}
+{"id": "syn-184", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "You have received Rs 4,999 from ab***@okexample. Enter your UPI PIN to accept the money.", "source": "synthetic"}
+{"id": "syn-185", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "QuickShip (example) final notice: shipment will be returned. Confirm details at https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-186", "label": "investment", "is_scam": true, "lang": "en", "text": "Join our VIP stock tips group, guaranteed 300% returns in 30 days. https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-187", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "XXXX17 ನಿಮ್ಮ ಲಾಗಿನ್ OTP. ಯಾರೊಂದಿಗೂ ಹಂಚಿಕೊಳ್ಳಬೇಡಿ.", "source": "synthetic"}
+{"id": "syn-188", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "ExampleExpress final notice: shipment will be returned. Confirm details at http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-189", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ಊಟ ಆಯ್ತಾ? ಮನೆಗೆ ಯಾವಾಗ ಬರ್ತೀಯ?", "source": "synthetic"}
+{"id": "syn-190", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 25,00,000 credited to your A/c XX9876 by salary. Available balance updated. -ExampleBank", "source": "synthetic"}
+{"id": "syn-191", "label": "other_scam", "is_scam": true, "lang": "hi", "text": "Mummy ye mera naya number hai, turant Rs 8,750 rk***@paytest par bhej do.", "source": "synthetic"}
+{"id": "syn-192", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 12,500 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -ExampleBank", "source": "synthetic"}
+{"id": "syn-193", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Your Netflix-style subscription failed, update card at https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-194", "label": "kyc_banking", "is_scam": true, "lang": "kn", "text": "ನಿಮ್ಮ ಡೆಬಿಟ್ ಕಾರ್ಡ್ ಬ್ಲಾಕ್ ಆಗಿದೆ. KYC ಅಧಿಕಾರಿಯನ್ನು 70XXXXXX39 ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಿ.", "source": "synthetic"}
+{"id": "syn-195", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Your card will be blocked. Tell us the CVV and OTP to keep it active. Call 63XXXXXX12.", "source": "synthetic"}
+{"id": "syn-196", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "International parcel held at customs. Pay duty Rs 25,00,000 to pq***@exampleupi to release.", "source": "synthetic"}
+{"id": "syn-197", "label": "otp_pin", "is_scam": true, "lang": "hi", "text": "Galti se aapke number par OTP chala gaya, kripya 97XXXXXX04 par bhej dijiye.", "source": "synthetic"}
+{"id": "syn-198", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Hey, are we still on for dinner at 8? I'll book the table.", "source": "synthetic"}
+{"id": "syn-199", "label": "task_job", "is_scam": true, "lang": "en", "text": "Congratulations, you are selected for a data entry job. Pay Rs 1,499 registration to ab***@okexample.", "source": "synthetic"}
+{"id": "syn-200", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 99,000 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-201", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "Income tax department: penalty pending, pay immediately at https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-202", "label": "other_scam", "is_scam": true, "lang": "hi", "text": "तुरंत लोन मंज़ूर Rs 4,999, प्रोसेसिंग फ़ीस https://refund-portal.example.test पर जमा करें।", "source": "synthetic"}
+{"id": "syn-203", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your electricity bill of Rs 25,00,000 for Sep is generated. Due date 25-Oct. Pay on the official app or website.", "source": "synthetic"}
+{"id": "syn-204", "label": "other_scam", "is_scam": true, "lang": "hi", "text": "Mummy ye mera naya number hai, turant Rs 1,499 rk***@paytest par bhej do.", "source": "synthetic"}
+{"id": "syn-205", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "Court summons issued against you. Pay fine of Rs 12,500 today at http://kyc-update.example.test to avoid arrest.", "source": "synthetic"}
+{"id": "syn-206", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Your mobile number has won 25 lakh in the international lottery. Send details to 63XXXXXX12.", "source": "synthetic"}
+{"id": "syn-207", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX76 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-208", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "Dear winner, claim your gift voucher of Rs 8,750 now: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-209", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX97 is your OTP for login. Do not share it with anyone. ExampleBank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-210", "label": "lottery_prize", "is_scam": true, "lang": "en", "text": "You are the lucky winner of an iPhone! Pay Rs 499 delivery charge at https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-211", "label": "task_job", "is_scam": true, "lang": "en", "text": "Earn daily by completing merchant tasks. Recharge Rs 12,500 to unlock VIP level.", "source": "synthetic"}
+{"id": "syn-212", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Dear Customer, your XYZ Bank account will be blocked today due to pending KYC. Update now: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-213", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "सितंबर का बिजली बिल Rs 8,750 जारी हुआ है। अंतिम तिथि 25 अक्टूबर। आधिकारिक ऐप पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-214", "label": "remote_access", "is_scam": true, "lang": "hi", "text": "Naya bank app http://tinyurl.example/a9 se download karein aur sabhi permission allow karein.", "source": "synthetic"}
+{"id": "syn-215", "label": "investment", "is_scam": true, "lang": "hi", "text": "हमारे VIP स्टॉक ग्रुप से जुड़ें, 30 दिन में 300% गारंटीड रिटर्न। http://kyc-update.example.test", "source": "synthetic"}
+{"id": "syn-216", "label": "impersonation_authority", "is_scam": true, "lang": "hi", "text": "TRAI: 2 ghante mein aapka number band ho jayega, 98XXXXXX21 par call karein.", "source": "synthetic"}
+{"id": "syn-217", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "Court summons issued against you. Pay fine of Rs 4,999 today at https://win-prize.example.test to avoid arrest.", "source": "synthetic"}
+{"id": "syn-218", "label": "task_job", "is_scam": true, "lang": "en", "text": "Congratulations, you are selected for a data entry job. Pay Rs 1,499 registration to xy***@examplebank.", "source": "synthetic"}
+{"id": "syn-219", "label": "kyc_banking", "is_scam": true, "lang": "hi", "text": "Aapka XYZ Bank account KYC pending hone ki wajah se block ho jayega. Abhi http://tinyurl.example/a9 par update karein.", "source": "synthetic"}
+{"id": "syn-220", "label": "task_job", "is_scam": true, "lang": "en", "text": "Work from home, rate hotels on maps and earn Rs 1,499. Prepaid task bonus 30%.", "source": "synthetic"}
+{"id": "syn-221", "label": "legitimate", "is_scam": false, "lang": "kn", "text": "ಸೆಪ್ಟೆಂಬರ್ ವಿದ್ಯುತ್ ಬಿಲ್ Rs 1,499 ರಚಿಸಲಾಗಿದೆ. ಅಧಿಕೃತ ಆ್ಯಪ್‌ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-222", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "Customs: a parcel in your name contains illegal items. Press 1 or call 91XXXXXX58.", "source": "synthetic"}
+{"id": "syn-223", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Dear user your account is on hold, KYC expired. Send Aadhaar photo on WhatsApp 97XXXXXX04.", "source": "synthetic"}
+{"id": "syn-224", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "सितंबर का बिजली बिल Rs 1,499 जारी हुआ है। अंतिम तिथि 25 अक्टूबर। आधिकारिक ऐप पर भुगतान करें।", "source": "synthetic"}
+{"id": "syn-225", "label": "kyc_banking", "is_scam": true, "lang": "hi", "text": "प्रिय ग्राहक, आपका ExampleBank खाता आज KYC अपडेट न होने के कारण बंद हो जाएगा। तुरंत अपडेट करें: https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-226", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "City Power: Your connection will be cut today. Last bill not paid. Call 91XXXXXX58 immediately to avoid disconnection.", "source": "synthetic"}
+{"id": "syn-227", "label": "utility_bill", "is_scam": true, "lang": "hi", "text": "प्रिय उपभोक्ता, आज रात 10:00 PM बजे आपकी बिजली काट दी जाएगी क्योंकि पिछला बिल अपडेट नहीं हुआ। बिजली अधिकारी से संपर्क करें 98XXXXXX21", "source": "synthetic"}
+{"id": "syn-228", "label": "delivery_parcel", "is_scam": true, "lang": "hi", "text": "आपका पार्सल अधूरे पते के कारण रुका है। 12 घंटे में अपडेट करें: https://bit.example/x7Kq", "source": "synthetic"}
+{"id": "syn-229", "label": "other_scam", "is_scam": true, "lang": "kn", "text": "ತ್ವರಿತ ಸಾಲ ಮಂಜೂರಾಗಿದೆ, ಪ್ರಕ್ರಿಯೆ ಶುಲ್ಕ http://tinyurl.example/a9 ನಲ್ಲಿ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-230", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 25,00,000 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-231", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Dear Consumer, your electricity power will be disconnected tonight at 9:30 PM because your previous month bill was not updated. Contact our electricity officer 63XXXXXX12", "source": "synthetic"}
+{"id": "syn-232", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "Your package could not be delivered. Pay Rs 25 redelivery fee at http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-233", "label": "impersonation_authority", "is_scam": true, "lang": "hi", "text": "यह साइबर पुलिस है। आपका आधार मनी लॉन्ड्रिंग से जुड़ा है। वीडियो कॉल पर रहें, आप डिजिटल अरेस्ट में हैं।", "source": "synthetic"}
+{"id": "syn-234", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX36 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-235", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your KYC is complete. No further action is needed. -ExampleBank", "source": "synthetic"}
+{"id": "syn-236", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Your electricity subsidy of Rs 25,00,000 is approved, pay small GST to rk***@paytest to receive.", "source": "synthetic"}
+{"id": "syn-237", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 4,999 credited to your A/c XX9876 by salary. Available balance updated. -ExampleBank", "source": "synthetic"}
+{"id": "syn-238", "label": "investment", "is_scam": true, "lang": "hi", "text": "Crypto mein Rs 99,000 lagaiye aur 7 din mein double paaiye. 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-239", "label": "delivery_parcel", "is_scam": true, "lang": "kn", "text": "ಕಸ್ಟಮ್ಸ್‌ನಲ್ಲಿ ಪಾರ್ಸೆಲ್ ಇದೆ, Rs 25,00,000 ಶುಲ್ಕ ಪಾವತಿಸಿ.", "source": "synthetic"}
+{"id": "syn-240", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX45 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-241", "label": "investment", "is_scam": true, "lang": "hi", "text": "हमारे VIP स्टॉक ग्रुप से जुड़ें, 30 दिन में 300% गारंटीड रिटर्न। http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-242", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 1,499 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Demo Bank", "source": "synthetic"}
+{"id": "syn-243", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your KYC is complete. No further action is needed. -Demo Bank", "source": "synthetic"}
+{"id": "syn-244", "label": "task_job", "is_scam": true, "lang": "kn", "text": "ಅರೆಕಾಲಿಕ ಉದ್ಯೋಗ! ವಿಡಿಯೋ ಲೈಕ್ ಮಾಡಿ ದಿನಕ್ಕೆ Rs 5000 ಗಳಿಸಿ. 70XXXXXX39", "source": "synthetic"}
+{"id": "syn-245", "label": "remote_access", "is_scam": true, "lang": "en", "text": "To process your refund please install a screen-share app and share the 9 digit code with our executive.", "source": "synthetic"}
+{"id": "syn-246", "label": "kyc_banking", "is_scam": true, "lang": "hi", "text": "Aapka Demo Bank account KYC pending hone ki wajah se block ho jayega. Abhi https://refund-portal.example.test par update karein.", "source": "synthetic"}
+{"id": "syn-247", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 12,500 credited to your A/c XX9876 by salary. Available balance updated. -Demo Bank", "source": "synthetic"}
+{"id": "syn-248", "label": "otp_pin", "is_scam": true, "lang": "en", "text": "Hi, I sent an OTP to your number by mistake, please forward it to me on 88XXXXXX67, urgent.", "source": "synthetic"}
+{"id": "syn-249", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your SIP of Rs 2,000 has been processed. Units will be allotted in 2 working days.", "source": "synthetic"}
+{"id": "syn-250", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपकी गैस सिलेंडर बुकिंग कन्फर्म हो गई है।", "source": "synthetic"}
+{"id": "syn-251", "label": "task_job", "is_scam": true, "lang": "hi", "text": "पार्ट टाइम जॉब! यूट्यूब वीडियो लाइक करके रोज़ Rs 5000 कमाएं। व्हाट्सऐप 70XXXXXX39", "source": "synthetic"}
+{"id": "syn-252", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX13 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-253", "label": "delivery_parcel", "is_scam": true, "lang": "en", "text": "DemoPost: Your parcel is on hold due to incomplete address. Update within 12 hrs: https://win-prize.example.test", "source": "synthetic"}
+{"id": "syn-254", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Your SIM will be blocked. Install the RustDesk app so our technician can fix it. Call 98XXXXXX21.", "source": "synthetic"}
+{"id": "syn-255", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX10 is your OTP for login. Do not share it with anyone. ExampleBank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-256", "label": "task_job", "is_scam": true, "lang": "en", "text": "Hello, I am HR from a digital agency. Simple online tasks, daily payout. Join telegram https://refund-portal.example.test", "source": "synthetic"}
+{"id": "syn-257", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 4,999 credited to your A/c XX9876 by salary. Available balance updated. -Demo Bank", "source": "synthetic"}
+{"id": "syn-258", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 99,000 credited to your A/c XX9876 by salary. Available balance updated. -Demo Bank", "source": "synthetic"}
+{"id": "syn-259", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Dear customer your gas connection will be stopped today, KYC of gas meter pending, call 63XXXXXX12.", "source": "synthetic"}
+{"id": "syn-260", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Your water connection will be disconnected tonight. Update bill details with officer 91XXXXXX58.", "source": "synthetic"}
+{"id": "syn-261", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Can you send me the notes from yesterday's class?", "source": "synthetic"}
+{"id": "syn-262", "label": "legitimate", "is_scam": false, "lang": "en", "text": "QuickShip (example): your parcel was delivered today at 2:15 PM.", "source": "synthetic"}
+{"id": "syn-263", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "आपके खाते XX1234 से UPI द्वारा Rs 99,000 कटे। यह आप नहीं थे? कार्ड के पीछे दिए नंबर पर कॉल करें।", "source": "synthetic"}
+{"id": "syn-264", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX62 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-265", "label": "investment", "is_scam": true, "lang": "en", "text": "SEBI-registered expert (claimed): pay Rs 4,999 for sure-shot intraday calls.", "source": "synthetic"}
+{"id": "syn-266", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Dear Consumer, your electricity power will be disconnected tonight at 11 PM because your previous month bill was not updated. Contact our electricity officer 70XXXXXX39", "source": "synthetic"}
+{"id": "syn-267", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX97 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-268", "label": "lottery_prize", "is_scam": true, "lang": "hi", "text": "Aapka number lottery mein jeeta hai, Rs 8,750 paane ke liye https://refund-portal.example.test par jayein.", "source": "synthetic"}
+{"id": "syn-269", "label": "impersonation_authority", "is_scam": true, "lang": "hi", "text": "TRAI: 2 ghante mein aapka number band ho jayega, 97XXXXXX04 par call karein.", "source": "synthetic"}
+{"id": "syn-270", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX64 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-271", "label": "investment", "is_scam": true, "lang": "en", "text": "Invest Rs 8,750 in our crypto plan and get double in 7 days. WhatsApp 88XXXXXX67", "source": "synthetic"}
+{"id": "syn-272", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX61 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-273", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX61 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-274", "label": "impersonation_authority", "is_scam": true, "lang": "en", "text": "CBI officer here. Transfer Rs 8,750 to the RBI verification account xy***@examplebank to clear your name.", "source": "synthetic"}
+{"id": "syn-275", "label": "investment", "is_scam": true, "lang": "hi", "text": "Crypto mein Rs 1,499 lagaiye aur 7 din mein double paaiye. 63XXXXXX12", "source": "synthetic"}
+{"id": "syn-276", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Train PNR XXXXXX4521: chart prepared, coach B2 berth 34.", "source": "synthetic"}
+{"id": "syn-277", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Your KYC is complete. No further action is needed. -XYZ Bank", "source": "synthetic"}
+{"id": "syn-278", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX97 is your OTP for login. Do not share it with anyone. Demo Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-279", "label": "utility_bill", "is_scam": true, "lang": "kn", "text": "ಆತ್ಮೀಯ ಗ್ರಾಹಕರೇ, ಹಿಂದಿನ ತಿಂಗಳ ಬಿಲ್ ಅಪ್‌ಡೇಟ್ ಆಗದ ಕಾರಣ ಇಂದು ರಾತ್ರಿ 11 PM ಕ್ಕೆ ನಿಮ್ಮ ವಿದ್ಯುತ್ ಸಂಪರ್ಕ ಕಡಿತಗೊಳ್ಳುತ್ತದೆ. ಅಧಿಕಾರಿಯನ್ನು 70XXXXXX39 ನಲ್ಲಿ ಸಂಪರ್ಕಿಸಿ.", "source": "synthetic"}
+{"id": "syn-280", "label": "utility_bill", "is_scam": true, "lang": "hi", "text": "Aaj raat 8:45 PM baje aapka bijli connection kaat diya jayega. Turant 98XXXXXX21 par call karein.", "source": "synthetic"}
+{"id": "syn-281", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 99,000 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-282", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Hi mom, this is my new number, my phone broke. Please send Rs 4,999 to ab***@okexample urgently.", "source": "synthetic"}
+{"id": "syn-283", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Hi mom, this is my new number, my phone broke. Please send Rs 8,750 to xy***@examplebank urgently.", "source": "synthetic"}
+{"id": "syn-284", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Interview scheduled on Monday 10 AM at our office. No fees are charged at any stage.", "source": "synthetic"}
+{"id": "syn-285", "label": "utility_bill", "is_scam": true, "lang": "en", "text": "Electricity bill pending Rs 8,750. Power cut at 9:30 PM. Pay now via http://kyc-update.example.test", "source": "synthetic"}
+{"id": "syn-286", "label": "otp_pin", "is_scam": true, "lang": "kn", "text": "ಅನಧಿಕೃತ ವಹಿವಾಟು ತಡೆಯಲು ಈಗ ಬಂದ OTP ಹೇಳಿ.", "source": "synthetic"}
+{"id": "syn-287", "label": "legitimate", "is_scam": false, "lang": "en", "text": "XXXX66 is your OTP for login. Do not share it with anyone. Sample Co-op Bank never asks for your OTP.", "source": "synthetic"}
+{"id": "syn-288", "label": "investment", "is_scam": true, "lang": "en", "text": "Join our VIP stock tips group, guaranteed 300% returns in 30 days. http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-289", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX76 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-290", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Download Customer-Support.apk from https://win-prize.example.test to cancel the Rs 25,00,000 charge.", "source": "synthetic"}
+{"id": "syn-291", "label": "remote_access", "is_scam": true, "lang": "hi", "text": "Naya bank app https://bit.example/x7Kq se download karein aur sabhi permission allow karein.", "source": "synthetic"}
+{"id": "syn-292", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 12,500 credited to your A/c XX9876 by salary. Available balance updated. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-293", "label": "legitimate", "is_scam": false, "lang": "en", "text": "Rs 1,499 debited from A/c XX1234 on 12-Oct via UPI. Not you? Call the number on the back of your card. -Sample Co-op Bank", "source": "synthetic"}
+{"id": "syn-294", "label": "impersonation_authority", "is_scam": true, "lang": "kn", "text": "ಇದು ಸೈಬರ್ ಪೊಲೀಸ್. ನಿಮ್ಮ ಆಧಾರ್ ಹಣ ವರ್ಗಾವಣೆ ಪ್ರಕರಣಕ್ಕೆ ಸಂಬಂಧಿಸಿದೆ. ವಿಡಿಯೋ ಕರೆಯಲ್ಲಿ ಇರಿ.", "source": "synthetic"}
+{"id": "syn-295", "label": "other_scam", "is_scam": true, "lang": "en", "text": "I am an army officer transferring, selling my scooter cheap. Pay advance to xy***@examplebank.", "source": "synthetic"}
+{"id": "syn-296", "label": "other_scam", "is_scam": true, "lang": "en", "text": "Your Netflix-style subscription failed, update card at http://kyc-update.example.test", "source": "synthetic"}
+{"id": "syn-297", "label": "kyc_banking", "is_scam": true, "lang": "en", "text": "Dear Customer, your Sample Co-op Bank account will be blocked today due to pending KYC. Update now: http://examp1e-bank.test/kyc", "source": "synthetic"}
+{"id": "syn-298", "label": "remote_access", "is_scam": true, "lang": "en", "text": "Your bank app needs an update. Download the new APK from https://bit.example/x7Kq and allow all permissions.", "source": "synthetic"}
+{"id": "syn-299", "label": "legitimate", "is_scam": false, "lang": "hi", "text": "XXXX83 आपका लॉगिन OTP है। इसे किसी के साथ साझा न करें।", "source": "synthetic"}
+{"id": "syn-300", "label": "legitimate", "is_scam": false, "lang": "en", "text": "DemoPost: your parcel was delivered today at 2:15 PM.", "source": "synthetic"}
