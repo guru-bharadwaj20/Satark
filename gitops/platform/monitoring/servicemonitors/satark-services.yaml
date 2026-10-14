@@ -1,0 +1,91 @@
+# ServiceMonitors for every Satark service (task 6.6).
+#
+# Contract with charts/satark-common: each service's Service carries
+#   app.kubernetes.io/part-of: satark
+#   app.kubernetes.io/name: <service>
+# and names its HTTP port "http". /metrics is served on that port.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: satark-services
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  namespaceSelector:
+    matchNames: [satark]
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: satark
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      scrapeTimeout: 10s
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_service_label_app_kubernetes_io_name]
+          targetLabel: app
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: node
+      metricRelabelings:
+        # Go/Python libs already set service="..."; drop the operator's
+        # duplicate job-derived label noise but keep "job" for up{} queries.
+        - action: labeldrop
+          regex: endpoint
+---
+# Sandbox browser runs in its own locked-down namespace.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: satark-sandbox
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  namespaceSelector:
+    matchNames: [satark-sandbox]
+  selector:
+    matchLabels:
+      app.kubernetes.io/part-of: satark
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+---
+# linkscan-operator (kubebuilder) serves controller-runtime metrics on 8443 over HTTPS.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: linkscan-operator
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames: [satark]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: linkscan-operator
+      control-plane: controller-manager
+  endpoints:
+    - port: https
+      scheme: https
+      path: /metrics
+      bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      tlsConfig:
+        insecureSkipVerify: true
+---
+# feed-sync is a CronJob (no Service); scrape its pods while they run.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: feed-sync
+  namespace: monitoring
+spec:
+  namespaceSelector:
+    matchNames: [satark]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: feed-sync
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

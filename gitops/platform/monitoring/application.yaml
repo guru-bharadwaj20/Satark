@@ -1,0 +1,23 @@
+# Argo CD Application: Satark monitoring config (ServiceMonitors, rules,
+# dashboards, datasources). Synced after kube-prometheus-stack installs CRDs.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring-config
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  source:
+    repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    path: gitops/platform/monitoring
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions:
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
