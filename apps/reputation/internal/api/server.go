@@ -38,6 +38,8 @@ type Config struct {
 	MinReporters int
 	// Limiter caps reports per reporter; nil disables limiting.
 	Limiter *ratelimit.Limiter
+	// AdminToken protects /v1/admin/*; empty disables those endpoints.
+	AdminToken string
 }
 
 // Server implements http.Handler.
@@ -65,6 +67,7 @@ func New(cfg Config) *Server {
 	s := &Server{cfg: cfg, mux: http.NewServeMux()}
 	s.mux.HandleFunc("POST /v1/reports", s.report)
 	s.mux.HandleFunc("GET /v1/lookup", s.lookup)
+	s.registerDelisting()
 	s.mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) })
 	s.mux.HandleFunc("GET /readyz", s.ready)
 	s.mux.Handle("GET /metrics", cfg.Metrics)

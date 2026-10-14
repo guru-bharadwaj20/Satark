@@ -70,6 +70,7 @@ func run(log *slog.Logger) error {
 			Hasher:       identifier.NewHasher(pepper),
 			Logger:       log,
 			MinReporters: envInt("REPUTATION_MIN_REPORTERS", 3),
+			AdminToken:   os.Getenv("REPUTATION_ADMIN_TOKEN"),
 			Limiter: ratelimit.New(nil,
 				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_HOUR", 5), Period: time.Hour},
 				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_DAY", 20), Period: 24 * time.Hour},
