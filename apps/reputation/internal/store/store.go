@@ -64,6 +64,15 @@ type PurgeResult struct {
 	Delistings      int `json:"delistings_deleted"`
 }
 
+// TrendRow is one aggregate line of the monthly trends report.
+type TrendRow struct {
+	Kind      string
+	Category  string
+	Reports   int
+	Reporters int // distinct reporters
+	Subjects  int // distinct subjects
+}
+
 // Store is the persistence interface used by the API.
 type Store interface {
 	// AddReport records r. It returns false when the same reporter has
@@ -80,6 +89,9 @@ type Store interface {
 
 	// Purge applies the retention policy and reports what it removed.
 	Purge(ctx context.Context, p RetentionPolicy) (PurgeResult, error)
+
+	// Trends aggregates reports created in [from, to) by kind and category.
+	Trends(ctx context.Context, from, to time.Time) ([]TrendRow, error)
 
 	CreateDelisting(ctx context.Context, d Delisting) (Delisting, error)
 	ListDelistings(ctx context.Context, status string) ([]Delisting, error)

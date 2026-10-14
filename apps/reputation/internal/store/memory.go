@@ -108,6 +108,37 @@ func (m *Memory) Purge(_ context.Context, p RetentionPolicy) (PurgeResult, error
 	return res, nil
 }
 
+func (m *Memory) Trends(_ context.Context, from, to time.Time) ([]TrendRow, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	type key struct{ k, c string }
+	agg := map[key]*TrendRow{}
+	reporters := map[key]map[string]bool{}
+	subjects := map[key]map[string]bool{}
+	var order []key
+	for _, e := range m.reports {
+		if e.CreatedAt.Before(from) || !e.CreatedAt.Before(to) {
+			continue
+		}
+		k := key{e.Kind, e.Category}
+		if agg[k] == nil {
+			agg[k] = &TrendRow{Kind: e.Kind, Category: e.Category}
+			reporters[k], subjects[k] = map[string]bool{}, map[string]bool{}
+			order = append(order, k)
+		}
+		agg[k].Reports++
+		reporters[k][e.ReporterHash] = true
+		subjects[k][e.SubjectHash] = true
+	}
+	out := make([]TrendRow, 0, len(order))
+	for _, k := range order {
+		r := *agg[k]
+		r.Reporters, r.Subjects = len(reporters[k]), len(subjects[k])
+		out = append(out, r)
+	}
+	return out, nil
+}
+
 func (m *Memory) CreateDelisting(_ context.Context, d Delisting) (Delisting, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()
