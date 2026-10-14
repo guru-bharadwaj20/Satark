@@ -1,0 +1,76 @@
+---
+# Enable Kubernetes API audit logging on control-plane nodes (task 9.14).
+# Logs are written to /var/log/kubernetes/audit/audit.log as JSON lines and
+# shipped to Loki by the `alloy-audit` DaemonSet (gitops/platform/audit-logs).
+- name: Kubernetes API audit logging
+  hosts: control_plane
+  become: true
+  serial: 1
+  vars:
+    manifest: /etc/kubernetes/manifests/kube-apiserver.yaml
+    audit_dir: /var/log/kubernetes/audit
+  tasks:
+    - name: Create audit policy and log directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        mode: "0700"
+        owner: root
+        group: root
+      loop:
+        - /etc/kubernetes/audit
+        - "{{ audit_dir }}"
+
+    - name: Install audit policy
+      ansible.builtin.copy:
+        src: ../files/audit-policy.yaml
+        dest: /etc/kubernetes/audit/policy.yaml
+        mode: "0600"
+        owner: root
+        group: root
+
+    - name: Set audit flags on kube-apiserver
+      ansible.builtin.lineinfile:
+        path: "{{ manifest }}"
+        regexp: '^(\s*)- --{{ item.flag }}=.*$'
+        line: "    - --{{ item.flag }}={{ item.value }}"
+        insertafter: '^\s*- kube-apiserver$'
+      loop:
+        - {flag: audit-policy-file, value: /etc/kubernetes/audit/policy.yaml}
+        - {flag: audit-log-path, value: "{{ audit_dir }}/audit.log"}
+        - {flag: audit-log-format, value: json}
+        - {flag: audit-log-maxage, value: "30"}
+        - {flag: audit-log-maxbackup, value: "10"}
+        - {flag: audit-log-maxsize, value: "100"}
+
+    - name: Mount the policy and log directory into the API server pod
+      ansible.builtin.blockinfile:
+        path: "{{ manifest }}"
+        marker: "    # {mark} satark audit volumeMounts"
+        insertafter: '^\s*volumeMounts:$'
+        block: |2
+              - mountPath: /etc/kubernetes/audit
+                name: audit-policy
+                readOnly: true
+              - mountPath: {{ audit_dir }}
+                name: audit-log
+
+    - name: Add host volumes for the policy and log directory
+      ansible.builtin.blockinfile:
+        path: "{{ manifest }}"
+        marker: "  # {mark} satark audit volumes"
+        insertafter: '^\s*volumes:$'
+        block: |2
+            - hostPath:
+                path: /etc/kubernetes/audit
+                type: Directory
+              name: audit-policy
+            - hostPath:
+                path: {{ audit_dir }}
+                type: DirectoryOrCreate
+              name: audit-log
+
+    - name: Wait for the API server to restart with auditing
+      ansible.builtin.wait_for:
+        path: "{{ audit_dir }}/audit.log"
+        timeout: 300
