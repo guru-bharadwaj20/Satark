@@ -12,7 +12,30 @@ service:
 serviceAccount:
   create: true
 
-resources: {}
+# Requests size scheduling; only memory is limited (CPU limits cause
+# throttling of latency-sensitive Go/Python services).
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    memory: 512Mi
+
+# /healthz = process alive; /readyz = dependencies reachable.
+startupProbe:
+  httpGet: {path: /healthz, port: http}
+  periodSeconds: 5
+  failureThreshold: 30
+livenessProbe:
+  httpGet: {path: /healthz, port: http}
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3
+readinessProbe:
+  httpGet: {path: /readyz, port: http}
+  periodSeconds: 5
+  timeoutSeconds: 2
+  failureThreshold: 3
 
 serviceMonitor:
   enabled: false
