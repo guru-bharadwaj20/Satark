@@ -9,3 +9,11 @@ cluster_dns_domain: cluster.local
 # MetalLB L2 pool: top of the host-only subnet, outside the VM and DHCP range.
 metallb_address_pool:
   - 192.168.56.240-192.168.56.250
+
+# Kubernetes version. The cluster deliberately runs one minor version behind
+# the latest upstream release (N-1) so that a real N-1 -> N upgrade can be
+# rehearsed with the k8s_upgrade role. Bump kubernetes_minor only through
+# SOP-01.
+kubernetes_minor: "1.35"
+# Exact patch to install; "*" means the newest patch of kubernetes_minor.
+kubernetes_patch: "*"

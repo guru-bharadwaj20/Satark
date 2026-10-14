@@ -40,3 +40,6 @@
   loop: "{{ k8s_prereqs_sysctl | dict2items }}"
   loop_control:
     label: "{{ item.key }}={{ item.value }}"
+
+- name: Configure the pkgs.k8s.io apt repository
+  ansible.builtin.import_tasks: repo.yml
