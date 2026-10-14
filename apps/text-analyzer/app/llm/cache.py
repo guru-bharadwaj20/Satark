@@ -16,6 +16,7 @@ from dataclasses import replace
 from typing import Protocol
 
 from app.llm.classifier import LLMClassifier, LLMOutcome
+from app.llm.metrics import record_outcome
 from app.llm.prompts import PROMPT_VERSION, injection_suspected
 from app.llm.schema import ClassificationResult
 
@@ -122,13 +123,15 @@ class CachedClassifier:
             try:
                 result = ClassificationResult.model_validate_json(hit)
                 p = self.inner.provider
-                return LLMOutcome(
+                outcome = LLMOutcome(
                     result=result,
                     provider=getattr(p, "name", ""),
                     model=getattr(p, "model", ""),
                     cached=True,
                     injection_suspected=injection_suspected(redacted_text),
                 )
+                record_outcome(outcome)
+                return outcome
             except ValueError:
                 log.info("discarding unreadable cache entry")
 

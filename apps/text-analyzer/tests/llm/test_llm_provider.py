@@ -3,7 +3,13 @@ import asyncio
 import pytest
 from llm_fakes import FakeProvider
 
-from app.llm.provider import CompletionRequest, LLMError, Message, get_provider, register_provider
+from app.llm.provider import (
+    CompletionRequest,
+    LLMError,
+    Message,
+    get_provider,
+    register_provider,
+)
 
 
 def test_request_splits_system_and_conversation():
