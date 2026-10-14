@@ -1,0 +1,68 @@
+name: Bug report
+description: Something is broken, or Satark gave an inaccurate verdict.
+title: "bug: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. **Remove all personal data** (phone numbers, names, UPI IDs, account details) before submitting.
+        Mask values like `98XXXXXX21` or `xy***@examplebank`.
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - telegram-bot
+        - gateway-api
+        - text-analyzer
+        - url-intel
+        - qr-decoder
+        - reputation
+        - sandbox / linkscan-operator
+        - pwa
+        - infrastructure (Ansible / Terraform / Helm / GitOps)
+        - docs
+        - other / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, or the verdict you got.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Send ...
+        2. See ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit / environment
+      placeholder: e.g. v0.3.1, commit abc1234, prod
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Redact tokens, secrets and personal data.
+      render: shell
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I have removed or masked all personal data and secrets.
+          required: true
