@@ -1,0 +1,27 @@
+# Values for qr-decoder. Environment overrides live in gitops/envs/{dev,prod}.
+replicaCount: 2
+
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/qr-decoder
+  tag: ""   # defaults to appVersion; CI bumps this per environment
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8001
+
+serviceAccount:
+  create: true
+
+resources: {}
+
+serviceMonitor:
+  enabled: false
+env:
+  LOG_LEVEL: info
+  PORT: "8001"
+
+networkPolicy:
+  ingressFrom:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: gateway-api

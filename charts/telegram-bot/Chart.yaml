@@ -1,0 +1,10 @@
+apiVersion: v2
+name: telegram-bot
+description: Telegram bot front end for Satark
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: satark-common
+    version: 0.1.0
+    repository: file://../satark-common
