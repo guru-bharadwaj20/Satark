@@ -1,0 +1,17 @@
+# Kubebuilder project metadata (layout go.kubebuilder.io/v4).
+domain: satark.io
+layout:
+- go.kubebuilder.io/v4
+projectName: linkscan-operator
+repo: github.com/guru-bharadwaj20/satark/apps/linkscan-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: satark.io
+  group: scan
+  kind: LinkScan
+  path: github.com/guru-bharadwaj20/satark/apps/linkscan-operator/api/v1alpha1
+  version: v1alpha1
+version: "3"

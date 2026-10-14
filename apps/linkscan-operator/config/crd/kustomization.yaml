@@ -1,0 +1,2 @@
+resources: []
+# +kubebuilder:scaffold:crdkustomizeresource
