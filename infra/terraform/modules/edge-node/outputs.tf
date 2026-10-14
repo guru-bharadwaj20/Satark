@@ -23,6 +23,11 @@ output "metric_namespace" {
   value       = local.metric_namespace
 }
 
+output "alerts_topic_arn" {
+  description = "SNS topic for edge alarms."
+  value       = aws_sns_topic.alerts.arn
+}
+
 output "public_ip" {
   description = "Elastic IP of the edge node."
   value       = aws_eip.edge.public_ip

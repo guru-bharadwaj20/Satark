@@ -54,6 +54,12 @@ variable "wireguard_peer_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "alarm_emails" {
+  description = "Email addresses for edge alarms (tunnel down, status checks)."
+  type        = list(string)
+  default     = []
+}
+
 variable "velero_retention_days" {
   description = "Days to keep Velero backups."
   type        = number
