@@ -1,0 +1,59 @@
+---
+# Kubernetes minor-version upgrade, one node at a time.
+#
+#   ansible-playbook -i inventory/prod playbooks/upgrade.yml -e k8s_upgrade_target_minor=1.31
+#
+# See docs/sops/SOP-01-k8s-upgrade.md before running.
+
+- name: Pre-flight checks
+  hosts: control_plane[0]
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Require an explicit target minor
+      ansible.builtin.assert:
+        that: k8s_upgrade_target_minor is defined
+        fail_msg: "Pass -e k8s_upgrade_target_minor=1.NN"
+
+    - name: Read current server version
+      ansible.builtin.command: kubectl --kubeconfig /etc/kubernetes/admin.conf version -o json
+      register: kver
+      changed_when: false
+
+    - name: Refuse to skip minors or downgrade
+      vars:
+        current_minor: "{{ (kver.stdout | from_json).serverVersion.minor | regex_replace('\\D', '') | int }}"
+        target_minor: "{{ k8s_upgrade_target_minor.split('.')[1] | int }}"
+      ansible.builtin.assert:
+        that:
+          - target_minor | int == current_minor | int + 1
+        fail_msg: "Cluster is 1.{{ current_minor }}; target must be 1.{{ current_minor | int + 1 }}"
+
+    - name: All nodes must be Ready
+      ansible.builtin.command: >-
+        kubectl --kubeconfig /etc/kubernetes/admin.conf get nodes
+        -o jsonpath='{range .items[*]}{.status.conditions[?(@.type=="Ready")].status}{"\n"}{end}'
+      register: ready
+      changed_when: false
+      failed_when: "'False' in ready.stdout or 'Unknown' in ready.stdout"
+
+    - name: Take an etcd snapshot before touching anything
+      ansible.builtin.systemd:
+        name: etcd-backup.service
+        state: started
+
+- name: Upgrade control plane
+  hosts: control_plane
+  become: true
+  serial: 1
+  any_errors_fatal: true
+  roles:
+    - k8s_upgrade
+
+- name: Upgrade workers
+  hosts: workers
+  become: true
+  serial: 1
+  max_fail_percentage: 0
+  roles:
+    - k8s_upgrade
