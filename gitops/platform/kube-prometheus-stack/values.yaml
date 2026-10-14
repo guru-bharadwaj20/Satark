@@ -38,8 +38,71 @@ prometheus:
             requests:
               storage: 20Gi
 
+# Alert routing to the Telegram ops channel (task 6.15).
+# The bot token lives in Secret monitoring/alertmanager-telegram (key
+# bot-token), created out of band and mounted at
+# /etc/alertmanager/secrets/alertmanager-telegram/. Replace chat_id with the
+# ops channel id (a negative number for channels and supergroups).
 alertmanager:
+  templateFiles:
+    telegram.tmpl: |-
+      {{ define "satark.telegram.message" -}}
+      [{{ .Status | toUpper }}] [{{ .CommonLabels.severity | toUpper }}] {{ .CommonLabels.alertname }}
+      {{ range .Alerts -}}
+      - {{ .Annotations.summary }}
+      {{- if .Annotations.runbook_url }}
+        Runbook: {{ .Annotations.runbook_url }}
+      {{- end }}
+      {{ end -}}
+      {{- end }}
+  config:
+    global:
+      resolve_timeout: 5m
+    templates:
+      - /etc/alertmanager/config/*.tmpl
+    route:
+      receiver: telegram-ops
+      group_by: [alertname, namespace, service, slo]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 4h
+      routes:
+        - receiver: "null"
+          matchers: ['alertname =~ "Watchdog|InfoInhibitor"']
+        - receiver: telegram-ops-critical
+          matchers: ['severity = "critical"']
+          repeat_interval: 1h
+        - receiver: telegram-ops
+          matchers: ['severity = "warning"']
+    inhibit_rules:
+      # A NotReady node explains its pods' failures: do not notify twice.
+      - source_matchers: ['alertname = "SatarkNodeNotReady"']
+        target_matchers: ['alertname =~ "SatarkPodCrashLooping|SatarkTargetDown|SatarkFrequentRestarts"']
+      # Critical suppresses warning for the same alert and service.
+      - source_matchers: ['severity = "critical"']
+        target_matchers: ['severity = "warning"']
+        equal: [alertname, service]
+    receivers:
+      - name: "null"
+      - name: telegram-ops
+        telegram_configs:
+          - bot_token_file: /etc/alertmanager/secrets/alertmanager-telegram/bot-token
+            chat_id: -1000000000000   # REPLACE with the ops channel id
+            parse_mode: ""
+            disable_notifications: true   # warnings arrive silently
+            send_resolved: true
+            message: '{{ template "satark.telegram.message" . }}'
+      - name: telegram-ops-critical
+        telegram_configs:
+          - bot_token_file: /etc/alertmanager/secrets/alertmanager-telegram/bot-token
+            chat_id: -1000000000000   # REPLACE with the ops channel id
+            parse_mode: ""
+            disable_notifications: false
+            send_resolved: true
+            message: '{{ template "satark.telegram.message" . }}'
   alertmanagerSpec:
+    secrets:
+      - alertmanager-telegram
     retention: 120h
     resources:
       requests: {cpu: 20m, memory: 64Mi}
@@ -61,6 +124,24 @@ grafana:
   persistence:
     enabled: true
     size: 2Gi
+  # Dashboards and datasources come only from Git (task 6.16): the sidecars
+  # load ConfigMaps labelled grafana_dashboard / grafana_datasource, and UI
+  # edits are not persisted back.
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      folderAnnotation: grafana_folder
+      provider:
+        foldersFromFilesStructure: true
+        allowUiUpdates: false
+        disableDelete: true
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      labelValue: "1"
   resources:
     requests: {cpu: 50m, memory: 128Mi}
     limits: {memory: 256Mi}

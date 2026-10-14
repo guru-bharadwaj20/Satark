@@ -7,3 +7,24 @@ resources:
   - rules/slo-recording.yaml
   - rules/slo-burn-alerts.yaml
   - rules/satark-alerts.yaml
+
+# Dashboards as code (task 6.16): JSON is rendered by
+# scripts/dashboards/generate.py and shipped as ConfigMaps that the Grafana
+# dashboard sidecar loads into the "Satark" folder.
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    grafana_folder: Satark
+configMapGenerator:
+  - name: dashboard-cluster-health
+    files: [dashboards/cluster-health.json]
+  - name: dashboard-node-linux
+    files: [dashboards/node-linux.json]
+  - name: dashboard-product-usage
+    files: [dashboards/product-usage.json]
+  - name: dashboard-scan-pipeline
+    files: [dashboards/scan-pipeline.json]
+  - name: dashboard-slo
+    files: [dashboards/slo.json]
