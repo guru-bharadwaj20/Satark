@@ -42,6 +42,12 @@ const (
 	ChooseLanguage Key = "choose_language"
 	LanguageSet    Key = "language_set"
 	Expired        Key = "expired"
+	WhoSent        Key = "who_sent"
+	SenderSaved    Key = "sender_saved_contact"
+	SenderUnknown  Key = "sender_unknown_number"
+	SenderBusiness Key = "sender_business"
+	SenderGroup    Key = "sender_group"
+	SenderSkip     Key = "sender_skip"
 )
 
 var table = map[Key]map[string]string{
@@ -95,6 +101,23 @@ var table = map[Key]map[string]string{
 		"hi": "यह अनुरोध समाप्त हो गया है। कृपया संदेश फिर से फ़ॉरवर्ड करें।",
 		"kn": "ಈ ವಿನಂತಿಯ ಅವಧಿ ಮುಗಿದಿದೆ. ದಯವಿಟ್ಟು ಸಂದೇಶವನ್ನು ಮತ್ತೆ ಫಾರ್ವರ್ಡ್ ಮಾಡಿ.",
 	},
+}
+
+func init() {
+	for k, v := range map[Key]map[string]string{
+		WhoSent: {
+			"en": "Who sent this?",
+			"hi": "यह किसने भेजा?",
+			"kn": "ಇದನ್ನು ಯಾರು ಕಳುಹಿಸಿದರು?",
+		},
+		SenderSaved:    {"en": "A saved contact", "hi": "सेव किया हुआ संपर्क", "kn": "ಉಳಿಸಿದ ಸಂಪರ್ಕ"},
+		SenderUnknown:  {"en": "Unknown number", "hi": "अनजान नंबर", "kn": "ಅಪರಿಚಿತ ಸಂಖ್ಯೆ"},
+		SenderBusiness: {"en": "Bank / company SMS", "hi": "बैंक / कंपनी का SMS", "kn": "ಬ್ಯಾಂಕ್ / ಕಂಪನಿ SMS"},
+		SenderGroup:    {"en": "A group chat", "hi": "कोई ग्रुप चैट", "kn": "ಗುಂಪು ಚಾಟ್"},
+		SenderSkip:     {"en": "Not sure, just check", "hi": "पता नहीं, बस जाँचें", "kn": "ಗೊತ್ತಿಲ್ಲ, ಪರಿಶೀಲಿಸಿ"},
+	} {
+		table[k] = v
+	}
 }
 
 // T returns the string for key in lang, falling back to English.

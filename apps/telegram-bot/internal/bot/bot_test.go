@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/gateway"
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/telegram"
@@ -84,17 +85,44 @@ func privateText(text string) telegram.Update {
 
 func newBot() (*Bot, *fakeAPI, *fakeGateway) {
 	api, gw := &fakeAPI{}, &fakeGateway{}
-	return &Bot{API: api, Gateway: gw, Prefs: NewPrefs(), Log: discard}, api, gw
+	return &Bot{API: api, Gateway: gw, Prefs: NewPrefs(), Pending: NewPending(time.Minute, 100), Log: discard}, api, gw
+}
+
+// answerWho presses the "Who sent this?" button for sender on the last reply.
+func answerWho(t *testing.T, b *Bot, api *fakeAPI, sender string) {
+	t.Helper()
+	kb := api.last().ReplyMarkup
+	if kb == nil {
+		t.Fatalf("expected sender question, got %q", api.last().Text)
+	}
+	for _, row := range kb.InlineKeyboard {
+		if strings.HasSuffix(row[0].CallbackData, ":"+sender) {
+			b.Handle(context.Background(), callback(row[0].CallbackData))
+			return
+		}
+	}
+	t.Fatalf("no button for %s", sender)
 }
 
 func TestForwardedTextIsScanned(t *testing.T) {
 	b, api, gw := newBot()
 	b.Handle(context.Background(), privateText("  Your electricity will be disconnected tonight  "))
+	if gw.text != "" {
+		t.Fatal("scanned before the sender question was answered")
+	}
+	answerWho(t, b, api, "unknown_number")
+	if gw.sender != "unknown_number" {
+		t.Fatalf("sender %q", gw.sender)
+	}
 	if gw.text != "Your electricity will be disconnected tonight" {
 		t.Fatalf("gateway got %q", gw.text)
 	}
-	if !strings.Contains(api.last().Text, "tight deadline") {
-		t.Fatalf("reply %q", api.last().Text)
+	last := api.last()
+	if !strings.Contains(last.Text, "tight deadline") || !strings.Contains(last.Text, "🔴") {
+		t.Fatalf("reply %q", last.Text)
+	}
+	if last.ReplyMarkup == nil || !strings.HasPrefix(last.ReplyMarkup.InlineKeyboard[0][0].CallbackData, "fb:s1:") {
+		t.Fatalf("missing feedback buttons: %+v", last.ReplyMarkup)
 	}
 }
 
@@ -112,6 +140,7 @@ func TestGatewayErrorReply(t *testing.T) {
 	b, api, gw := newBot()
 	gw.err = gateway.ErrUnavailable
 	b.Handle(context.Background(), privateText("hello"))
+	answerWho(t, b, api, "unknown")
 	if !strings.Contains(api.last().Text, "try again") {
 		t.Fatalf("reply %q", api.last().Text)
 	}
@@ -126,8 +155,9 @@ func TestStartCommand(t *testing.T) {
 }
 
 func TestLongTextTruncated(t *testing.T) {
-	b, _, gw := newBot()
+	b, api, gw := newBot()
 	b.Handle(context.Background(), privateText(strings.Repeat("क", MaxTextChars+10)))
+	answerWho(t, b, api, "unknown")
 	if n := len([]rune(gw.text)); n != MaxTextChars {
 		t.Fatalf("sent %d runes", n)
 	}
@@ -196,10 +226,15 @@ func callback(data string) telegram.Update {
 }
 
 func TestLanguageDefaultsFromTelegramClient(t *testing.T) {
-	b, _, gw := newBot()
+	b, api, gw := newBot()
 	u := privateText("hello")
 	u.Message.From.LanguageCode = "kn-IN"
 	b.Handle(context.Background(), u)
+	if !strings.Contains(api.last().Text, "ಯಾರು") {
+		t.Fatalf("question not localized: %q", api.last().Text)
+	}
+	b.Prefs.SetLang(42, "kn") // callbacks carry no client language in this fake
+	answerWho(t, b, api, "group")
 	if gw.lang != "kn" {
 		t.Fatalf("lang %q", gw.lang)
 	}
@@ -217,6 +252,7 @@ func TestLanguageMenuAndCallback(t *testing.T) {
 		t.Fatalf("reply %q", api.last().Text)
 	}
 	b.Handle(context.Background(), privateText("hello"))
+	answerWho(t, b, api, "unknown")
 	if gw.lang != "hi" {
 		t.Fatalf("lang %q", gw.lang)
 	}
@@ -227,9 +263,10 @@ func TestLanguageMenuAndCallback(t *testing.T) {
 }
 
 func TestLanguageCommandArgument(t *testing.T) {
-	b, _, gw := newBot()
+	b, api, gw := newBot()
 	b.Handle(context.Background(), privateText("/lang KN"))
 	b.Handle(context.Background(), privateText("hello"))
+	answerWho(t, b, api, "unknown")
 	if gw.lang != "kn" {
 		t.Fatalf("lang %q", gw.lang)
 	}
@@ -240,5 +277,60 @@ func TestBadLanguageCallbackIgnored(t *testing.T) {
 	b.Handle(context.Background(), callback("lang:fr"))
 	if len(api.answered) != 1 || len(api.sent) != 0 {
 		t.Fatal("unsupported language should only be acknowledged")
+	}
+}
+
+func TestWhoSentExpiredOrForeignToken(t *testing.T) {
+	b, api, gw := newBot()
+	b.Handle(context.Background(), privateText("hello"))
+	data := api.last().ReplyMarkup.InlineKeyboard[0][0].CallbackData
+	other := callback(data)
+	other.CallbackQuery.Message.Chat.ID = 99 // a different chat cannot use the token
+	b.Handle(context.Background(), other)
+	if gw.text != "" {
+		t.Fatal("token used from another chat")
+	}
+	b.Handle(context.Background(), callback(data))
+	if gw.text != "hello" {
+		t.Fatal("expected scan")
+	}
+	gw.text = ""
+	b.Handle(context.Background(), callback(data)) // second press: already consumed
+	if gw.text != "" || !strings.Contains(api.last().Text, "expired") {
+		t.Fatalf("reply %q", api.last().Text)
+	}
+}
+
+func TestPendingTTLAndCap(t *testing.T) {
+	p := NewPending(time.Minute, 2)
+	now := time.Unix(1000, 0)
+	p.now = func() time.Time { return now }
+	a := p.Put(1, "a")
+	p.Put(1, "b")
+	p.Put(1, "c") // evicts the oldest
+	if _, ok := p.Take(1, a); ok {
+		t.Fatal("oldest entry should be evicted")
+	}
+	d := p.Put(1, "d")
+	now = now.Add(2 * time.Minute)
+	if _, ok := p.Take(1, d); ok {
+		t.Fatal("expired entry returned")
+	}
+}
+
+func TestCallbackDataFitsTelegramLimit(t *testing.T) {
+	kb := senderKeyboard("0123456789ab", "en")
+	for _, row := range kb.InlineKeyboard {
+		if len(row[0].CallbackData) > 64 {
+			t.Fatalf("callback data too long: %q", row[0].CallbackData)
+		}
+	}
+}
+
+func TestFeedbackCallback(t *testing.T) {
+	b, api, _ := newBot()
+	b.Handle(context.Background(), callback("fb:s1:down"))
+	if len(api.answered) != 1 || len(api.sent) != 0 {
+		t.Fatalf("answered=%v sent=%d", api.answered, len(api.sent))
 	}
 }

@@ -56,7 +56,7 @@ func run() error {
 		return fmt.Errorf("GATEWAY_TIMEOUT: %w", err)
 	}
 	gw := gateway.New(getenv("GATEWAY_API_URL", "http://gateway-api:8080"), gwTimeout)
-	b := &bot.Bot{API: tg, Gateway: gw, Prefs: bot.NewPrefs(), Log: log}
+	b := &bot.Bot{API: tg, Gateway: gw, Prefs: bot.NewPrefs(), Pending: bot.NewPending(10*time.Minute, 10000), Log: log}
 	poller := &bot.Poller{API: tg, Handler: b, Log: log, PollTimeout: pollTimeout, Workers: 8}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
