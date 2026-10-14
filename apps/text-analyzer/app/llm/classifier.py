@@ -11,10 +11,10 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import StrEnum
 
-from app.llm.prompts import PROMPT_VERSION, build_classification_messages
+from app.llm.prompts import PROMPT_VERSION, build_classification_messages, injection_suspected
 from app.llm.provider import (
     CompletionRequest,
     CompletionResponse,
@@ -46,6 +46,7 @@ class LLMOutcome:
     output_tokens: int = 0
     latency_s: float = 0.0
     cached: bool = False
+    injection_suspected: bool = False
     prompt_version: str = PROMPT_VERSION
 
     @property
@@ -110,6 +111,14 @@ class LLMClassifier:
 
     async def classify(
         self, redacted_text: str, rule_hits: list[str] | None = None, language: str = "en"
+    ) -> LLMOutcome:
+        outcome = await self._classify(redacted_text, rule_hits, language)
+        if injection_suspected(redacted_text):
+            outcome = replace(outcome, injection_suspected=True)
+        return outcome
+
+    async def _classify(
+        self, redacted_text: str, rule_hits: list[str] | None, language: str
     ) -> LLMOutcome:
         if self.provider is None:
             return self._fallback(FallbackReason.DISABLED)
