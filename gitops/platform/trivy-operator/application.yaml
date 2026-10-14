@@ -1,0 +1,60 @@
+# Trivy Operator (task 9.7): continuous vulnerability, config-audit,
+# exposed-secret and RBAC scanning. Results are stored as CRDs
+# (VulnerabilityReport, ConfigAuditReport, ...) and exported as Prometheus
+# metrics scraped by the monitoring stack.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: trivy-operator
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: trivy-system
+  source:
+    repoURL: https://aquasecurity.github.io/helm-charts/
+    chart: trivy-operator
+    targetRevision: 0.26.1
+    helm:
+      valuesObject:
+        targetNamespaces: "satark,satark-data,satark-sandbox,monitoring,argocd,kyverno"
+        operator:
+          scanJobsConcurrentLimit: 3
+          scanJobTimeout: 10m
+          vulnerabilityScannerScanOnlyCurrentRevisions: true
+          configAuditScannerEnabled: true
+          rbacAssessmentScannerEnabled: true
+          exposedSecretScannerEnabled: true
+          infraAssessmentScannerEnabled: true
+          clusterComplianceEnabled: true
+          metricsVulnIdEnabled: true
+        trivy:
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          ignoreUnfixed: true
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {memory: 512Mi}
+        # Scan jobs must satisfy the same PSA/Kyverno rules as everything else.
+        scanJobPodTemplateContainerSecurityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {drop: [ALL]}
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 10000
+        resources:
+          requests: {cpu: 50m, memory: 128Mi}
+          limits: {memory: 512Mi}
+        serviceMonitor:
+          enabled: true
+          namespace: monitoring
+          labels:
+            release: kube-prometheus-stack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
