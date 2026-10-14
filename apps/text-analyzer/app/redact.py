@@ -144,7 +144,50 @@ def _is_aadhaar(value: str) -> bool:
 
 AADHAAR = Detector("AADHAAR", _AADHAAR, _is_aadhaar)
 
-DETECTORS: tuple[Detector, ...] = (CARD, AADHAAR, PHONE, LANDLINE)
+# PAN: AAAAA9999A where the 4th letter encodes the holder type.
+PAN = Detector(
+    "PAN",
+    re.compile(r"(?<![\w])[A-Z]{3}[PCHFATBLJG][A-Z]\d{4}[A-Z](?![\w])", re.IGNORECASE),
+)
+
+EMAIL = Detector(
+    "EMAIL",
+    re.compile(r"(?<![\w.+-])[\w.+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,24}(?![\w])"),
+)
+
+# UPI virtual payment address: handle@psp, where the PSP part has no dot
+# (dotted forms are e-mail addresses, handled first). Masked handles such as
+# xy***@examplebank are covered too.
+UPI = Detector(
+    "UPI",
+    re.compile(r"(?<![\w.*-])[\w.*-]{2,256}@[A-Za-z][A-Za-z0-9]{1,63}(?![\w.@])"),
+)
+
+# Bank account numbers (9-18 digits) are only redacted next to a keyword, to
+# avoid swallowing amounts, order IDs and dates.
+_ACCOUNT_KEYWORDS = r"(?<!\w)(?:a/?c|acct|account|acc|ac\s*no|खाता|ಖಾತೆ)"
+ACCOUNT = Detector(
+    "ACCOUNT",
+    re.compile(
+        _ACCOUNT_KEYWORDS
+        + r"(?:\s*(?:no|number|num|संख्या|ಸಂಖ್ಯೆ))?\.?\s*[:#-]?\s*"
+        + r"([0-9Xx*]{2,}(?:[\s-]?[0-9Xx*]{2,}){0,5})",
+        re.IGNORECASE,
+    ),
+    lambda v: 9 <= len(re.sub(r"[^0-9Xx*]", "", v)) <= 18,
+    group=1,
+)
+
+DETECTORS: tuple[Detector, ...] = (
+    EMAIL,
+    UPI,
+    CARD,
+    AADHAAR,
+    ACCOUNT,
+    PAN,
+    PHONE,
+    LANDLINE,
+)
 
 
 def redact(text: str, detectors: tuple[Detector, ...] = DETECTORS) -> RedactionResult:
