@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: etcd_backup
+  author: guru-bharadwaj20
+  description: Periodic etcd snapshots uploaded to S3 via a systemd timer
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []

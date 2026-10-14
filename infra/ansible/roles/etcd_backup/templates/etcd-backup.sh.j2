@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+# Takes an etcd snapshot, verifies it, uploads it to S3 and prunes local copies.
+set -euo pipefail
+
+ts="$(date -u +%Y%m%dT%H%M%SZ)"
+host="$(hostname -s)"
+file="{{ etcd_backup_dir }}/etcd-${host}-${ts}.db"
+
+ETCDCTL_API=3 /usr/local/bin/etcdctl \
+  --endpoints={{ etcd_backup_endpoint }} \
+  --cacert={{ etcd_backup_pki_dir }}/ca.crt \
+  --cert={{ etcd_backup_pki_dir }}/healthcheck-client.crt \
+  --key={{ etcd_backup_pki_dir }}/healthcheck-client.key \
+  snapshot save "$file"
+
+/usr/local/bin/etcdutl snapshot status "$file" -w table
+gzip -f "$file"
+sha256sum "${file}.gz" > "${file}.gz.sha256"
+
+aws s3 cp --only-show-errors --sse AES256 "${file}.gz" \
+  "s3://{{ etcd_backup_bucket }}/{{ etcd_backup_prefix }}/${host}/$(basename "${file}.gz")"
+aws s3 cp --only-show-errors --sse AES256 "${file}.gz.sha256" \
+  "s3://{{ etcd_backup_bucket }}/{{ etcd_backup_prefix }}/${host}/$(basename "${file}.gz.sha256")"
+
+# Keep only the newest N local snapshots.
+ls -1t {{ etcd_backup_dir }}/etcd-*.db.gz | tail -n +$(( {{ etcd_backup_local_keep }} + 1 )) | while read -r old; do
+  rm -f "$old" "${old}.sha256"
+done
+
+# Timestamp for the node-exporter textfile collector -> alert on staleness.
+textfile_dir=/var/lib/node_exporter/textfile_collector
+if [[ -d "$textfile_dir" ]]; then
+  echo "satark_etcd_backup_last_success_timestamp_seconds $(date +%s)" > "${textfile_dir}/etcd_backup.prom.$$"
+  mv "${textfile_dir}/etcd_backup.prom.$$" "${textfile_dir}/etcd_backup.prom"
+fi

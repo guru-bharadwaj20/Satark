@@ -1,0 +1,15 @@
+---
+etcd_backup_bucket: satark-backups-prod
+etcd_backup_prefix: etcd
+etcd_backup_region: ap-south-1
+etcd_backup_dir: /var/backups/etcd
+etcd_backup_local_keep: 3
+# systemd OnCalendar expression
+etcd_backup_schedule: "*-*-* 00/6:20:00"
+etcd_backup_endpoint: https://127.0.0.1:2379
+etcd_backup_pki_dir: /etc/kubernetes/pki/etcd
+etcdctl_version: v3.5.16
+# AWS credentials for the etcd-backup IAM user (write-only to the prefix).
+# Provide from Ansible Vault.
+etcd_backup_aws_access_key_id: ""
+etcd_backup_aws_secret_access_key: ""

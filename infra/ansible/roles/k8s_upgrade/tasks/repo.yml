@@ -1,0 +1,49 @@
+---
+# Point apt at pkgs.k8s.io for the target minor. Each minor has its own repo.
+- name: Ensure keyrings directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download signing key for target minor
+  ansible.builtin.get_url:
+    url: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_upgrade_target_minor }}/deb/Release.key"
+    dest: /tmp/kubernetes-release.key
+    mode: "0644"
+
+- name: Dearmor signing key
+  ansible.builtin.command: >-
+    gpg --batch --yes --dearmor -o {{ k8s_upgrade_repo_keyring }} /tmp/kubernetes-release.key
+  changed_when: true
+
+- name: Switch apt repository to target minor
+  ansible.builtin.copy:
+    dest: "{{ k8s_upgrade_repo_file }}"
+    mode: "0644"
+    content: >
+      deb [signed-by={{ k8s_upgrade_repo_keyring }}]
+      https://pkgs.k8s.io/core:/stable:/v{{ k8s_upgrade_target_minor }}/deb/ /
+
+- name: Refresh apt cache
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Resolve target package version
+  ansible.builtin.shell: |
+    set -o pipefail
+    {% if k8s_upgrade_target_version == 'latest' %}
+    apt-cache madison kubeadm | awk '{print $3}' | grep '^{{ k8s_upgrade_target_minor }}\.' | sort -V | tail -1
+    {% else %}
+    apt-cache madison kubeadm | awk '{print $3}' | grep '^{{ k8s_upgrade_target_version }}-' | head -1
+    {% endif %}
+  args:
+    executable: /bin/bash
+  register: k8s_upgrade_pkg
+  changed_when: false
+  failed_when: k8s_upgrade_pkg.stdout | length == 0
+
+- name: Record resolved versions
+  ansible.builtin.set_fact:
+    k8s_upgrade_pkg_version: "{{ k8s_upgrade_pkg.stdout | trim }}"
+    k8s_upgrade_kube_version: "v{{ (k8s_upgrade_pkg.stdout | trim).split('-')[0] }}"
