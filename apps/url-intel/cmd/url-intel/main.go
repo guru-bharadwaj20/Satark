@@ -19,6 +19,7 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/netguard"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/tlscheck"
 )
 
 func main() {
@@ -35,6 +36,7 @@ func main() {
 		analyzer.WithChecks(
 			dnscheck.New(),
 			&domainage.Check{L: domainage.New(lookupClient)},
+			tlscheck.New(),
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
