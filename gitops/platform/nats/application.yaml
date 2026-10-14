@@ -1,0 +1,36 @@
+# NATS with JetStream for the link-scan pipeline (task 8.14).
+# url-intel publishes to scan.jobs.<id>; linkscan-operator publishes to
+# scan.results.<id>. Streams are created by the PostSync Job in streams-job.yaml.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nats
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - repoURL: https://nats-io.github.io/k8s/helm/charts/
+    chart: nats
+    targetRevision: 1.2.6
+    helm:
+      releaseName: nats
+      valueFiles:
+      - $values/gitops/platform/nats/values.yaml
+  - repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    ref: values
+  - repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    path: gitops/platform/nats/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: satark-data
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

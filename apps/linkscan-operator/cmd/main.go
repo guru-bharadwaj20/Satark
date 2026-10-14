@@ -7,9 +7,13 @@ Licensed under the MIT License. See LICENSE in the repository root.
 package main
 
 import (
+	"context"
 	"flag"
+	"fmt"
+	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -21,6 +25,9 @@ import (
 
 	scanv1alpha1 "github.com/guru-bharadwaj20/satark/apps/linkscan-operator/api/v1alpha1"
 	"github.com/guru-bharadwaj20/satark/apps/linkscan-operator/internal/controller"
+	"github.com/guru-bharadwaj20/satark/apps/linkscan-operator/internal/natsbridge"
+	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 var (
@@ -38,6 +45,13 @@ func main() {
 	var enableLeaderElection bool
 	var sandbox controller.SandboxConfig
 	var dnsServers string
+	var natsURL, scanNamespace string
+	var maxActive int
+	var ensureStreams bool
+	flag.StringVar(&natsURL, "nats-url", os.Getenv("NATS_URL"), "NATS URL for scan jobs and results (empty disables the NATS bridge).")
+	flag.StringVar(&scanNamespace, "scan-namespace", envOr("SCAN_NAMESPACE", "satark-sandbox"), "Namespace for LinkScans created from NATS jobs.")
+	flag.IntVar(&maxActive, "max-active-scans", 5, "Unfinished scans one replica may run at a time.")
+	flag.BoolVar(&ensureStreams, "nats-ensure-streams", false, "Create JetStream streams and the consumer if missing (local development).")
 	flag.StringVar(&sandbox.Image, "sandbox-image", envOr("SANDBOX_IMAGE", "ghcr.io/guru-bharadwaj20/satark/sandbox-browser:dev"), "Default sandbox-browser image.")
 	flag.StringVar(&sandbox.RuntimeClassName, "sandbox-runtime-class", envOr("SANDBOX_RUNTIME_CLASS", "gvisor"), "RuntimeClass for sandbox pods (empty for the cluster default).")
 	flag.StringVar(&sandbox.ScreenshotBucket, "screenshot-bucket", os.Getenv("SCREENSHOT_BUCKET"), "S3 bucket for sandbox screenshots (empty disables upload).")
@@ -69,12 +83,60 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := (&controller.LinkScanReconciler{
+	reconciler := &controller.LinkScanReconciler{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		Sandbox:  sandbox,
 		Recorder: mgr.GetEventRecorderFor("linkscan-operator"),
-	}).SetupWithManager(mgr); err != nil {
+	}
+	if natsURL != "" {
+		nc, err := nats.Connect(natsURL, nats.Name("linkscan-operator"), nats.MaxReconnects(-1), nats.ReconnectWait(2*time.Second))
+		if err != nil {
+			setupLog.Error(err, "unable to connect to NATS")
+			os.Exit(1)
+		}
+		defer nc.Drain() //nolint:errcheck
+		js, err := jetstream.New(nc)
+		if err != nil {
+			setupLog.Error(err, "unable to open JetStream")
+			os.Exit(1)
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+		if ensureStreams {
+			if err := natsbridge.EnsureStreams(ctx, js); err != nil {
+				setupLog.Error(err, "unable to declare streams")
+				os.Exit(1)
+			}
+		}
+		consumer, err := js.Consumer(ctx, natsbridge.JobsStream, natsbridge.ConsumerName)
+		cancel()
+		if err != nil {
+			setupLog.Error(err, "unable to find JetStream consumer", "stream", natsbridge.JobsStream, "consumer", natsbridge.ConsumerName)
+			os.Exit(1)
+		}
+		reconciler.Results = &natsbridge.ResultPublisher{JS: js}
+		if err := mgr.Add(&natsbridge.Intake{
+			Client:    mgr.GetClient(),
+			Consumer:  consumer,
+			Namespace: scanNamespace,
+			Replica:   envOr("POD_NAME", "local"),
+			MaxActive: maxActive,
+			Log:       ctrl.Log.WithName("intake"),
+		}); err != nil {
+			setupLog.Error(err, "unable to add intake")
+			os.Exit(1)
+		}
+		if err := mgr.AddReadyzCheck("nats", func(_ *http.Request) error {
+			if !nc.IsConnected() {
+				return fmt.Errorf("nats disconnected: %s", nc.Status())
+			}
+			return nil
+		}); err != nil {
+			setupLog.Error(err, "unable to set up nats check")
+			os.Exit(1)
+		}
+	}
+	if err := reconciler.SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "LinkScan")
 		os.Exit(1)
 	}

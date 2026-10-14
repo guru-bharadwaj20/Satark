@@ -38,6 +38,14 @@ type LinkScanReconciler struct {
 	Scheme   *runtime.Scheme
 	Sandbox  SandboxConfig
 	Recorder record.EventRecorder
+	// Results, when set, receives every finished scan exactly once before
+	// the TTL may delete it.
+	Results ResultSink
+}
+
+// ResultSink publishes finished scans (implemented by natsbridge.ResultPublisher).
+type ResultSink interface {
+	PublishResult(ctx context.Context, scan *scanv1alpha1.LinkScan) error
 }
 
 // event records a Kubernetes Event on the scan when a recorder is set.
@@ -122,6 +130,19 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 // handleFinished garbage-collects a finished LinkScan once its TTL expires.
 // Deleting the LinkScan also removes its sandbox pod via the owner reference.
 func (r *LinkScanReconciler) handleFinished(ctx context.Context, scan *scanv1alpha1.LinkScan) (ctrl.Result, error) {
+	if r.Results != nil && !scan.Status.ResultPublished {
+		if err := r.Results.PublishResult(ctx, scan); err != nil {
+			resultsPublished.WithLabelValues("error").Inc()
+			r.event(scan, corev1.EventTypeWarning, "ResultPublishFailed", err.Error())
+			return ctrl.Result{}, err
+		}
+		resultsPublished.WithLabelValues("ok").Inc()
+		scan.Status.ResultPublished = true
+		if err := r.Status().Update(ctx, scan); err != nil {
+			// The publish is de-duplicated by message id, so a retry is safe.
+			return ctrl.Result{}, err
+		}
+	}
 	expiry, ok := ttlExpiry(scan)
 	if !ok {
 		return ctrl.Result{}, nil

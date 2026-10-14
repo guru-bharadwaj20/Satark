@@ -1,0 +1,75 @@
+# Helm values for nats-io/nats 1.2.x
+fullnameOverride: nats
+
+config:
+  cluster:
+    enabled: true
+    replicas: 3
+  jetstream:
+    enabled: true
+    fileStore:
+      enabled: true
+      dir: /data
+      pvc:
+        enabled: true
+        size: 5Gi
+        storageClassName: ""
+    memoryStore:
+      enabled: true
+      maxSize: 256Mi
+  monitor:
+    enabled: true
+    port: 8222
+  merge:
+    max_payload: 65536
+    jetstream:
+      max_file_store: 4Gi
+
+container:
+  merge:
+    resources:
+      requests: {cpu: 100m, memory: 256Mi}
+      limits: {cpu: "1", memory: 512Mi}
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop: ["ALL"]
+
+reloader:
+  merge:
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop: ["ALL"]
+
+podTemplate:
+  merge:
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+  topologySpreadConstraints:
+    kubernetes.io/hostname:
+      maxSkew: 1
+      whenUnsatisfiable: ScheduleAnyway
+
+podDisruptionBudget:
+  enabled: true
+
+# Prometheus metrics (KEDA also reads consumer lag from the monitor port).
+promExporter:
+  enabled: true
+  podMonitor:
+    enabled: true
+    merge:
+      metadata:
+        labels:
+          release: kube-prometheus-stack
+
+natsBox:
+  enabled: true
