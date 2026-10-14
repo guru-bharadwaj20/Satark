@@ -89,6 +89,30 @@ func Normalize(k Kind, value string) (string, error) {
 	return "", ErrInvalid
 }
 
+// Mask hides most of a normalised identifier so lookups never echo back
+// full personal data: phone "98XXXXXX21", UPI "xy***@examplebank".
+// Domains are public and are returned unchanged.
+func Mask(k Kind, normalized string) string {
+	switch k {
+	case Phone:
+		if len(normalized) != 10 {
+			return "XXXXXXXXXX"
+		}
+		return normalized[:2] + "XXXXXX" + normalized[8:]
+	case UPI:
+		at := strings.LastIndexByte(normalized, '@')
+		if at < 0 {
+			return "***"
+		}
+		user := normalized[:at]
+		if len(user) > 2 {
+			user = user[:2]
+		}
+		return user + "***" + normalized[at:]
+	}
+	return normalized
+}
+
 // Hasher derives stable, non-reversible keys with a server-side pepper so
 // the database never holds raw phone numbers, VPAs or reporter IDs.
 type Hasher struct{ pepper []byte }
