@@ -5,8 +5,10 @@ package analyzer
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -93,6 +95,48 @@ type Analyzer struct {
 	checks    []Check
 	allow     Allowlist
 	now       func() time.Time
+
+	sem          chan struct{}
+	checkTimeout time.Duration
+	observe      func(check string, d time.Duration, outcome string)
+}
+
+// Defaults for the worker pool.
+const (
+	DefaultWorkers      = 64
+	DefaultCheckTimeout = 5 * time.Second
+)
+
+// ErrCheckTimeout is recorded when a check exceeds its time budget.
+var ErrCheckTimeout = errors.New("check timed out")
+
+// TimeoutHinter lets a check ask for its own time budget.
+type TimeoutHinter interface {
+	Timeout() time.Duration
+}
+
+// WithWorkers bounds how many checks run concurrently across all requests.
+func WithWorkers(n int) Option {
+	return func(a *Analyzer) {
+		if n > 0 {
+			a.sem = make(chan struct{}, n)
+		}
+	}
+}
+
+// WithCheckTimeout sets the default per-check time budget.
+func WithCheckTimeout(d time.Duration) Option {
+	return func(a *Analyzer) {
+		if d > 0 {
+			a.checkTimeout = d
+		}
+	}
+}
+
+// WithObserver receives every check's duration and outcome
+// ("ok", "error", "timeout", "rejected") for metrics.
+func WithObserver(f func(check string, d time.Duration, outcome string)) Option {
+	return func(a *Analyzer) { a.observe = f }
 }
 
 // WithAllowlist sets the official-domain allowlist.
@@ -115,7 +159,7 @@ func WithChecks(c ...Check) Option {
 
 // New creates an Analyzer.
 func New(opts ...Option) *Analyzer {
-	a := &Analyzer{now: time.Now}
+	a := &Analyzer{now: time.Now, sem: make(chan struct{}, DefaultWorkers), checkTimeout: DefaultCheckTimeout}
 	for _, o := range opts {
 		o(a)
 	}
@@ -168,16 +212,69 @@ func (a *Analyzer) Analyze(ctx context.Context, raw string) (*Report, error) {
 	return rep, nil
 }
 
+// runChecks runs checks concurrently on the shared worker pool, each under
+// its own deadline. Results keep the order of checks. A check that ignores
+// its context is abandoned at the deadline and reported as timed out.
 func (a *Analyzer) runChecks(ctx context.Context, t *Target, checks []Check) []Finding {
-	out := make([]Finding, 0, len(checks))
-	for _, c := range checks {
-		start := time.Now()
-		f := c.Run(ctx, t)
+	out := make([]Finding, len(checks))
+	var wg sync.WaitGroup
+	for i, c := range checks {
+		wg.Add(1)
+		go func(i int, c Check) {
+			defer wg.Done()
+			out[i] = a.runOne(ctx, t, c)
+		}(i, c)
+	}
+	wg.Wait()
+	return out
+}
+
+func (a *Analyzer) runOne(ctx context.Context, t *Target, c Check) Finding {
+	start := time.Now()
+	finish := func(f Finding, outcome string) Finding {
 		f.Check = c.Name()
 		f.DurationMS = time.Since(start).Milliseconds()
-		out = append(out, f)
+		if a.observe != nil {
+			a.observe(f.Check, time.Since(start), outcome)
+		}
+		return f
 	}
-	return out
+
+	select {
+	case a.sem <- struct{}{}:
+	case <-ctx.Done():
+		return finish(Finding{Error: "not started: " + ctx.Err().Error()}, "rejected")
+	}
+	timeout := a.checkTimeout
+	if h, ok := c.(TimeoutHinter); ok && h.Timeout() > 0 {
+		timeout = h.Timeout()
+	}
+	cctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	done := make(chan Finding, 1)
+	go func() {
+		defer func() { <-a.sem }()
+		defer func() {
+			if r := recover(); r != nil {
+				done <- Finding{Error: fmt.Sprintf("check panicked: %v", r)}
+			}
+		}()
+		done <- c.Run(cctx, t)
+	}()
+
+	select {
+	case f := <-done:
+		if f.Error != "" {
+			if cctx.Err() == context.DeadlineExceeded {
+				return finish(Finding{Error: ErrCheckTimeout.Error()}, "timeout")
+			}
+			return finish(f, "error")
+		}
+		return finish(f, "ok")
+	case <-cctx.Done():
+		return finish(Finding{Error: ErrCheckTimeout.Error()}, "timeout")
+	}
 }
 
 // Score sums signal weights, clamped to 0..100.
