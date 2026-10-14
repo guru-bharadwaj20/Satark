@@ -1,0 +1,20 @@
+---
+# --- SSH ---------------------------------------------------------------
+hardening_ssh_port: 22
+# Users allowed to log in over SSH. The Vagrant user is kept so `vagrant ssh`
+# keeps working in the lab.
+hardening_ssh_allow_users:
+  - vagrant
+  - satark
+hardening_ssh_max_auth_tries: 3
+hardening_ssh_client_alive_interval: 300
+hardening_ssh_client_alive_count_max: 2
+
+# --- fail2ban ----------------------------------------------------------
+hardening_fail2ban_bantime: 1h
+hardening_fail2ban_findtime: 10m
+hardening_fail2ban_maxretry: 5
+# Never ban the lab network (control node lives here).
+hardening_fail2ban_ignoreip:
+  - 127.0.0.1/8
+  - "{{ lab_network_cidr | default('192.168.56.0/24') }}"

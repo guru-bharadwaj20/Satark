@@ -1,0 +1,3 @@
+---
+- name: Harden SSH and install fail2ban
+  ansible.builtin.import_tasks: ssh.yml
