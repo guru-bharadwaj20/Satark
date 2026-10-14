@@ -1,0 +1,9 @@
+---
+- name: Render kubeadm configuration and audit policy
+  ansible.builtin.import_tasks: config.yml
+
+- name: Initialise the control plane
+  ansible.builtin.import_tasks: init.yml
+
+- name: Distribute the admin kubeconfig
+  ansible.builtin.import_tasks: kubeconfig.yml

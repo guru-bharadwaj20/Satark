@@ -43,3 +43,15 @@
 
 - name: Configure the pkgs.k8s.io apt repository
   ansible.builtin.import_tasks: repo.yml
+
+- name: Set kernel defaults required by protectKernelDefaults
+  ansible.posix.sysctl:
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+    sysctl_file: /etc/sysctl.d/99-kubelet.conf
+    sysctl_set: true
+    state: present
+    reload: true
+  loop: "{{ k8s_prereqs_kubelet_kernel_defaults | dict2items }}"
+  loop_control:
+    label: "{{ item.key }}={{ item.value }}"
