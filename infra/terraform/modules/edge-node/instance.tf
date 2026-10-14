@@ -2,6 +2,10 @@
 # gp3 root volume, and an Elastic IP so DNS records stay stable across
 # instance replacement.
 
+locals {
+  instance_tags = { Name = var.name, Role = "edge" }
+}
+
 data "aws_ssm_parameter" "ubuntu_arm64" {
   name = "/aws/service/canonical/ubuntu/server/24.04/stable/current/arm64/hvm/ebs-gp3/ami-id"
 }
@@ -40,7 +44,7 @@ resource "aws_instance" "edge" {
     cpu_credits = "standard"
   }
 
-  tags = merge(var.tags, { Name = var.name, Role = "edge" })
+  tags = merge(local.instance_tags, var.tags)
 
   lifecycle {
     # AMI updates happen through planned replacement, not on every new release.

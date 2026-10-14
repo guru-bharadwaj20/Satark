@@ -105,6 +105,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install checkov==3.2.334
+      - name: test custom policies against fixtures
+        run: policies/checkov/test-custom-policies.sh
       - name: checkov
         run: >-
           checkov --directory infra/terraform

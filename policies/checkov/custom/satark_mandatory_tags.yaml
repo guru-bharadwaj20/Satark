@@ -1,0 +1,42 @@
+metadata:
+  id: CKV2_SATARK_1
+  name: Ensure taggable resources carry the mandatory Project, Environment, Owner and ManagedBy tags
+  category: CONVENTION
+  guideline: Pass var.tags from the environment composition (see infra/terraform/envs/*/main.tf).
+definition:
+  and:
+    - cond_type: attribute
+      resource_types: &taggable
+        - aws_s3_bucket
+        - aws_instance
+        - aws_eip
+        - aws_vpc
+        - aws_subnet
+        - aws_internet_gateway
+        - aws_route_table
+        - aws_security_group
+        - aws_iam_role
+        - aws_iam_policy
+        - aws_iam_user
+        - aws_iam_instance_profile
+        - aws_iam_openid_connect_provider
+        - aws_route53_zone
+        - aws_cloudwatch_log_group
+        - aws_cloudwatch_metric_alarm
+        - aws_sns_topic
+        - aws_budgets_budget
+        - aws_ssm_document
+      attribute: tags.Project
+      operator: exists
+    - cond_type: attribute
+      resource_types: *taggable
+      attribute: tags.Environment
+      operator: exists
+    - cond_type: attribute
+      resource_types: *taggable
+      attribute: tags.Owner
+      operator: exists
+    - cond_type: attribute
+      resource_types: *taggable
+      attribute: tags.ManagedBy
+      operator: exists

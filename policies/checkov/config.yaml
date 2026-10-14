@@ -2,6 +2,12 @@
 framework:
   - terraform
 download-external-modules: false
+# Satark custom policies (task 5.20): CKV2_SATARK_1 mandatory tags,
+# CKV_SATARK_2 no SSH open to the internet. Path is relative to the repo root.
+external-checks-dir:
+  - policies/checkov/custom
+skip-path:
+  - policies/checkov/tests
 skip-check:
   # Edge is public ingress by design (80/443 from anywhere); SSH is never opened.
   - CKV_AWS_260
