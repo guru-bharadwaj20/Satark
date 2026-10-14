@@ -316,3 +316,45 @@ func expectEvent(t *testing.T, rec *record.FakeRecorder, prefix string) {
 		}
 	}
 }
+
+type fakeSink struct {
+	got  []string
+	fail bool
+}
+
+func (f *fakeSink) PublishResult(_ context.Context, scan *scanv1alpha1.LinkScan) error {
+	if f.fail {
+		return fmt.Errorf("nats unavailable")
+	}
+	f.got = append(f.got, scan.Name+"="+string(scan.Status.Phase))
+	return nil
+}
+
+func TestResultPublishedOnceBeforeTTL(t *testing.T) {
+	h := newHarness(t)
+	sink := &fakeSink{fail: true}
+	h.r.Results = sink
+	h.createScan("pub", func(s *scanv1alpha1.LinkScan) { s.Spec.TTLSecondsAfterFinished = ptr.To(int64(0)) })
+	h.reconcile("pub")
+	pod := h.getPod(h.getScan("pub"))
+	h.setPodStatus(pod, corev1.PodStatus{Phase: corev1.PodFailed, Reason: "DeadlineExceeded"})
+	h.reconcile("pub") // -> TimedOut
+
+	// Publishing fails: the scan must survive its TTL until the result is out.
+	if _, err := h.r.Reconcile(h.ctx, ctrl.Request{NamespacedName: types.NamespacedName{Namespace: h.ns, Name: "pub"}}); err == nil {
+		t.Fatal("expected publish error")
+	}
+	if h.getScan("pub").Status.ResultPublished {
+		t.Fatal("must not be marked published")
+	}
+
+	sink.fail = false
+	h.reconcile("pub")
+	if len(sink.got) != 1 || sink.got[0] != "pub=TimedOut" {
+		t.Fatalf("published %v", sink.got)
+	}
+	err := k8sClient.Get(h.ctx, types.NamespacedName{Namespace: h.ns, Name: "pub"}, &scanv1alpha1.LinkScan{})
+	if !apierrors.IsNotFound(err) {
+		t.Fatalf("expected deletion after publish, got %v", err)
+	}
+}

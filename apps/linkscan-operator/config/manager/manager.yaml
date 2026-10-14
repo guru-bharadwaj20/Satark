@@ -28,6 +28,15 @@ spec:
         - --leader-elect
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=:8080
+        env:
+        - name: NATS_URL
+          value: nats://nats.satark-data.svc:4222
+        - name: SCAN_NAMESPACE
+          value: satark-sandbox
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - name: metrics
           containerPort: 8080
