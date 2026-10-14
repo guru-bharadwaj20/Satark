@@ -8,3 +8,4 @@ this folder, including `root.yaml` itself.
 |---|---|
 | `root.yaml` | The root Application (manages this folder) |
 | `projects.yaml` | `platform` and `satark` AppProjects |
+| `services-appset.yaml` | ApplicationSet: one Application per service per environment |
