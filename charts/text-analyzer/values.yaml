@@ -1,0 +1,28 @@
+# Values for text-analyzer. Environment overrides live in gitops/envs/{dev,prod}.
+replicaCount: 2
+
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/text-analyzer
+  tag: ""   # defaults to appVersion; CI bumps this per environment
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8000
+
+serviceAccount:
+  create: true
+
+resources: {}
+
+serviceMonitor:
+  enabled: false
+env:
+  LOG_LEVEL: info
+  PORT: "8000"
+  RULES_DIR: /app/rules
+
+networkPolicy:
+  ingressFrom:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: gateway-api

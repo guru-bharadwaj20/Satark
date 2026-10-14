@@ -1,6 +1,7 @@
 {{/*
 Prometheus Operator ServiceMonitor scraping /metrics on the http port.
-Off by default until the monitoring stack (Phase 6) provides the CRD.
+Off by default: the platform ServiceMonitors in gitops/platform/monitoring
+already scrape Satark services, so enabling both would duplicate targets.
 Values: serviceMonitor.{enabled,interval,scrapeTimeout,labels}.
 */}}
 {{- define "satark-common.servicemonitor" -}}
@@ -11,6 +12,7 @@ metadata:
   name: {{ include "satark-common.fullname" . }}
   labels:
     {{- include "satark-common.labels" . | nindent 4 }}
+    release: kube-prometheus-stack
     {{- with .Values.serviceMonitor.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}

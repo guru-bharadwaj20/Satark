@@ -1,0 +1,48 @@
+# Values for telegram-bot. Environment overrides live in gitops/envs/{dev,prod}.
+replicaCount: 1
+
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/telegram-bot
+  tag: ""   # defaults to appVersion; CI bumps this per environment
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8082
+
+serviceAccount:
+  create: true
+
+resources: {}
+
+serviceMonitor:
+  enabled: false
+env:
+  LOG_LEVEL: info
+  PORT: "8082"
+  GATEWAY_API_URL: http://gateway-api:8080
+  # polling (default) or webhook; webhook uses the HTTPRoute from task 3.16.
+  TELEGRAM_MODE: polling
+
+extraEnv:
+  - name: TELEGRAM_BOT_TOKEN
+    valueFrom:
+      secretKeyRef: {name: telegram-bot, key: token}
+
+# Long polling holds one getUpdates session; keep a single replica.
+pdb:
+  enabled: false
+
+networkPolicy:
+  allowGateway: true
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: gateway-api
+      ports: [{port: 8080, protocol: TCP}]
+    # Telegram Bot API (api.telegram.org) over HTTPS.
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16]
+      ports: [{port: 443, protocol: TCP}]

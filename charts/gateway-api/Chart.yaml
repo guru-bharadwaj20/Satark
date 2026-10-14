@@ -1,0 +1,10 @@
+apiVersion: v2
+name: gateway-api
+description: "Public REST API: auth, rate limiting, fan-out and risk scoring"
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+dependencies:
+  - name: satark-common
+    version: 0.1.0
+    repository: file://../satark-common

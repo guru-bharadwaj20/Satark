@@ -1,0 +1,61 @@
+# Values for gateway-api. Environment overrides live in gitops/envs/{dev,prod}.
+replicaCount: 2
+
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/gateway-api
+  tag: ""   # defaults to appVersion; CI bumps this per environment
+  pullPolicy: IfNotPresent
+
+service:
+  port: 8080
+
+serviceAccount:
+  create: true
+
+resources: {}
+
+serviceMonitor:
+  enabled: false
+env:
+  LOG_LEVEL: info
+  PORT: "8080"
+  TEXT_ANALYZER_URL: http://text-analyzer:8000
+  QR_DECODER_URL: http://qr-decoder:8001
+  VALKEY_ADDR: valkey.satark-data.svc.cluster.local:6379
+
+# Secrets are created out of band (scripts/deploy-mvp.sh), never committed.
+extraEnv:
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef: {name: gateway-api-db, key: url}
+  - name: VALKEY_PASSWORD
+    valueFrom:
+      secretKeyRef: {name: valkey-auth, key: password}
+  - name: SATARK_HMAC_KEY
+    valueFrom:
+      secretKeyRef: {name: gateway-api-hmac, key: key}
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+networkPolicy:
+  allowGateway: true
+  allowData: true
+  ingressFrom:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/name: telegram-bot
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: text-analyzer
+      ports: [{port: 8000, protocol: TCP}]
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: qr-decoder
+      ports: [{port: 8001, protocol: TCP}]
