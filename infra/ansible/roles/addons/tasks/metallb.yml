@@ -1,0 +1,48 @@
+---
+- name: Install or upgrade the MetalLB chart
+  kubernetes.core.helm:
+    name: metallb
+    chart_ref: metallb
+    chart_repo_url: "{{ addons_metallb_chart_repo }}"
+    chart_version: "{{ addons_metallb_chart_version }}"
+    release_namespace: "{{ addons_metallb_namespace }}"
+    create_namespace: true
+    kubeconfig: "{{ addons_kubeconfig }}"
+    wait: true
+    wait_timeout: 5m
+
+- name: Label the MetalLB namespace for privileged pod security
+  ansible.builtin.command: >-
+    kubectl label namespace {{ addons_metallb_namespace }}
+    pod-security.kubernetes.io/enforce=privileged
+    pod-security.kubernetes.io/audit=privileged
+    pod-security.kubernetes.io/warn=privileged --overwrite
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  register: addons_metallb_ns_label
+  changed_when: "'not labeled' not in addons_metallb_ns_label.stdout"
+
+- name: Render the MetalLB address pool and L2 advertisement
+  ansible.builtin.template:
+    src: metallb-pool.yaml.j2
+    dest: "{{ addons_manifest_dir }}/metallb-pool.yaml"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Wait for the MetalLB webhook to accept requests
+  ansible.builtin.command: >-
+    kubectl -n {{ addons_metallb_namespace }} rollout status deployment/metallb-controller --timeout=3m
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  changed_when: false
+
+- name: Apply the MetalLB address pool
+  ansible.builtin.command: kubectl apply -f {{ addons_manifest_dir }}/metallb-pool.yaml
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  register: addons_metallb_apply
+  changed_when: "'configured' in addons_metallb_apply.stdout or 'created' in addons_metallb_apply.stdout"
+  retries: 10
+  delay: 6
+  until: addons_metallb_apply.rc == 0

@@ -1,0 +1,16 @@
+---
+- name: Create the add-on manifest directory
+  ansible.builtin.file:
+    path: "{{ addons_manifest_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Install MetalLB
+  ansible.builtin.import_tasks: metallb.yml
+  when: addons_metallb_enabled | bool
+
+- name: Install metrics-server
+  ansible.builtin.import_tasks: metrics-server.yml
+  when: addons_metrics_server_enabled | bool

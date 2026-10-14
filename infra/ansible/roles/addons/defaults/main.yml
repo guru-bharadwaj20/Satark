@@ -1,0 +1,24 @@
+---
+# Cluster add-ons installed from the control-plane node with helm/kubectl.
+addons_kubeconfig: /etc/kubernetes/admin.conf
+addons_manifest_dir: /etc/kubernetes/addons
+
+# --- MetalLB (L2 mode) ---------------------------------------------------
+addons_metallb_enabled: true
+addons_metallb_chart_repo: https://metallb.github.io/metallb
+addons_metallb_chart_version: 0.15.2
+addons_metallb_namespace: metallb-system
+addons_metallb_pool_name: lab-pool
+addons_metallb_addresses: "{{ metallb_address_pool | default(['192.168.56.240-192.168.56.250']) }}"
+# Only announce on the host-only NIC so the VirtualBox host can reach LB IPs.
+addons_metallb_interfaces:
+  - enp0s8
+
+# --- metrics-server ------------------------------------------------------
+addons_metrics_server_enabled: true
+addons_metrics_server_chart_repo: https://kubernetes-sigs.github.io/metrics-server/
+addons_metrics_server_chart_version: 3.13.0
+addons_metrics_server_namespace: kube-system
+# Kubelet serving certificates are signed by the cluster CA (serverTLSBootstrap),
+# so TLS verification stays on. Set true only as a temporary workaround.
+addons_metrics_server_insecure_tls: false
