@@ -68,3 +68,15 @@ func TestParseSandboxOutput(t *testing.T) {
 		t.Fatal("expected error for empty output")
 	}
 }
+
+func TestActiveDeadlineFollowsTimeout(t *testing.T) {
+	scan := testScan()
+	scan.Spec.TimeoutSeconds = 42
+	if d := *buildSandboxPod(scan, SandboxConfig{}).Spec.ActiveDeadlineSeconds; d != 42 {
+		t.Fatalf("activeDeadlineSeconds=%d", d)
+	}
+	scan.Spec.TimeoutSeconds = 0
+	if d := *buildSandboxPod(scan, SandboxConfig{}).Spec.ActiveDeadlineSeconds; d != defaultTimeoutSeconds {
+		t.Fatalf("default activeDeadlineSeconds=%d", d)
+	}
+}

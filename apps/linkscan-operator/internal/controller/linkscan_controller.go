@@ -9,6 +9,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -24,6 +25,11 @@ import (
 )
 
 const conditionReady = "Ready"
+
+// scheduleGrace is extra time allowed on top of the scan timeout for the pod
+// to be scheduled and pull its image; activeDeadlineSeconds only starts
+// counting once the kubelet has accepted the pod.
+const scheduleGrace = 60 * time.Second
 
 // LinkScanReconciler reconciles a LinkScan object.
 type LinkScanReconciler struct {
@@ -78,7 +84,24 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return ctrl.Result{}, err
 	}
 
-	return ctrl.Result{}, r.syncFromPod(ctx, scan, pod)
+	if err := r.syncFromPod(ctx, scan, pod); err != nil {
+		return ctrl.Result{}, err
+	}
+	if scan.Status.Phase.IsFinished() {
+		return ctrl.Result{}, nil
+	}
+
+	// Hard upper bound: catches pods stuck Pending (unschedulable, image
+	// pull failures) that activeDeadlineSeconds never sees.
+	deadline := scan.CreationTimestamp.Add(time.Duration(timeoutSeconds(scan))*time.Second + scheduleGrace)
+	if remaining := time.Until(deadline); remaining > 0 {
+		return ctrl.Result{RequeueAfter: remaining}, nil
+	}
+	if err := r.Delete(ctx, pod, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{}, r.finish(ctx, scan, scanv1alpha1.PhaseTimedOut, "DeadlineExceeded",
+		fmt.Sprintf("sandbox did not finish within %ds", timeoutSeconds(scan)), nil)
 }
 
 // syncFromPod maps the sandbox pod state onto the LinkScan status.
@@ -106,6 +129,10 @@ func (r *LinkScanReconciler) syncFromPod(ctx context.Context, scan *scanv1alpha1
 		}
 		return r.finish(ctx, scan, scanv1alpha1.PhaseSucceeded, "Completed", "scan completed", result)
 	case corev1.PodFailed:
+		if pod.Status.Reason == "DeadlineExceeded" {
+			return r.finish(ctx, scan, scanv1alpha1.PhaseTimedOut, "DeadlineExceeded",
+				fmt.Sprintf("sandbox exceeded activeDeadlineSeconds=%d", timeoutSeconds(scan)), nil)
+		}
 		msg := "sandbox pod failed"
 		if tm := terminationMessage(pod); tm != "" {
 			if _, perr := parseSandboxOutput(tm); perr != nil {

@@ -68,7 +68,7 @@ func buildSandboxPod(scan *scanv1alpha1.LinkScan, cfg SandboxConfig) *corev1.Pod
 	env := []corev1.EnvVar{
 		{Name: "TARGET_URL", Value: scan.Spec.URL},
 		{Name: "SCAN_ID", Value: scan.Name},
-		{Name: "TIMEOUT_SECONDS", Value: itoa(scan.Spec.TimeoutSeconds)},
+		{Name: "TIMEOUT_SECONDS", Value: itoa(timeoutSeconds(scan))},
 		{Name: "RESULT_PATH", Value: "/dev/termination-log"},
 		{Name: "HOME", Value: "/tmp"},
 	}
@@ -105,6 +105,7 @@ func buildSandboxPod(scan *scanv1alpha1.LinkScan, cfg SandboxConfig) *corev1.Pod
 			HostIPC:                       false,
 			ShareProcessNamespace:         ptr.To(false),
 			TerminationGracePeriodSeconds: ptr.To(int64(5)),
+			ActiveDeadlineSeconds:         ptr.To(timeoutSeconds(scan)),
 			DNSPolicy:                     corev1.DNSNone,
 			DNSConfig:                     &corev1.PodDNSConfig{Nameservers: dns},
 			SecurityContext: &corev1.PodSecurityContext{
@@ -161,4 +162,15 @@ func buildSandboxPod(scan *scanv1alpha1.LinkScan, cfg SandboxConfig) *corev1.Pod
 		pod.Spec.RuntimeClassName = ptr.To(cfg.RuntimeClassName)
 	}
 	return pod
+}
+
+// defaultTimeoutSeconds applies when spec.timeoutSeconds is unset.
+const defaultTimeoutSeconds = int64(60)
+
+// timeoutSeconds returns the effective scan timeout.
+func timeoutSeconds(scan *scanv1alpha1.LinkScan) int64 {
+	if scan.Spec.TimeoutSeconds > 0 {
+		return scan.Spec.TimeoutSeconds
+	}
+	return defaultTimeoutSeconds
 }
