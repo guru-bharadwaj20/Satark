@@ -6,13 +6,15 @@ import logging
 import os
 import time
 from collections.abc import Awaitable, Callable
+from dataclasses import asdict
 
-from fastapi import FastAPI, File, HTTPException, Request, Response, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel
 
 from app import __version__
 from app.decode import DecodeError, decode_image
+from app.patterns import detect_flags
 from app.upi import UPIParseError, parse_upi
 
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(5 * 1024 * 1024)))
@@ -27,6 +29,7 @@ REQUESTS = Counter(
     "satark_qr_decoder_requests_total", "HTTP requests handled by qr-decoder.", ["path", "status"]
 )
 LATENCY = Histogram("satark_qr_decoder_request_duration_seconds", "HTTP request latency.", ["path"])
+FLAGS = Counter("satark_qr_decoder_flags_total", "UPI risk flags raised, by code.", ["code"])
 CODES = Counter("satark_qr_decoder_codes_total", "Decoded QR codes, by kind.", ["kind"])
 
 app = FastAPI(title="satark-qr-decoder", version=__version__)
@@ -55,11 +58,18 @@ class UPIOut(BaseModel):
     summary: str
 
 
+class FlagOut(BaseModel):
+    code: str
+    weight: int
+    message: str
+
+
 class DecodedCode(BaseModel):
     format: str
     kind: str
     text: str | None = None
     upi: UPIOut | None = None
+    flags: list[FlagOut] = []
 
 
 class DecodeResponse(BaseModel):
@@ -91,7 +101,10 @@ def metrics() -> Response:
 
 
 @app.post("/v1/decode", response_model=DecodeResponse)
-async def decode(image: UploadFile = File(...)) -> DecodeResponse:  # noqa: B008
+async def decode(
+    image: UploadFile = File(...),  # noqa: B008
+    context: str | None = Form(None, max_length=2000),  # noqa: B008
+) -> DecodeResponse:
     data = await image.read(MAX_UPLOAD_BYTES + 1)
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="image too large")
@@ -111,7 +124,14 @@ async def decode(image: UploadFile = File(...)) -> DecodeResponse:  # noqa: B008
                 kind = "text"
             else:
                 # The raw link contains an unmasked UPI ID, so it is not echoed.
-                out.append(DecodedCode(format=c.format, kind=kind, upi=UPIOut(**intent.as_dict())))
+                flags = [FlagOut(**asdict(f)) for f in detect_flags(intent, context)]
+                for f in flags:
+                    FLAGS.labels(f.code).inc()
+                out.append(
+                    DecodedCode(
+                        format=c.format, kind=kind, upi=UPIOut(**intent.as_dict()), flags=flags
+                    )
+                )
                 continue
         out.append(DecodedCode(format=c.format, kind=kind, text=c.text))
     for code in out:
