@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: wireguard
+  author: guru-bharadwaj20
+  description: WireGuard tunnel between the on-prem worker and the AWS edge
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+dependencies: []

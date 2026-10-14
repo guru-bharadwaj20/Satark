@@ -1,0 +1,31 @@
+# {{ ansible_managed }}
+# Satark edge tunnel ({{ wireguard_role }} side)
+{% set prefix = wireguard_network.split('/')[1] %}
+[Interface]
+PrivateKey = {{ wireguard_private_key }}
+MTU = {{ wireguard_mtu }}
+{% if wireguard_role == 'server' %}
+Address = {{ wireguard_server_address }}/{{ prefix }}
+ListenPort = {{ wireguard_port }}
+
+[Peer]
+# {{ wireguard_client_host }}
+PublicKey = {{ hostvars[wireguard_client_host].wireguard_public_key }}
+AllowedIPs = {{ ([wireguard_client_address ~ '/32'] + wireguard_routed_networks) | join(', ') }}
+{% else %}
+Address = {{ wireguard_client_address }}/{{ prefix }}
+# Masquerade tunnel traffic towards the cluster LAN so replies return via wg.
+PostUp = iptables -t nat -A POSTROUTING -s {{ wireguard_network }} -o {{ wireguard_lan_interface }} -j MASQUERADE
+PostUp = iptables -A FORWARD -i %i -o {{ wireguard_lan_interface }} -j ACCEPT
+PostUp = iptables -A FORWARD -i {{ wireguard_lan_interface }} -o %i -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+PostDown = iptables -t nat -D POSTROUTING -s {{ wireguard_network }} -o {{ wireguard_lan_interface }} -j MASQUERADE
+PostDown = iptables -D FORWARD -i %i -o {{ wireguard_lan_interface }} -j ACCEPT
+PostDown = iptables -D FORWARD -i {{ wireguard_lan_interface }} -o %i -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+[Peer]
+# {{ wireguard_server_host }} (AWS edge)
+PublicKey = {{ hostvars[wireguard_server_host].wireguard_public_key }}
+Endpoint = {{ wireguard_server_endpoint }}:{{ wireguard_port }}
+AllowedIPs = {{ wireguard_server_address }}/32
+PersistentKeepalive = {{ wireguard_persistent_keepalive }}
+{% endif %}

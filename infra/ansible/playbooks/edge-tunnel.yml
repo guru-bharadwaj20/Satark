@@ -1,0 +1,42 @@
+---
+# Brings up the WireGuard tunnel between worker-1 and the AWS edge (task 5.15).
+#
+# The edge has no SSH. Reach it with the SSM connection plugin, for example
+# with an inventory entry like:
+#
+#   edge:
+#     hosts:
+#       edge-1:
+#         ansible_connection: amazon.aws.aws_ssm
+#         ansible_aws_ssm_instance_id: i-0123456789abcdef0
+#         ansible_aws_ssm_region: ap-south-1
+#         ansible_aws_ssm_bucket_name: <a transfer bucket>
+#
+# Run: ansible-playbook -i inventory/hosts.yml playbooks/edge-tunnel.yml \
+#        -e wireguard_server_endpoint=<edge EIP>
+
+- name: Create WireGuard keys on both tunnel ends
+  hosts: edge:worker-1
+  become: true
+  gather_facts: true
+  tasks:
+    - name: Install WireGuard and generate keys
+      ansible.builtin.include_role:
+        name: wireguard
+        tasks_from: keys
+
+- name: Configure WireGuard on the edge (server)
+  hosts: edge
+  become: true
+  roles:
+    - role: wireguard
+      vars:
+        wireguard_role: server
+
+- name: Configure WireGuard on worker-1 (client)
+  hosts: worker-1
+  become: true
+  roles:
+    - role: wireguard
+      vars:
+        wireguard_role: client

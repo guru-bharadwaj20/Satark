@@ -1,0 +1,74 @@
+---
+- name: Validate role inputs
+  ansible.builtin.assert:
+    that:
+      - wireguard_role in ['server', 'client']
+      - wireguard_role == 'server' or wireguard_server_endpoint | length > 0
+    fail_msg: "wireguard_role must be server or client, and clients need wireguard_server_endpoint"
+
+- name: Ensure keys exist
+  ansible.builtin.include_tasks: keys.yml
+  when: wireguard_public_key is not defined
+
+- name: Check the peer's public key is known
+  ansible.builtin.assert:
+    that:
+      - hostvars[wireguard_peer_host].wireguard_public_key is defined
+    fail_msg: >-
+      Public key of {{ wireguard_peer_host }} is unknown. Run keys.yml on both
+      ends first (see playbooks/edge-tunnel.yml).
+  vars:
+    wireguard_peer_host: "{{ wireguard_client_host if wireguard_role == 'server' else wireguard_server_host }}"
+
+- name: Read private key
+  ansible.builtin.slurp:
+    src: "{{ wireguard_key_dir }}/{{ wireguard_interface }}.key"
+  register: wireguard_privkey_b64
+  no_log: true
+
+- name: Enable IP forwarding
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/60-wireguard.conf
+    content: "net.ipv4.ip_forward = 1\n"
+    owner: root
+    group: root
+    mode: "0644"
+  register: wireguard_sysctl
+
+- name: Apply sysctl settings
+  ansible.builtin.command: sysctl --system
+  when: wireguard_sysctl.changed
+  changed_when: true
+
+- name: Render WireGuard config
+  ansible.builtin.template:
+    src: wg.conf.j2
+    dest: "{{ wireguard_key_dir }}/{{ wireguard_interface }}.conf"
+    owner: root
+    group: root
+    mode: "0600"
+  vars:
+    wireguard_private_key: "{{ wireguard_privkey_b64.content | b64decode | trim }}"
+  no_log: true
+  notify: Restart wireguard
+
+- name: Enable and start the tunnel
+  ansible.builtin.systemd_service:
+    name: "wg-quick@{{ wireguard_interface }}"
+    enabled: true
+    state: started
+
+- name: Flush handlers so the tunnel is up before verification
+  ansible.builtin.meta: flush_handlers
+
+- name: Check the peer answers through the tunnel
+  ansible.builtin.command: >-
+    ping -c 3 -W 2
+    {{ wireguard_client_address if wireguard_role == 'server' else wireguard_server_address }}
+  register: wireguard_ping
+  changed_when: false
+  failed_when: false
+
+- name: Report tunnel status
+  ansible.builtin.debug:
+    msg: "{{ 'Tunnel is up' if wireguard_ping.rc == 0 else 'Peer not reachable yet (the client may not have dialled in)' }}"

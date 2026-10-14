@@ -1,0 +1,37 @@
+---
+# Which side of the tunnel this host is:
+#   server - the AWS edge node, listens on wireguard_port with a public EIP
+#   client - the on-prem worker (worker-1), dials out to the edge
+# Only the client dials out, so the home network needs no inbound port.
+wireguard_role: client
+
+wireguard_interface: wg0
+wireguard_port: 51820
+wireguard_network: 10.200.0.0/24
+wireguard_server_address: 10.200.0.1
+wireguard_client_address: 10.200.0.2
+
+# Public endpoint of the edge (Elastic IP or DNS name). Required on the client.
+wireguard_server_endpoint: ""
+
+# Keepalive from the client keeps the NAT mapping on the home router open
+# so the edge can always reach worker-1 (task 5.15).
+wireguard_persistent_keepalive: 25
+
+# Cluster networks reached through the client: the MetalLB address pool
+# that HAProxy on the edge forwards to.
+wireguard_routed_networks:
+  - 192.168.56.240/28
+
+# Interface on the client facing the cluster LAN. Traffic from the tunnel is
+# masqueraded out of it, so return traffic finds its way back.
+wireguard_lan_interface: "{{ ansible_default_ipv4.interface | default('eth0') }}"
+
+wireguard_mtu: 1380
+
+# Inventory names of the peers. Public keys are read from their facts, so
+# both hosts must be in the same play.
+wireguard_server_host: "{{ groups['edge'][0] }}"
+wireguard_client_host: worker-1
+
+wireguard_key_dir: /etc/wireguard
