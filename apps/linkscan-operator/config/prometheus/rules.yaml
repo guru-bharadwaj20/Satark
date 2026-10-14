@@ -1,0 +1,27 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: linkscan-operator
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+  - name: satark-linkscan
+    rules:
+    - alert: LinkScanFailureRateHigh
+      expr: |
+        sum(rate(satark_linkscan_scans_total{phase=~"Failed|TimedOut"}[15m]))
+          / clamp_min(sum(rate(satark_linkscan_scans_total[15m])), 1e-9) > 0.25
+      for: 15m
+      labels:
+        severity: warning
+      annotations:
+        summary: More than 25% of link scans are failing or timing out
+        runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-008-linkscan-sandbox-failures.md
+    - alert: LinkScanPodCreateErrors
+      expr: increase(satark_linkscan_sandbox_pod_create_errors_total[10m]) > 5
+      labels:
+        severity: warning
+      annotations:
+        summary: linkscan-operator cannot create sandbox pods
+        runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-008-linkscan-sandbox-failures.md

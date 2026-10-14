@@ -16,6 +16,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/record"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
@@ -34,14 +35,24 @@ const scheduleGrace = 60 * time.Second
 // LinkScanReconciler reconciles a LinkScan object.
 type LinkScanReconciler struct {
 	client.Client
-	Scheme  *runtime.Scheme
-	Sandbox SandboxConfig
+	Scheme   *runtime.Scheme
+	Sandbox  SandboxConfig
+	Recorder record.EventRecorder
+}
+
+// event records a Kubernetes Event on the scan when a recorder is set.
+func (r *LinkScanReconciler) event(scan *scanv1alpha1.LinkScan, eventType, reason, msg string) {
+	if r.Recorder != nil {
+		r.Recorder.Event(scan, eventType, reason, msg)
+	}
 }
 
 // +kubebuilder:rbac:groups=scan.satark.io,resources=linkscans,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=scan.satark.io,resources=linkscans/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=scan.satark.io,resources=linkscans/finalizers,verbs=update
 // +kubebuilder:rbac:groups="",resources=pods,verbs=get;list;watch;create;delete
+// +kubebuilder:rbac:groups="",resources=events,verbs=create;patch
+// +kubebuilder:rbac:groups=events.k8s.io,resources=events,verbs=create;patch
 
 // Reconcile drives a LinkScan through its lifecycle: create the sandbox pod,
 // mirror its progress and record the result.
@@ -71,9 +82,13 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			return ctrl.Result{}, err
 		}
 		if err := r.Create(ctx, pod); err != nil && !apierrors.IsAlreadyExists(err) {
+			podCreateErrors.Inc()
+			r.event(scan, corev1.EventTypeWarning, "PodCreateFailed", fmt.Sprintf("could not create sandbox pod: %v", err))
 			return ctrl.Result{}, fmt.Errorf("create sandbox pod: %w", err)
 		}
 		log.Info("created sandbox pod", "pod", pod.Name)
+		podsCreated.Inc()
+		r.event(scan, corev1.EventTypeNormal, "PodCreated", "created sandbox pod "+pod.Name)
 		scan.Status.Phase = scanv1alpha1.PhasePending
 		scan.Status.PodName = pod.Name
 		scan.Status.Message = "sandbox pod created"
@@ -184,7 +199,16 @@ func (r *LinkScanReconciler) finish(ctx context.Context, scan *scanv1alpha1.Link
 		status = metav1.ConditionTrue
 	}
 	setCondition(scan, status, reason, scan.Status.Message)
-	return r.Status().Update(ctx, scan)
+	if phase == scanv1alpha1.PhaseSucceeded {
+		r.event(scan, corev1.EventTypeNormal, reason, scan.Status.Message)
+	} else {
+		r.event(scan, corev1.EventTypeWarning, reason, fmt.Sprintf("scan %s: %s", phase, scan.Status.Message))
+	}
+	if err := r.Status().Update(ctx, scan); err != nil {
+		return err
+	}
+	observeFinished(scan, reason)
+	return nil
 }
 
 func setCondition(scan *scanv1alpha1.LinkScan, status metav1.ConditionStatus, reason, msg string) {
