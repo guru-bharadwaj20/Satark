@@ -79,6 +79,35 @@ func (m *Memory) DeleteReporter(_ context.Context, reporter string) (int, error)
 	return n, nil
 }
 
+func (m *Memory) Purge(_ context.Context, p RetentionPolicy) (PurgeResult, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	var res PurgeResult
+	kept := m.reports[:0]
+	for _, e := range m.reports {
+		if e.CreatedAt.Before(p.ReportsBefore) {
+			res.Reports++
+			continue
+		}
+		kept = append(kept, e)
+	}
+	m.reports = kept
+	keptD := m.delistings[:0]
+	for _, d := range m.delistings {
+		if d.DecidedAt != nil && d.DecidedAt.Before(p.DecidedDelistsBefore) {
+			res.Delistings++
+			continue
+		}
+		if d.DecidedAt != nil && d.DecidedAt.Before(p.ContactsBefore) && d.Contact != "" {
+			d.Contact = ""
+			res.ContactsCleared++
+		}
+		keptD = append(keptD, d)
+	}
+	m.delistings = keptD
+	return res, nil
+}
+
 func (m *Memory) CreateDelisting(_ context.Context, d Delisting) (Delisting, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

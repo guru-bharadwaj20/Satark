@@ -82,6 +82,32 @@ func (p *Postgres) DeleteReporter(ctx context.Context, reporter string) (int, er
 	return int(tag.RowsAffected()), err
 }
 
+func (p *Postgres) Purge(ctx context.Context, pol RetentionPolicy) (PurgeResult, error) {
+	var res PurgeResult
+	tx, err := p.pool.Begin(ctx)
+	if err != nil {
+		return res, err
+	}
+	defer tx.Rollback(ctx) //nolint:errcheck // no-op after commit
+	steps := []struct {
+		sql string
+		arg time.Time
+		n   *int
+	}{
+		{`DELETE FROM reputation_reports WHERE created_at < $1`, pol.ReportsBefore, &res.Reports},
+		{`DELETE FROM reputation_delistings WHERE decided_at < $1`, pol.DecidedDelistsBefore, &res.Delistings},
+		{`UPDATE reputation_delistings SET contact = '' WHERE decided_at < $1 AND contact <> ''`, pol.ContactsBefore, &res.ContactsCleared},
+	}
+	for _, s := range steps {
+		tag, err := tx.Exec(ctx, s.sql, s.arg)
+		if err != nil {
+			return res, err
+		}
+		*s.n = int(tag.RowsAffected())
+	}
+	return res, tx.Commit(ctx)
+}
+
 const delistCols = `id, kind, subject_hash, subject_masked, reason, contact, status, review_note, created_at, decided_at`
 
 func scanDelisting(row pgx.Row) (Delisting, error) {
