@@ -1,0 +1,100 @@
+# Declares the JetStream streams and the operator's durable consumer.
+# Idempotent: `nats stream add --config` fails if a stream exists with a
+# different config, so existing streams are updated with `stream edit`.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nats-streams
+  namespace: satark-data
+data:
+  SCAN_JOBS.json: |
+    {
+      "name": "SCAN_JOBS",
+      "subjects": ["scan.jobs.>"],
+      "retention": "workqueue",
+      "storage": "file",
+      "num_replicas": 3,
+      "max_age": 600000000000,
+      "max_msgs": 50000,
+      "max_msg_size": 8192,
+      "discard": "new",
+      "duplicate_window": 120000000000
+    }
+  SCAN_RESULTS.json: |
+    {
+      "name": "SCAN_RESULTS",
+      "subjects": ["scan.results.>"],
+      "retention": "limits",
+      "storage": "file",
+      "num_replicas": 3,
+      "max_age": 3600000000000,
+      "max_msgs": 100000,
+      "max_msg_size": 16384,
+      "discard": "old",
+      "duplicate_window": 120000000000
+    }
+  linkscan-operator.json: |
+    {
+      "durable_name": "linkscan-operator",
+      "ack_policy": "explicit",
+      "ack_wait": 30000000000,
+      "max_deliver": 5,
+      "max_ack_pending": 200,
+      "deliver_policy": "all",
+      "filter_subject": "scan.jobs.>"
+    }
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nats-streams
+  namespace: satark-data
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 6
+  ttlSecondsAfterFinished: 3600
+  template:
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+      - name: nats-box
+        image: natsio/nats-box:0.14.5
+        env:
+        - name: NATS_URL
+          value: nats://nats.satark-data.svc:4222
+        command: ["/bin/sh", "-ec"]
+        args:
+        - |
+          for s in SCAN_JOBS SCAN_RESULTS; do
+            if nats stream info "$s" >/dev/null 2>&1; then
+              nats stream edit "$s" --config "/streams/$s.json" --force
+            else
+              nats stream add "$s" --config "/streams/$s.json"
+            fi
+          done
+          if ! nats consumer info SCAN_JOBS linkscan-operator >/dev/null 2>&1; then
+            nats consumer add SCAN_JOBS linkscan-operator --config /streams/linkscan-operator.json
+          fi
+          nats stream ls
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop: ["ALL"]
+        resources:
+          requests: {cpu: 10m, memory: 32Mi}
+          limits: {cpu: 100m, memory: 64Mi}
+        volumeMounts:
+        - name: streams
+          mountPath: /streams
+      volumes:
+      - name: streams
+        configMap:
+          name: nats-streams
