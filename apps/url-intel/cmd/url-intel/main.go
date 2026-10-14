@@ -23,6 +23,7 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/tlscheck"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/urlheur"
 )
 
 func main() {
@@ -45,6 +46,7 @@ func main() {
 			ctlog.New(lookupClient),
 			&lookalike.Check{D: brands},
 			&homoglyph.Check{Brands: brands},
+			urlheur.Check{},
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
