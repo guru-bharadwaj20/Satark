@@ -1,0 +1,8 @@
+---
+# containerd package from the Ubuntu archive.
+containerd_package: containerd
+containerd_config_path: /etc/containerd/config.toml
+# Use the systemd cgroup driver (must match the kubelet's cgroupDriver).
+containerd_systemd_cgroup: true
+# Point crictl at containerd.
+containerd_crictl_endpoint: unix:///run/containerd/containerd.sock
