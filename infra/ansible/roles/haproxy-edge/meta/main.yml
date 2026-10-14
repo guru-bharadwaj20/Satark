@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: haproxy_edge
+  author: guru-bharadwaj20
+  description: HAProxy SNI passthrough on the AWS edge to the MetalLB IP via WireGuard
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+dependencies: []

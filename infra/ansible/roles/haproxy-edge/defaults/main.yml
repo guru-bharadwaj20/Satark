@@ -1,0 +1,28 @@
+---
+# MetalLB IP of the Envoy Gateway service, reached through the WireGuard
+# tunnel. TLS terminates in the cluster (cert-manager certificates), so the
+# edge never holds private keys.
+haproxy_edge_backend_ip: 192.168.56.240
+haproxy_edge_https_port: 443
+haproxy_edge_http_port: 80
+
+# SNI hostnames allowed through. Anything else is rejected, so random scans of
+# the EIP don't reach the cluster.
+haproxy_edge_allowed_sni:
+  - satark.example.in
+  - api.satark.example.in
+  - app.satark.example.in
+  - bot.satark.example.in
+  - grafana.satark.example.in
+  - argocd.satark.example.in
+
+# Send PROXY protocol v2 so the gateway sees the real client IP (rate limits
+# depend on it). Envoy Gateway needs a ClientTrafficPolicy with
+# enableProxyProtocol: true to accept it.
+haproxy_edge_send_proxy: true
+
+haproxy_edge_maxconn: 2000
+haproxy_edge_timeout_connect: 5s
+haproxy_edge_timeout_client: 60s
+haproxy_edge_timeout_server: 60s
+haproxy_edge_stats_port: 8404

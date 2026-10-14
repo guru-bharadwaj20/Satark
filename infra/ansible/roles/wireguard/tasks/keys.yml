@@ -1,0 +1,43 @@
+---
+# Install WireGuard and make sure this host has a key pair. Run on both ends
+# before main.yml, so each side can read the other's public key from facts.
+
+- name: Install WireGuard tools
+  ansible.builtin.apt:
+    name:
+      - wireguard
+      - wireguard-tools
+      - iptables
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ensure key directory exists
+  ansible.builtin.file:
+    path: "{{ wireguard_key_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Generate private key if missing
+  ansible.builtin.shell: |
+    set -o pipefail
+    umask 077
+    wg genkey > {{ wireguard_key_dir }}/{{ wireguard_interface }}.key
+  args:
+    creates: "{{ wireguard_key_dir }}/{{ wireguard_interface }}.key"
+    executable: /bin/bash
+
+- name: Derive public key
+  ansible.builtin.shell: |
+    set -o pipefail
+    wg pubkey < {{ wireguard_key_dir }}/{{ wireguard_interface }}.key
+  args:
+    executable: /bin/bash
+  register: wireguard_pubkey_cmd
+  changed_when: false
+
+- name: Publish public key as a fact for the peer
+  ansible.builtin.set_fact:
+    wireguard_public_key: "{{ wireguard_pubkey_cmd.stdout | trim }}"
