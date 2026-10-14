@@ -1,0 +1,7 @@
+---
+# Control-plane host that issues join tokens.
+kubeadm_worker_control_plane_host: "{{ groups['control_plane'][0] }}"
+# Lifetime of the bootstrap token created for each run.
+kubeadm_worker_token_ttl: 30m
+kubeadm_worker_node_ip: "{{ node_ip | default(ansible_host) }}"
+kubeadm_worker_config_path: /etc/kubernetes/kubeadm-join.yaml
