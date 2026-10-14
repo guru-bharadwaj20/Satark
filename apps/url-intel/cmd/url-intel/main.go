@@ -17,6 +17,7 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/dnscheck"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/domainage"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/expand"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/lookalike"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/netguard"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
@@ -29,6 +30,8 @@ func main() {
 
 	lookupClient := netguard.NewHTTPClient(cfg.LookupTimeout)
 
+	brands := lookalike.Default()
+
 	an := analyzer.New(
 		analyzer.WithPreparers(
 			normalize.Preparer{},
@@ -39,6 +42,7 @@ func main() {
 			&domainage.Check{L: domainage.New(lookupClient)},
 			tlscheck.New(),
 			ctlog.New(lookupClient),
+			&lookalike.Check{D: brands},
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
