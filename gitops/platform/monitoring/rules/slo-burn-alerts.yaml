@@ -1,0 +1,134 @@
+# Multi-window, multi-burn-rate SLO alerts (task 6.13), per the Google SRE
+# workbook: each alert needs both a long and a short window above the burn
+# threshold, so it fires fast and resets fast once the problem is fixed.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: satark-slo-burn
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  groups:
+    - name: satark-slo-burn
+      rules:
+        - alert: SatarkAvailabilityBudgetFastBurn
+          expr: |
+            slo:sli_error:ratio_rate1h{slo="availability",service="gateway-api"} > (14.4 * (1 - 0.995))
+            and
+            slo:sli_error:ratio_rate5m{slo="availability",service="gateway-api"} > (14.4 * (1 - 0.995))
+          for: 2m
+          labels:
+            severity: critical
+            slo: availability
+            window: 1h
+          annotations:
+            summary: gateway-api availability SLO burning error budget 14.4x too fast (1h/5m windows)
+            description: "At this rate the service spends 2% of the 30-day budget in 1 hour. Current 1h error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkAvailabilityBudgetFastBurn
+          expr: |
+            slo:sli_error:ratio_rate6h{slo="availability",service="gateway-api"} > (6 * (1 - 0.995))
+            and
+            slo:sli_error:ratio_rate30m{slo="availability",service="gateway-api"} > (6 * (1 - 0.995))
+          for: 15m
+          labels:
+            severity: critical
+            slo: availability
+            window: 6h
+          annotations:
+            summary: gateway-api availability SLO burning error budget 6x too fast (6h/30m windows)
+            description: "At this rate the service spends 5% of the 30-day budget in 6 hours. Current 6h error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkAvailabilityBudgetSlowBurn
+          expr: |
+            slo:sli_error:ratio_rate1d{slo="availability",service="gateway-api"} > (3 * (1 - 0.995))
+            and
+            slo:sli_error:ratio_rate2h{slo="availability",service="gateway-api"} > (3 * (1 - 0.995))
+          for: 1h
+          labels:
+            severity: warning
+            slo: availability
+            window: 1d
+          annotations:
+            summary: gateway-api availability SLO burning error budget 3x too fast (1d/2h windows)
+            description: "At this rate the service spends 10% of the 30-day budget in 1 day. Current 1d error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkAvailabilityBudgetSlowBurn
+          expr: |
+            slo:sli_error:ratio_rate3d{slo="availability",service="gateway-api"} > (1 * (1 - 0.995))
+            and
+            slo:sli_error:ratio_rate6h{slo="availability",service="gateway-api"} > (1 * (1 - 0.995))
+          for: 3h
+          labels:
+            severity: warning
+            slo: availability
+            window: 3d
+          annotations:
+            summary: gateway-api availability SLO burning error budget 1x too fast (3d/6h windows)
+            description: "At this rate the service spends 10% of the 30-day budget in 3 days. Current 3d error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkLatencyBudgetFastBurn
+          expr: |
+            slo:sli_error:ratio_rate1h{slo="latency",service="gateway-api"} > (14.4 * (1 - 0.95))
+            and
+            slo:sli_error:ratio_rate5m{slo="latency",service="gateway-api"} > (14.4 * (1 - 0.95))
+          for: 2m
+          labels:
+            severity: critical
+            slo: latency
+            window: 1h
+          annotations:
+            summary: gateway-api latency SLO burning error budget 14.4x too fast (1h/5m windows)
+            description: "At this rate the service spends 2% of the 30-day budget in 1 hour. Current 1h error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkLatencyBudgetFastBurn
+          expr: |
+            slo:sli_error:ratio_rate6h{slo="latency",service="gateway-api"} > (6 * (1 - 0.95))
+            and
+            slo:sli_error:ratio_rate30m{slo="latency",service="gateway-api"} > (6 * (1 - 0.95))
+          for: 15m
+          labels:
+            severity: critical
+            slo: latency
+            window: 6h
+          annotations:
+            summary: gateway-api latency SLO burning error budget 6x too fast (6h/30m windows)
+            description: "At this rate the service spends 5% of the 30-day budget in 6 hours. Current 6h error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkLatencyBudgetSlowBurn
+          expr: |
+            slo:sli_error:ratio_rate1d{slo="latency",service="gateway-api"} > (3 * (1 - 0.95))
+            and
+            slo:sli_error:ratio_rate2h{slo="latency",service="gateway-api"} > (3 * (1 - 0.95))
+          for: 1h
+          labels:
+            severity: warning
+            slo: latency
+            window: 1d
+          annotations:
+            summary: gateway-api latency SLO burning error budget 3x too fast (1d/2h windows)
+            description: "At this rate the service spends 10% of the 30-day budget in 1 day. Current 1d error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget
+        - alert: SatarkLatencyBudgetSlowBurn
+          expr: |
+            slo:sli_error:ratio_rate3d{slo="latency",service="gateway-api"} > (1 * (1 - 0.95))
+            and
+            slo:sli_error:ratio_rate6h{slo="latency",service="gateway-api"} > (1 * (1 - 0.95))
+          for: 3h
+          labels:
+            severity: warning
+            slo: latency
+            window: 3d
+          annotations:
+            summary: gateway-api latency SLO burning error budget 1x too fast (3d/6h windows)
+            description: "At this rate the service spends 10% of the 30-day budget in 3 days. Current 3d error ratio: {{ $value | humanizePercentage }}."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+            dashboard_url: /d/satark-slo/satark-slos-and-error-budget

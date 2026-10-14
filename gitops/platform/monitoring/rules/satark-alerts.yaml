@@ -1,0 +1,165 @@
+# Satark alert rules (task 6.14). Every alert carries a runbook_url; an alert
+# without a runbook is not allowed (enforced by scripts/check-alert-runbooks.sh).
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: satark-alerts
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  groups:
+    - name: satark-workloads
+      rules:
+        - alert: SatarkPodCrashLooping
+          expr: |
+            max by (namespace, pod, container) (
+              kube_pod_container_status_waiting_reason{namespace=~"satark|satark-data|satark-sandbox", reason="CrashLoopBackOff"}
+            ) == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{ $labels.namespace }}/{{ $labels.pod }} ({{ $labels.container }}) is in CrashLoopBackOff"
+            description: Container has been crash-looping for more than 5 minutes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-001-crashloop-imagepull.md
+        - alert: SatarkImagePullFailing
+          expr: |
+            max by (namespace, pod, container, reason) (
+              kube_pod_container_status_waiting_reason{namespace=~"satark|satark-data|satark-sandbox", reason=~"ImagePullBackOff|ErrImagePull|InvalidImageName"}
+            ) == 1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{ $labels.namespace }}/{{ $labels.pod }} cannot pull its image ({{ $labels.reason }})"
+            description: Image pull has been failing for more than 5 minutes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-001-crashloop-imagepull.md
+        - alert: SatarkFrequentRestarts
+          expr: |
+            increase(kube_pod_container_status_restarts_total{namespace=~"satark|satark-data|satark-sandbox"}[30m]) > 3
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.namespace }}/{{ $labels.pod }} restarted {{ $value | printf \"%.0f\" }} times in 30m"
+            description: Container restarts frequently; check for OOMKills or failing probes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-001-crashloop-imagepull.md
+        - alert: SatarkTargetDown
+          expr: |
+            up{namespace=~"satark|satark-sandbox"} == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Prometheus cannot scrape {{ $labels.job }} ({{ $labels.pod }})"
+            description: The /metrics endpoint has been unreachable for 5 minutes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-001-crashloop-imagepull.md
+
+    - name: satark-nodes
+      rules:
+        - alert: SatarkNodeNotReady
+          expr: |
+            kube_node_status_condition{condition="Ready", status="true"} == 0
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Node {{ $labels.node }} is NotReady"
+            description: The kubelet on this node has not reported Ready for 3 minutes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-002-node-notready.md
+        - alert: SatarkNodePressure
+          expr: |
+            kube_node_status_condition{condition=~"MemoryPressure|DiskPressure|PIDPressure", status="true"} == 1
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Node {{ $labels.node }} reports {{ $labels.condition }}"
+            description: The kubelet will start evicting pods if this persists.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-002-node-notready.md
+        - alert: SatarkNodeFilesystemAlmostFull
+          expr: |
+            (
+              node_filesystem_avail_bytes{fstype!~"tmpfs|overlay|squashfs"}
+              / node_filesystem_size_bytes{fstype!~"tmpfs|overlay|squashfs"}
+            ) < 0.10
+            and node_filesystem_readonly == 0
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.instance }} {{ $labels.mountpoint }} has less than 10% space left"
+            description: Low disk space causes DiskPressure and pod eviction.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-002-node-notready.md
+
+    - name: satark-dns
+      rules:
+        - alert: SatarkCoreDNSDown
+          expr: |
+            absent(up{job=~".*coredns.*"} == 1)
+          for: 3m
+          labels:
+            severity: critical
+          annotations:
+            summary: No CoreDNS instance is up
+            description: In-cluster name resolution is failing for every service.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-005-dns-failures.md
+        - alert: SatarkDNSServfailHigh
+          expr: |
+            sum(rate(coredns_dns_responses_total{rcode="SERVFAIL"}[5m]))
+            / sum(rate(coredns_dns_responses_total[5m])) > 0.05
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "CoreDNS SERVFAIL ratio is {{ $value | humanizePercentage }}"
+            description: More than 5% of DNS answers are SERVFAIL; upstream resolvers may be failing.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-005-dns-failures.md
+        - alert: SatarkDNSLatencyHigh
+          expr: |
+            histogram_quantile(0.99, sum by (le) (rate(coredns_dns_request_duration_seconds_bucket[5m]))) > 0.5
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "CoreDNS p99 latency is {{ $value | humanizeDuration }}"
+            description: Slow DNS stalls URL checks and outbound calls.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-005-dns-failures.md
+
+    - name: satark-api
+      rules:
+        - alert: SatarkHighErrorRate
+          expr: |
+            (
+              sum by (service) (rate(satark_http_requests_total{code=~"5..", route!~"/healthz|/readyz|/metrics"}[5m]))
+              / sum by (service) (rate(satark_http_requests_total{route!~"/healthz|/readyz|/metrics"}[5m]))
+            ) > 0.05
+            and sum by (service) (rate(satark_http_requests_total[5m])) > 0.1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "{{ $labels.service }} 5xx ratio is {{ $value | humanizePercentage }}"
+            description: More than 5% of requests are failing (ignored below 0.1 req/s).
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+        - alert: SatarkHighLatency
+          expr: |
+            histogram_quantile(0.95, sum by (service, le) (rate(satark_http_request_duration_seconds_bucket{route!~"/healthz|/readyz|/metrics"}[10m]))) > 2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.service }} p95 latency is {{ $value | humanizeDuration }}"
+            description: p95 latency has been above 2s for 10 minutes.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
+        - alert: SatarkLLMErrorsHigh
+          expr: |
+            sum by (service, provider) (rate(satark_llm_calls_total{outcome=~"error|timeout"}[10m]))
+            / sum by (service, provider) (rate(satark_llm_calls_total{outcome!="skipped"}[10m])) > 0.2
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "{{ $labels.provider }} LLM calls from {{ $labels.service }} are failing ({{ $value | humanizePercentage }})"
+            description: Rule-based scoring still works, but text verdicts lose LLM explanations.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-011-high-error-rate-slo-burn.md
