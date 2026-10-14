@@ -1,0 +1,158 @@
+# Weekly compliance snapshot (task 9.18). Every Monday the CronJob collects a
+# summary of Kyverno PolicyReports, Trivy Operator vulnerability and
+# config-audit reports, PSA namespace labels and NetworkPolicy coverage, and
+# writes one JSON document per run to a PVC (kept 12 weeks) and to stdout,
+# where Alloy ships it to Loki ({job="compliance-snapshot"}).
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: compliance-snapshot
+  namespace: monitoring
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: compliance-snapshot
+rules:
+  # Read-only, and deliberately no access to Secrets.
+  - apiGroups: [""]
+    resources: [namespaces, pods]
+    verbs: [get, list]
+  - apiGroups: [networking.k8s.io]
+    resources: [networkpolicies]
+    verbs: [get, list]
+  - apiGroups: [wgpolicyk8s.io]
+    resources: [policyreports, clusterpolicyreports]
+    verbs: [get, list]
+  - apiGroups: [kyverno.io]
+    resources: [clusterpolicies]
+    verbs: [get, list]
+  - apiGroups: [aquasecurity.github.io]
+    resources: [vulnerabilityreports, configauditreports, exposedsecretreports, clustercompliancereports]
+    verbs: [get, list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: compliance-snapshot
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: compliance-snapshot
+subjects:
+  - kind: ServiceAccount
+    name: compliance-snapshot
+    namespace: monitoring
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: compliance-snapshots
+  namespace: monitoring
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: compliance-snapshot-script
+  namespace: monitoring
+data:
+  snapshot.sh: |
+    #!/bin/sh
+    set -eu
+    TS="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    OUT="/snapshots/snapshot-$(date -u +%Y%m%d).json"
+    APP_NS="satark satark-data satark-sandbox"
+
+    list() { kubectl get "$@" -o json 2>/dev/null || echo '{"items":[]}'; }
+
+    policy=$(list policyreports -A | jq '[.items[].summary // {}] | {
+      pass: (map(.pass // 0) | add // 0), fail: (map(.fail // 0) | add // 0),
+      warn: (map(.warn // 0) | add // 0), error: (map(.error // 0) | add // 0) }')
+
+    vulns=$(list vulnerabilityreports -A | jq '[.items[].report.summary // {}] | {
+      critical: (map(.criticalCount // 0) | add // 0), high: (map(.highCount // 0) | add // 0),
+      medium: (map(.mediumCount // 0) | add // 0), low: (map(.lowCount // 0) | add // 0) }')
+
+    config=$(list configauditreports -A | jq '[.items[].report.summary // {}] | {
+      critical: (map(.criticalCount // 0) | add // 0), high: (map(.highCount // 0) | add // 0) }')
+
+    secrets=$(list exposedsecretreports -A | jq '[.items[].report.summary // {}] |
+      (map((.criticalCount // 0) + (.highCount // 0)) | add // 0)')
+
+    psa="[]"; netpol="[]"
+    for ns in $APP_NS; do
+      level=$(kubectl get ns "$ns" -o jsonpath='{.metadata.labels.pod-security\.kubernetes\.io/enforce}' 2>/dev/null || true)
+      psa=$(echo "$psa" | jq --arg ns "$ns" --arg l "${level:-none}" '. + [{namespace: $ns, enforce: $l}]')
+      deny=$(kubectl get networkpolicy default-deny-all -n "$ns" -o name 2>/dev/null || true)
+      netpol=$(echo "$netpol" | jq --arg ns "$ns" --argjson d "$([ -n "$deny" ] && echo true || echo false)" \
+        '. + [{namespace: $ns, defaultDeny: $d}]')
+    done
+
+    jq -n --arg ts "$TS" --argjson policy "$policy" --argjson vulns "$vulns" \
+      --argjson config "$config" --argjson secrets "$secrets" \
+      --argjson psa "$psa" --argjson netpol "$netpol" '{
+        kind: "SatarkComplianceSnapshot", timestamp: $ts,
+        kyverno: $policy, trivy: {vulnerabilities: $vulns, configAudit: $config, exposedSecrets: $secrets},
+        podSecurity: $psa, networkPolicies: $netpol,
+        compliant: (($policy.fail == 0) and ($vulns.critical == 0) and ($secrets == 0)
+                    and ($psa | all(.enforce == "restricted")) and ($netpol | all(.defaultDeny)))
+      }' | tee "$OUT"
+
+    # Keep 12 weekly snapshots.
+    ls -1t /snapshots/snapshot-*.json | tail -n +13 | xargs -r rm -f
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: compliance-snapshot
+  namespace: monitoring
+spec:
+  schedule: "23 2 * * 1"
+  timeZone: Asia/Kolkata
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 4
+  failedJobsHistoryLimit: 4
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: compliance-snapshot
+        spec:
+          serviceAccountName: compliance-snapshot
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            fsGroup: 1001
+            seccompProfile: {type: RuntimeDefault}
+          containers:
+            - name: snapshot
+              # alpine/k8s ships kubectl and jq.
+              image: docker.io/alpine/k8s:1.31.4
+              command: ["/bin/sh", "/scripts/snapshot.sh"]
+              resources:
+                requests: {cpu: 50m, memory: 64Mi}
+                limits: {memory: 256Mi}
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: {drop: [ALL]}
+              volumeMounts:
+                - {name: script, mountPath: /scripts, readOnly: true}
+                - {name: snapshots, mountPath: /snapshots}
+                - {name: tmp, mountPath: /tmp}
+          volumes:
+            - name: script
+              configMap: {name: compliance-snapshot-script}
+            - name: snapshots
+              persistentVolumeClaim: {claimName: compliance-snapshots}
+            - name: tmp
+              emptyDir: {}

@@ -1,0 +1,70 @@
+name: zap-baseline
+
+# OWASP ZAP baseline (passive) scan against the public gateway-api (task 9.19).
+# The baseline scan only spiders and observes responses; it sends no attack
+# payloads, so it is safe to run against the dev environment.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Base URL of gateway-api to scan"
+        required: false
+  schedule:
+    - cron: "41 4 * * 3" # weekly, Wednesday
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zap-baseline
+  cancel-in-progress: false
+
+jobs:
+  zap-baseline:
+    name: ZAP baseline
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      # Set the repository variable ZAP_TARGET_URL (e.g. https://api.dev.example)
+      # or pass the `target` input when dispatching.
+      TARGET: ${{ inputs.target || vars.ZAP_TARGET_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check target
+        run: |
+          if [ -z "$TARGET" ]; then
+            echo "::error::No target. Set vars.ZAP_TARGET_URL or the 'target' input."
+            exit 1
+          fi
+          curl -sSf --max-time 15 "$TARGET/healthz" >/dev/null
+
+      - name: Run ZAP baseline scan
+        run: |
+          mkdir -p zap-out && chmod 777 zap-out
+          docker run --rm --network host \
+            -v "$PWD/.zap:/zap/wrk/config:ro" \
+            -v "$PWD/zap-out:/zap/wrk:rw" \
+            ghcr.io/zaproxy/zaproxy:2.16.0 \
+            zap-baseline.py \
+              -t "$TARGET" \
+              -c config/rules.tsv \
+              -r report.html -J report.json -w report.md \
+              -m 3 -T 10 -I \
+              -z "-config spider.maxDuration=3"
+          # -I: do not fail on warnings; FAIL-level rules in rules.tsv still fail.
+
+      - name: Fail on high-risk alerts
+        run: |
+          high=$(jq '[.site[].alerts[] | select((.riskcode|tonumber) >= 3)] | length' zap-out/report.json)
+          echo "High-risk alerts: $high"
+          cat zap-out/report.md >> "$GITHUB_STEP_SUMMARY"
+          [ "$high" -eq 0 ]
+
+      - name: Upload ZAP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-baseline-report
+          path: zap-out/
+          retention-days: 30
