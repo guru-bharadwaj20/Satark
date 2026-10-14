@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+#
+# Satark on-prem lab: one control-plane node and two workers on a
+# VirtualBox host-only network (192.168.56.0/24).
+#
+# Environment overrides:
+#   SATARK_WORKERS=1      run a single worker (8 GB RAM hosts)
+#   SATARK_BOX=...        base box (default bento/ubuntu-24.04)
+#   SATARK_SSH_PUBKEY=... public key injected for Ansible
+#                         (default ~/.ssh/satark_ed25519.pub)
+
+BOX        = ENV.fetch("SATARK_BOX", "bento/ubuntu-24.04")
+WORKERS    = Integer(ENV.fetch("SATARK_WORKERS", "2"))
+SUBNET     = "192.168.56"
+PUBKEY     = File.expand_path(ENV.fetch("SATARK_SSH_PUBKEY", "~/.ssh/satark_ed25519.pub"))
+
+NODES = [
+  { name: "cp-1", ip: "#{SUBNET}.10", cpus: 2, memory: 4096 },
+] + (1..WORKERS).map do |i|
+  { name: "worker-#{i}", ip: "#{SUBNET}.#{10 + i}", cpus: 2, memory: 4096 }
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = BOX
+  config.vm.box_check_update = false
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.ssh.insert_key = true
+
+  NODES.each do |node|
+    config.vm.define node[:name], primary: node[:name] == "cp-1" do |vm|
+      vm.vm.hostname = node[:name]
+      vm.vm.network "private_network", ip: node[:ip]
+
+      vm.vm.provider "virtualbox" do |vb|
+        vb.name   = "satark-#{node[:name]}"
+        vb.cpus   = node[:cpus]
+        vb.memory = node[:memory]
+        vb.linked_clone = true
+        vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vb.customize ["modifyvm", :id, "--audio-driver", "none"]
+      end
+
+      # Minimal provisioning only: everything else is done by Ansible.
+      if File.exist?(PUBKEY)
+        vm.vm.provision "file", source: PUBKEY, destination: "/tmp/satark.pub"
+      end
+      vm.vm.provision "shell", name: "bootstrap", inline: <<-SHELL
+        set -euo pipefail
+        install -d -m 0700 -o vagrant -g vagrant /home/vagrant/.ssh
+        if [ -f /tmp/satark.pub ]; then
+          grep -qxF "$(cat /tmp/satark.pub)" /home/vagrant/.ssh/authorized_keys 2>/dev/null \
+            || cat /tmp/satark.pub >> /home/vagrant/.ssh/authorized_keys
+          chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
+          chmod 0600 /home/vagrant/.ssh/authorized_keys
+          rm -f /tmp/satark.pub
+        fi
+        # Make the kubelet advertise the host-only IP, not the NAT one.
+        sed -i '/#{node[:name]}/d' /etc/hosts
+        echo "#{node[:ip]} #{node[:name]}" >> /etc/hosts
+      SHELL
+    end
+  end
+end
