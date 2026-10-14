@@ -33,3 +33,10 @@ def test_env_selects_provider(monkeypatch):
     register_provider("fake-env", lambda: FakeProvider(["ok"]))
     monkeypatch.setenv("SATARK_LLM_PROVIDER", "fake-env")
     assert get_provider().name == "fake"
+
+
+def test_none_disables_llm(monkeypatch):
+    from app.llm.provider import get_provider_or_none
+
+    monkeypatch.setenv("SATARK_LLM_PROVIDER", "none")
+    assert get_provider_or_none() is None
