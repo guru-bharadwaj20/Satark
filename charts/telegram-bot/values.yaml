@@ -12,7 +12,30 @@ service:
 serviceAccount:
   create: true
 
-resources: {}
+# Requests size scheduling; only memory is limited (CPU limits cause
+# throttling of latency-sensitive Go/Python services).
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
+
+# /healthz = process alive; /readyz = dependencies reachable.
+startupProbe:
+  httpGet: {path: /healthz, port: http}
+  periodSeconds: 5
+  failureThreshold: 12
+livenessProbe:
+  httpGet: {path: /healthz, port: http}
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3
+readinessProbe:
+  httpGet: {path: /readyz, port: http}
+  periodSeconds: 5
+  timeoutSeconds: 2
+  failureThreshold: 3
 
 serviceMonitor:
   enabled: false
@@ -46,3 +69,12 @@ networkPolicy:
             cidr: 0.0.0.0/0
             except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16]
       ports: [{port: 443, protocol: TCP}]
+
+# Telegram webhook endpoint, used only when TELEGRAM_MODE=webhook (task 3.16).
+route:
+  enabled: true
+  hostnames: ["bot.satark.example"]
+  paths:
+    - path: /telegram/webhook
+      type: Exact
+  timeout: 10s

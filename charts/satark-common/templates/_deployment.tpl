@@ -7,6 +7,16 @@ tolerations, affinity, topologySpreadConstraints, volumes, volumeMounts,
 serviceAccount, podSecurityContext, securityContext, autoscaling.enabled.
 */}}
 {{- define "satark-common.deployment" -}}
+{{- /* Every Satark service must declare probes and resources (task 3.17). */ -}}
+{{- if not (and .Values.livenessProbe .Values.readinessProbe) -}}
+{{- fail (printf "%s: livenessProbe and readinessProbe are required" .Chart.Name) -}}
+{{- end -}}
+{{- if not (and .Values.resources .Values.resources.requests .Values.resources.limits) -}}
+{{- fail (printf "%s: resources.requests and resources.limits are required" .Chart.Name) -}}
+{{- end -}}
+{{- if not .Values.resources.limits.memory -}}
+{{- fail (printf "%s: resources.limits.memory is required" .Chart.Name) -}}
+{{- end -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
