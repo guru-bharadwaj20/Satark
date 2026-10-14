@@ -1,0 +1,21 @@
+[
+  {"method": "HEAD", "url": "https://bit.ly/3kycUPD", "status": 301,
+   "headers": {"Location": "https://hdfcbank-kyc-update.example/verify?ref=sms"}},
+  {"method": "HEAD", "url": "https://hdfcbank-kyc-update.example/verify?ref=sms", "status": 200,
+   "headers": {"Content-Type": "text/html"}},
+  {"method": "HEAD", "url": "https://uidai.gov.in/", "status": 200},
+  {"method": "HEAD", "url": "https://www.wikipedia.org/", "status": 200},
+
+  {"method": "GET", "url": "https://rdap.org/domain/hdfcbank-kyc-update.example", "status": 200,
+   "headers": {"Content-Type": "application/rdap+json"}, "body_file": "rdap_new_domain.json"},
+  {"method": "GET", "url": "https://rdap.org/domain/wikipedia.org", "status": 200,
+   "headers": {"Content-Type": "application/rdap+json"}, "body_file": "rdap_old_domain.json"},
+
+  {"method": "GET", "url": "https://crt.sh/?output=json&q=hdfcbank-kyc-update.example", "status": 200,
+   "headers": {"Content-Type": "application/json"}, "body_file": "crtsh_new_domain.json"},
+  {"method": "GET", "url": "https://crt.sh/?output=json&q=wikipedia.org", "status": 200,
+   "headers": {"Content-Type": "application/json"}, "body_file": "crtsh_old_domain.json"},
+
+  {"method": "POST", "url": "https://safebrowsing.googleapis.com/v4/threatMatches:find", "ignore_query": true,
+   "status": 200, "headers": {"Content-Type": "application/json"}, "body_file": "safebrowsing_no_match.json"}
+]
