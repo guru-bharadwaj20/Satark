@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS reputation_reports (
 );
 CREATE INDEX IF NOT EXISTS reputation_reports_subject_idx ON reputation_reports (kind, subject_hash);
 CREATE INDEX IF NOT EXISTS reputation_reports_created_idx ON reputation_reports (created_at);
+CREATE INDEX IF NOT EXISTS reputation_reports_reporter_idx ON reputation_reports (reporter_hash);
 
 -- Delisting requests (SOP-07). contact is optional and purged by retention.
 CREATE TABLE IF NOT EXISTS reputation_delistings (

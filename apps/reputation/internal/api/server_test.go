@@ -84,6 +84,25 @@ func TestRateLimit(t *testing.T) {
 	}
 }
 
+func TestForget(t *testing.T) {
+	s := newTestServer()
+	report(t, s, "tg:1", "9000000001")
+	report(t, s, "tg:1", "9000000002")
+	report(t, s, "tg:2", "9000000001")
+	_, out := do(t, s, "POST", "/v1/forget", `{"reporter_id":"tg:1"}`)
+	if out["reports_deleted"].(float64) != 2 {
+		t.Fatalf("forget: %v", out)
+	}
+	// tg:1 can report again (nothing left), tg:2's report is untouched.
+	_, out = do(t, s, "POST", "/v1/reports", `{"kind":"phone","value":"9000000001","reporter_id":"tg:2"}`)
+	if out["status"] != "duplicate" {
+		t.Fatalf("other reporter affected: %v", out)
+	}
+	if rec, _ := do(t, s, "POST", "/v1/forget", `{}`); rec.Code != 400 {
+		t.Fatalf("empty forget: %d", rec.Code)
+	}
+}
+
 func TestBucket(t *testing.T) {
 	for n, want := range map[int]string{3: "fewer than 10", 10: "10-49", 75: "50-99", 500: "100+"} {
 		if got := Bucket(n); got != want {

@@ -64,6 +64,21 @@ func (m *Memory) DeleteSubject(_ context.Context, kind, subject string) (int, er
 	return n, nil
 }
 
+func (m *Memory) DeleteReporter(_ context.Context, reporter string) (int, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	kept, n := m.reports[:0], 0
+	for _, e := range m.reports {
+		if e.ReporterHash == reporter {
+			n++
+			continue
+		}
+		kept = append(kept, e)
+	}
+	m.reports = kept
+	return n, nil
+}
+
 func (m *Memory) CreateDelisting(_ context.Context, d Delisting) (Delisting, error) {
 	m.mu.Lock()
 	defer m.mu.Unlock()

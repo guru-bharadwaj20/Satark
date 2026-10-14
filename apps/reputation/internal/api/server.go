@@ -68,6 +68,7 @@ func New(cfg Config) *Server {
 	s.mux.HandleFunc("POST /v1/reports", s.report)
 	s.mux.HandleFunc("GET /v1/lookup", s.lookup)
 	s.registerDelisting()
+	s.mux.HandleFunc("POST /v1/forget", s.forget)
 	s.mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) { w.Write([]byte("ok")) })
 	s.mux.HandleFunc("GET /readyz", s.ready)
 	s.mux.Handle("GET /metrics", cfg.Metrics)
@@ -132,6 +133,26 @@ func (s *Server) report(w http.ResponseWriter, r *http.Request) {
 	}
 	s.cfg.Metrics.Inc("satark_reputation_reports_total", "kind", string(kind), "result", result)
 	writeJSON(w, http.StatusAccepted, map[string]any{"status": result})
+}
+
+// forget deletes every report filed by a reporter. It is called by the
+// bot's /forget command; the caller is trusted (cluster-internal, guarded
+// by NetworkPolicy) and passes the same reporter_id it reports with.
+func (s *Server) forget(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		ReporterID string `json:"reporter_id"`
+	}
+	if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 1024)).Decode(&req); err != nil || req.ReporterID == "" {
+		writeErr(w, http.StatusBadRequest, "reporter_id is required")
+		return
+	}
+	n, err := s.cfg.Store.DeleteReporter(r.Context(), s.cfg.Hasher.Reporter(req.ReporterID))
+	if err != nil {
+		s.internal(w, "delete reporter", err)
+		return
+	}
+	s.cfg.Metrics.Inc("satark_reputation_forget_requests_total")
+	writeJSON(w, http.StatusOK, map[string]any{"reports_deleted": n})
 }
 
 func (s *Server) lookup(w http.ResponseWriter, r *http.Request) {
