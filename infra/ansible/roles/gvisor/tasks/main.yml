@@ -1,0 +1,56 @@
+---
+- name: Check CPU architecture is supported
+  ansible.builtin.assert:
+    that: ansible_architecture in gvisor_arch_map
+    fail_msg: "gVisor has no release for {{ ansible_architecture }}"
+
+- name: Download gVisor binaries with checksum verification
+  ansible.builtin.get_url:
+    url: "{{ gvisor_base_url }}/{{ item }}"
+    checksum: "sha512:{{ gvisor_base_url }}/{{ item }}.sha512"
+    dest: "{{ gvisor_bin_dir }}/{{ item }}"
+    mode: "0755"
+    owner: root
+    group: root
+  loop: "{{ gvisor_binaries }}"
+  notify: Restart containerd
+
+- name: Check runsc runs
+  ansible.builtin.command: "{{ gvisor_bin_dir }}/runsc --version"
+  register: gvisor_version
+  changed_when: false
+
+- name: Show installed runsc version
+  ansible.builtin.debug:
+    msg: "{{ gvisor_version.stdout_lines | first }}"
+
+- name: Write runsc shim configuration
+  ansible.builtin.template:
+    src: runsc.toml.j2
+    dest: /etc/containerd/runsc.toml
+    mode: "0644"
+  notify: Restart containerd
+
+- name: Register the runsc runtime handler with containerd
+  ansible.builtin.blockinfile:
+    path: "{{ containerd_config_path }}"
+    marker: "# {mark} ANSIBLE MANAGED: gvisor runtime handler"
+    block: "{{ lookup('ansible.builtin.template', 'containerd-runsc.toml.j2') }}"
+    backup: true
+  notify: Restart containerd
+
+- name: Restart containerd now so the handler is available
+  ansible.builtin.meta: flush_handlers
+
+- name: Smoke test runsc through containerd
+  ansible.builtin.shell: |
+    set -o pipefail
+    ctr --namespace gvisor-smoke images pull docker.io/library/busybox:1.36 >/dev/null
+    ctr --namespace gvisor-smoke run --rm --runtime io.containerd.runsc.v1 \
+      docker.io/library/busybox:1.36 gvisor-smoke-{{ 1000 | random }} dmesg | head -n 3
+  args:
+    executable: /bin/bash
+  register: gvisor_smoke
+  changed_when: false
+  failed_when: "'gVisor' not in gvisor_smoke.stdout and 'Starting gVisor' not in gvisor_smoke.stdout"
+  when: gvisor_smoke_test | default(true) | bool

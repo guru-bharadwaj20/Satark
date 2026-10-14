@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: gvisor
+  author: guru-bharadwaj20
+  description: Install gVisor (runsc) and register it as a containerd runtime handler
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []
