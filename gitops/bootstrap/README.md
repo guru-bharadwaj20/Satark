@@ -27,3 +27,7 @@ this folder, including `root.yaml` itself.
 Waves between child Applications only block correctly because Argo CD is
 configured with a health check for `argoproj.io/Application`
 (see `gitops/platform/argocd`).
+
+`argocd.yaml` (wave -5) points Argo CD at `gitops/platform/argocd`, so
+upgrades and config changes to Argo CD itself go through Git. Auto-prune is
+disabled on it on purpose.

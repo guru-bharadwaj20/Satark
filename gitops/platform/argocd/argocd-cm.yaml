@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  # Without this, an app-of-apps parent does not wait for child Applications
+  # to become healthy, so sync waves between them do nothing.
+  resource.customizations.health.argoproj.io_Application: |
+    hs = {}
+    hs.status = "Progressing"
+    hs.message = ""
+    if obj.status ~= nil and obj.status.health ~= nil then
+      hs.status = obj.status.health.status
+      if obj.status.health.message ~= nil then
+        hs.message = obj.status.health.message
+      end
+    end
+    return hs
+  # Do not let status-only fields cause permanent OutOfSync.
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+  application.resourceTrackingMethod: annotation
+  timeout.reconciliation: 180s
+  admin.enabled: "true"
+  statusbadge.enabled: "true"

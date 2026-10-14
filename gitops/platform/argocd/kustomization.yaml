@@ -1,0 +1,10 @@
+# Argo CD manages its own installation from here. Keep the version in step
+# with argocd_bootstrap_version in infra/ansible/roles/argocd_bootstrap.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argocd
+resources:
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v2.13.3/manifests/install.yaml
+patches:
+  - path: argocd-cm.yaml
+  - path: argocd-cmd-params-cm.yaml
