@@ -5,3 +5,4 @@ resources:
 - ../rbac
 - ../manager
 - ../prometheus
+- ../keda

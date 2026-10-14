@@ -28,6 +28,7 @@ spec:
         - --leader-elect
         - --health-probe-bind-address=:8081
         - --metrics-bind-address=:8080
+        - --max-active-scans=5
         env:
         - name: NATS_URL
           value: nats://nats.satark-data.svc:4222
