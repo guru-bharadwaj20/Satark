@@ -20,7 +20,7 @@
   register: addons_local_path_apply
   changed_when: "'configured' in addons_local_path_apply.stdout or 'created' in addons_local_path_apply.stdout"
 
-- name: Mark {{ addons_local_path_storage_class }} as the default StorageClass
+- name: Mark the local-path StorageClass as the cluster default
   ansible.builtin.command: >-
     kubectl annotate storageclass {{ addons_local_path_storage_class }}
     storageclass.kubernetes.io/is-default-class=true --overwrite

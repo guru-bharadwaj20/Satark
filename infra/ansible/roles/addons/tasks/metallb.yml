@@ -12,11 +12,16 @@
     wait_timeout: 5m
 
 - name: Label the MetalLB namespace for privileged pod security
-  ansible.builtin.command: >-
-    kubectl label namespace {{ addons_metallb_namespace }}
-    pod-security.kubernetes.io/enforce=privileged
-    pod-security.kubernetes.io/audit=privileged
-    pod-security.kubernetes.io/warn=privileged --overwrite
+  ansible.builtin.command:
+    argv:
+      - kubectl
+      - label
+      - namespace
+      - "{{ addons_metallb_namespace }}"
+      - pod-security.kubernetes.io/enforce=privileged
+      - pod-security.kubernetes.io/audit=privileged
+      - pod-security.kubernetes.io/warn=privileged
+      - --overwrite
   environment:
     KUBECONFIG: "{{ addons_kubeconfig }}"
   register: addons_metallb_ns_label
@@ -31,8 +36,14 @@
     mode: "0600"
 
 - name: Wait for the MetalLB webhook to accept requests
-  ansible.builtin.command: >-
-    kubectl -n {{ addons_metallb_namespace }} rollout status deployment/metallb-controller --timeout=3m
+  ansible.builtin.command:
+    argv:
+      - kubectl
+      - --namespace={{ addons_metallb_namespace }}
+      - rollout
+      - status
+      - deployment/metallb-controller
+      - --timeout=3m
   environment:
     KUBECONFIG: "{{ addons_kubeconfig }}"
   changed_when: false
