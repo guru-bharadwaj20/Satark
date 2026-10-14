@@ -1,0 +1,37 @@
+---
+# Packages installed on every node.
+common_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - jq
+  - vim
+  - htop
+  - net-tools
+  - dnsutils
+  - conntrack
+  - socat
+  - ipset
+  - ipvsadm
+  - nfs-common
+  - python3-apt
+  - chrony
+
+# Timezone for all nodes.
+common_timezone: Asia/Kolkata
+
+# Upstream NTP pools used by chrony.
+common_ntp_servers:
+  - 0.in.pool.ntp.org
+  - 1.in.pool.ntp.org
+  - time.cloudflare.com
+
+# Administrative users. Each item: name, groups (list), ssh_public_key_file
+# (path on the control node). Users get passwordless sudo.
+common_admin_users: "{{ admin_users | default([]) }}"
+
+# journald limits to keep logs from filling small VM disks.
+common_journald_system_max_use: 500M
+common_journald_system_max_file_size: 50M
+common_journald_max_retention: 14day
