@@ -1,0 +1,15 @@
+# CNPG creates its own PodDisruptionBudgets for the primary and replicas, so
+# no PDB is defined here. This ConfigMap documents the connection contract the
+# application charts rely on.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: satark-pg-connection
+  namespace: satark-data
+data:
+  host: satark-pg-rw.satark-data.svc.cluster.local
+  readOnlyHost: satark-pg-ro.satark-data.svc.cluster.local
+  port: "5432"
+  database: satark
+  # Credentials: Secret satark-pg-app (keys: username, password), created
+  # by scripts/platform/create-pg-secret.sh, never committed.
