@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: good-pod, namespace: satark}
+spec:
+  securityContext: {runAsNonRoot: true, runAsUser: 10001}
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/gateway-api:v0.1.0
+      securityContext: {allowPrivilegeEscalation: false}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: privileged-pod, namespace: satark}
+spec:
+  securityContext: {runAsNonRoot: true, runAsUser: 10001}
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/gateway-api:v0.1.0
+      securityContext: {privileged: true, allowPrivilegeEscalation: false}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: escalation-pod, namespace: satark}
+spec:
+  securityContext: {runAsNonRoot: true, runAsUser: 10001}
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/gateway-api:v0.1.0
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: root-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/gateway-api:v0.1.0
+      securityContext: {allowPrivilegeEscalation: false}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: uid-zero-pod, namespace: satark}
+spec:
+  securityContext: {runAsNonRoot: true, runAsUser: 0}
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/gateway-api:v0.1.0
+      securityContext: {allowPrivilegeEscalation: false}
