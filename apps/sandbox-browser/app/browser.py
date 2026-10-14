@@ -7,6 +7,7 @@ import logging
 from playwright.async_api import Error as PlaywrightError
 from playwright.async_api import Frame, Page, Response, async_playwright
 
+from . import forms
 from .config import Settings
 from .redirects import RedirectTracker
 from .report import ScanReport
@@ -84,6 +85,7 @@ async def scan(settings: Settings) -> ScanReport:
                 report.title = await page.title()
             except PlaywrightError:
                 pass
+            report.forms = await forms.detect(page)
             await context.close()
         finally:
             await browser.close()
