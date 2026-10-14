@@ -79,3 +79,15 @@ def ask_handler(agent, budget: DailyTokenBudget) -> Handler:
         return "\n".join(lines)
 
     return run
+
+
+def postmortem_handler(generator, budget: DailyTokenBudget) -> Handler:
+    async def run(arg: str) -> str:
+        draft, tokens = await generator.draft(arg)
+        budget.record(tokens)
+        return (
+            "<b>Postmortem draft</b> (review before publishing to docs/postmortems/)\n\n"
+            f"<pre>{escape(draft)}</pre>\n<i>{tokens} tokens</i>"
+        )
+
+    return run

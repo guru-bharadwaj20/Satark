@@ -10,6 +10,7 @@ from app.alerts import Alert
 from app.config import Settings
 from app.diagnose import Diagnoser, format_for_telegram
 from app.limits import Cooldown, DailyTokenBudget
+from app.postmortem import IncidentHistory
 
 log = logging.getLogger("satark.opsbot.pipeline")
 
@@ -27,11 +28,13 @@ class AlertPipeline:
         chat_id: str,
         cooldown: Cooldown | None = None,
         budget: DailyTokenBudget | None = None,
+        history: IncidentHistory | None = None,
     ) -> None:
         self.diagnoser, self.telegram, self.chat_id = diagnoser, telegram, chat_id
         self.cooldown = cooldown or Cooldown(1800)
         self.budget = budget or DailyTokenBudget(200_000)
         self._budget_notice_day = None
+        self.history = history or IncidentHistory()
 
     async def __call__(self, alert: Alert) -> None:
         if not self.cooldown.try_acquire(alert.key):
@@ -45,6 +48,7 @@ class AlertPipeline:
             alert, use_llm=use_llm, fallback_note="Daily LLM token budget reached"
         )
         self.budget.record(d.tokens)
+        self.history.add(alert.name, alert.namespace, alert.severity, d.text)
         await self.telegram.send(self.chat_id, format_for_telegram(d))
         DIAGNOSES.labels("llm" if d.llm_ok else "fallback").inc()
         if not use_llm and self._budget_notice_day != self.budget._day:
@@ -99,9 +103,12 @@ class _lazy_retriever:  # pragma: no cover - connects on first use
 
 
 def build_router(s: Settings, pipeline: AlertPipeline):  # pragma: no cover - production wiring
+    import httpx
+
     from app.ask import AskAgent, PrometheusClient
-    from app.commands import CommandRouter, ask_handler
+    from app.commands import CommandRouter, ask_handler, postmortem_handler
     from app.context import LokiClient
+    from app.postmortem import PostmortemGenerator
 
     llm = pipeline.diagnoser.llm
     router = CommandRouter(
@@ -109,4 +116,12 @@ def build_router(s: Settings, pipeline: AlertPipeline):  # pragma: no cover - pr
     )
     agent = AskAgent(llm, PrometheusClient(s.prometheus_url), LokiClient(s.loki_url))
     router.register("/ask", ask_handler(agent, pipeline.budget))
+    pm = PostmortemGenerator(
+        llm, httpx.AsyncClient(base_url=s.prometheus_url, timeout=20.0), pipeline.history
+    )
+    router.register(
+        "/postmortem",
+        postmortem_handler(pm, pipeline.budget),
+        "/postmortem [AlertName] [Nh] [notes] - draft a blameless postmortem",
+    )
     return router
