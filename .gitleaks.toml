@@ -1,21 +1,38 @@
+# gitleaks configuration (task 9.13). Used by the pre-commit hook and by
+# .github/workflows/gitleaks.yml. Extends the upstream default rule set.
 title = "Satark gitleaks config"
 
 [extend]
 useDefault = true
 
+# Telegram bot tokens: <bot id>:<35 char secret>
 [[rules]]
 id = "telegram-bot-token"
-description = "Telegram bot token"
-regex = '''\b[0-9]{8,10}:[A-Za-z0-9_-]{35}\b'''
-keywords = ["telegram", "bot", "token"]
+description = "Telegram Bot API token"
+regex = '''\b[0-9]{8,10}:AA[0-9A-Za-z_-]{33}\b'''
+keywords = [":AA"]
+
+# Age secret keys used with SOPS or for offline backups of the sealing key.
+[[rules]]
+id = "age-secret-key"
+description = "age secret key"
+regex = '''AGE-SECRET-KEY-1[QPZRY9X8GF2TVDW0S3JN54KHCE6MUA7L]{58}'''
+keywords = ["AGE-SECRET-KEY-1"]
 
 [allowlist]
-description = "Example and placeholder values"
+description = "Encrypted or public material that is safe to commit"
 paths = [
   '''(^|/)testdata/''',
   '''\.env\.example$''',
+  # SealedSecrets hold ciphertext only the cluster controller can decrypt.
+  '''gitops/envs/.*/secrets/.*\.sealed\.yaml$''',
+  # The sealing certificate is public.
+  '''(^|/)pub-cert\.pem$''',
+  # Lockfiles contain integrity hashes that look like secrets.
+  '''(^|/)(go\.sum|package-lock\.json|pnpm-lock\.yaml|poetry\.lock|uv\.lock)$''',
 ]
 regexes = [
+  # Obvious placeholders in docs, fixtures and examples.
+  '''(?i)(example|placeholder|changeme|redacted|xxxx+|<[a-z_-]+>)''',
   '''REPLACE_ME''',
-  '''changeme''',
 ]

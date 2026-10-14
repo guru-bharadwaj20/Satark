@@ -1,0 +1,46 @@
+# Sealed Secrets controller (task 9.11). Secrets are encrypted with the
+# controller's public key (`kubeseal`) and committed as SealedSecret
+# resources; only the in-cluster controller can decrypt them.
+# The private sealing key must be backed up out of band (see SOP-03).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-10"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  source:
+    repoURL: https://bitnami-labs.github.io/sealed-secrets
+    chart: sealed-secrets
+    targetRevision: 2.17.1
+    helm:
+      valuesObject:
+        # kubeseal defaults to this name/namespace.
+        fullnameOverride: sealed-secrets-controller
+        keyrenewperiod: 720h
+        resources:
+          requests: {cpu: 50m, memory: 64Mi}
+          limits: {memory: 128Mi}
+        podSecurityContext:
+          enabled: true
+          fsGroup: 65534
+        containerSecurityContext:
+          enabled: true
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1001
+          allowPrivilegeEscalation: false
+          capabilities: {drop: [ALL]}
+        metrics:
+          serviceMonitor:
+            enabled: true
+            namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
