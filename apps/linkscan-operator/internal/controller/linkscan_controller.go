@@ -82,10 +82,12 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 			return ctrl.Result{}, err
 		}
 		if err := r.Create(ctx, pod); err != nil && !apierrors.IsAlreadyExists(err) {
+			podCreateErrors.Inc()
 			r.event(scan, corev1.EventTypeWarning, "PodCreateFailed", fmt.Sprintf("could not create sandbox pod: %v", err))
 			return ctrl.Result{}, fmt.Errorf("create sandbox pod: %w", err)
 		}
 		log.Info("created sandbox pod", "pod", pod.Name)
+		podsCreated.Inc()
 		r.event(scan, corev1.EventTypeNormal, "PodCreated", "created sandbox pod "+pod.Name)
 		scan.Status.Phase = scanv1alpha1.PhasePending
 		scan.Status.PodName = pod.Name
@@ -202,7 +204,11 @@ func (r *LinkScanReconciler) finish(ctx context.Context, scan *scanv1alpha1.Link
 	} else {
 		r.event(scan, corev1.EventTypeWarning, reason, fmt.Sprintf("scan %s: %s", phase, scan.Status.Message))
 	}
-	return r.Status().Update(ctx, scan)
+	if err := r.Status().Update(ctx, scan); err != nil {
+		return err
+	}
+	observeFinished(scan, reason)
+	return nil
 }
 
 func setCondition(scan *scanv1alpha1.LinkScan, status metav1.ConditionStatus, reason, msg string) {
