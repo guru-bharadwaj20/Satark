@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Satark contributors
+  description: Swap off, kernel modules, sysctls and the pkgs.k8s.io repository
+  license: MIT
+  min_ansible_version: "2.16"
+  platforms:
+    - name: Ubuntu
+      versions: [noble]
+dependencies: []
