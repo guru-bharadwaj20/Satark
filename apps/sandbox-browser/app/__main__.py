@@ -24,8 +24,11 @@ def write_result(path: str, report: ScanReport) -> None:
 
 
 def main() -> int:
-    logging.basicConfig(level=logging.INFO, stream=sys.stderr,
-                        format="%(asctime)s %(levelname)s %(name)s %(message)s")
+    logging.basicConfig(
+        level=logging.INFO,
+        stream=sys.stderr,
+        format="%(asctime)s %(levelname)s %(name)s %(message)s",
+    )
     try:
         settings = config.load()
     except config.ConfigError as exc:

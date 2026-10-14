@@ -4,8 +4,13 @@ from app.report import Forms, ScanReport, encode
 
 
 def test_encode_matches_operator_contract():
-    r = ScanReport(final_url="https://b.example/", redirect_chain=["https://a.example/", "https://b.example/"],
-                   forms=Forms(otp=True), downloads=["app.apk"], screenshot_key="k.png")
+    r = ScanReport(
+        final_url="https://b.example/",
+        redirect_chain=["https://a.example/", "https://b.example/"],
+        forms=Forms(otp=True),
+        downloads=["app.apk"],
+        screenshot_key="k.png",
+    )
     data = json.loads(encode(r))
     assert data["final_url"] == "https://b.example/"
     assert data["forms"] == {"password": False, "otp": True, "card_number": False}
