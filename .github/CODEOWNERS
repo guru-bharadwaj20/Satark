@@ -1,0 +1,7 @@
+# Production changes need a review from a maintainer. Together with branch
+# protection on main ("Require review from Code Owners"), this makes every
+# prod promotion PR a reviewed change.
+/gitops/envs/prod/     @guru-bharadwaj20
+/gitops/bootstrap/     @guru-bharadwaj20
+/gitops/platform/      @guru-bharadwaj20
+/.github/workflows/    @guru-bharadwaj20
