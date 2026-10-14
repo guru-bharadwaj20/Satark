@@ -20,10 +20,9 @@ const DefaultAPIURL = "https://api.telegram.org"
 
 // Client calls the Bot API for one bot token.
 type Client struct {
-	base  string // e.g. https://api.telegram.org/bot<token>
-	file  string // e.g. https://api.telegram.org/file/bot<token>
-	http  *http.Client
-	maxDL int64
+	base string // e.g. https://api.telegram.org/bot<token>
+	file string // e.g. https://api.telegram.org/file/bot<token>
+	http *http.Client
 }
 
 // New creates a client. apiURL is normally DefaultAPIURL.
@@ -33,10 +32,9 @@ func New(apiURL, token string, hc *http.Client) *Client {
 		hc = &http.Client{Timeout: 0} // per-call deadlines come from contexts
 	}
 	return &Client{
-		base:  apiURL + "/bot" + token,
-		file:  apiURL + "/file/bot" + token,
-		http:  hc,
-		maxDL: 10 << 20,
+		base: apiURL + "/bot" + token,
+		file: apiURL + "/file/bot" + token,
+		http: hc,
 	}
 }
 
@@ -135,4 +133,57 @@ func (c *Client) SendMessage(ctx context.Context, m SendMessage) (Message, error
 	var out Message
 	err := c.call(ctx, "sendMessage", m, &out)
 	return out, err
+}
+
+// File is the result of getFile.
+type File struct {
+	FileID   string `json:"file_id"`
+	FileSize int64  `json:"file_size"`
+	FilePath string `json:"file_path"`
+}
+
+// ErrFileTooLarge is returned when a download exceeds the size limit.
+var ErrFileTooLarge = errors.New("telegram file too large")
+
+// DownloadFile resolves fileID with getFile and downloads it, up to limit bytes.
+func (c *Client) DownloadFile(ctx context.Context, fileID string, limit int64) ([]byte, error) {
+	var f File
+	if err := c.call(ctx, "getFile", map[string]string{"file_id": fileID}, &f); err != nil {
+		return nil, err
+	}
+	if f.FileSize > limit {
+		return nil, ErrFileTooLarge
+	}
+	if f.FilePath == "" || strings.Contains(f.FilePath, "..") {
+		return nil, errors.New("telegram getFile: missing file path")
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, c.file+"/"+f.FilePath, nil)
+	if err != nil {
+		return nil, scrub(err)
+	}
+	resp, err := c.http.Do(req)
+	if err != nil {
+		return nil, scrub(err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("telegram file download: HTTP %d", resp.StatusCode)
+	}
+	data, err := io.ReadAll(io.LimitReader(resp.Body, limit+1))
+	if err != nil {
+		return nil, err
+	}
+	if int64(len(data)) > limit {
+		return nil, ErrFileTooLarge
+	}
+	return data, nil
+}
+
+// AnswerCallbackQuery acknowledges a button press, optionally with a toast.
+func (c *Client) AnswerCallbackQuery(ctx context.Context, id, text string) error {
+	params := map[string]string{"callback_query_id": id}
+	if text != "" {
+		params["text"] = text
+	}
+	return c.call(ctx, "answerCallbackQuery", params, nil)
 }
