@@ -1,0 +1,65 @@
+---
+# Remove a worker node cleanly.
+#
+#   ansible-playbook -i inventory/prod playbooks/remove-node.yml -e node=worker-2
+#
+# Afterwards delete the host from the inventory. See SOP-02.
+
+- name: Drain and delete the Node object
+  hosts: control_plane[0]
+  become: true
+  gather_facts: false
+  vars:
+    kubectl: kubectl --kubeconfig /etc/kubernetes/admin.conf
+  tasks:
+    - name: Require node name
+      ansible.builtin.assert:
+        that:
+          - node is defined
+          - node not in groups['control_plane']
+        fail_msg: "Pass -e node=<worker name>. Control-plane nodes are not removed with this playbook."
+
+    - name: Make sure enough workers remain
+      ansible.builtin.command: >-
+        {{ kubectl }} get nodes -l '!node-role.kubernetes.io/control-plane' -o name
+      register: workers
+      changed_when: false
+      failed_when: workers.stdout_lines | length < 2
+
+    - name: Cordon
+      ansible.builtin.command: "{{ kubectl }} cordon {{ node }}"
+      changed_when: true
+
+    - name: Drain (respects PodDisruptionBudgets)
+      ansible.builtin.command: >-
+        {{ kubectl }} drain {{ node }} --ignore-daemonsets --delete-emptydir-data --timeout=600s
+      changed_when: true
+
+    - name: Delete Node object
+      ansible.builtin.command: "{{ kubectl }} delete node {{ node }}"
+      changed_when: true
+
+- name: Reset the removed host
+  hosts: "{{ node }}"
+  become: true
+  gather_facts: false
+  ignore_unreachable: true
+  tasks:
+    - name: kubeadm reset
+      ansible.builtin.command: kubeadm reset --force
+      changed_when: true
+
+    - name: Remove CNI and kubelet state
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/cni/net.d
+        - /var/lib/kubelet
+        - /var/lib/cni
+
+    - name: Stop kubelet
+      ansible.builtin.systemd:
+        name: kubelet
+        state: stopped
+        enabled: false

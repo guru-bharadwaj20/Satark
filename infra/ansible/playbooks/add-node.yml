@@ -1,0 +1,71 @@
+---
+# Add one or more worker nodes to the running cluster.
+#
+# 1. Add the host to the `workers` group (and `new_nodes`) in the inventory.
+# 2. ansible-playbook -i inventory/prod playbooks/add-node.yml -l 'new_nodes:control_plane[0]'
+#
+# See docs/sops/SOP-02-add-remove-node.md.
+
+- name: Prepare new nodes with the same base roles as site.yml
+  hosts: new_nodes
+  become: true
+  vars:
+    # Base roles applied to every node by site.yml before kubeadm join.
+    add_node_prep_roles: [common, containerd, kubernetes]
+  tasks:
+    - name: Apply base roles
+      ansible.builtin.include_role:
+        name: "{{ prep_role }}"
+      loop: "{{ add_node_prep_roles }}"
+      loop_control:
+        loop_var: prep_role
+
+- name: Create a short-lived join command
+  hosts: control_plane[0]
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Generate join command (token valid 30 minutes)
+      ansible.builtin.command: kubeadm token create --ttl 30m --print-join-command
+      register: join_cmd
+      changed_when: true
+      no_log: true
+
+    - name: Share join command with new nodes
+      ansible.builtin.set_fact:
+        satark_join_command: "{{ join_cmd.stdout | trim }}"
+      no_log: true
+
+- name: Join new nodes
+  hosts: new_nodes
+  become: true
+  serial: 1
+  tasks:
+    - name: Check whether node already joined
+      ansible.builtin.stat:
+        path: /etc/kubernetes/kubelet.conf
+      register: kubelet_conf
+
+    - name: Run kubeadm join
+      when: not kubelet_conf.stat.exists
+      ansible.builtin.command: "{{ hostvars[groups['control_plane'][0]].satark_join_command }}"
+      changed_when: true
+      no_log: true
+
+    - name: Wait for node to be Ready
+      ansible.builtin.command: >-
+        kubectl --kubeconfig /etc/kubernetes/admin.conf get node {{ ansible_hostname }}
+        -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}'
+      delegate_to: "{{ groups['control_plane'][0] }}"
+      register: ready
+      changed_when: false
+      until: ready.stdout == 'True'
+      retries: 30
+      delay: 10
+
+    - name: Label as worker
+      ansible.builtin.command: >-
+        kubectl --kubeconfig /etc/kubernetes/admin.conf label node {{ ansible_hostname }}
+        node-role.kubernetes.io/worker= --overwrite
+      delegate_to: "{{ groups['control_plane'][0] }}"
+      changed_when: true
