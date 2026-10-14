@@ -1,0 +1,21 @@
+# Managed by Ansible role argocd_bootstrap. Mirrors gitops/bootstrap/root.yaml.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root
+  namespace: {{ argocd_bootstrap_namespace }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: {{ argocd_bootstrap_repo_url }}
+    targetRevision: {{ argocd_bootstrap_repo_revision }}
+    path: gitops/bootstrap
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ argocd_bootstrap_namespace }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

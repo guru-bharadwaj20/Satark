@@ -1,0 +1,8 @@
+---
+# Install Argo CD on the cluster. Run after the cluster is built (site.yml).
+- name: Bootstrap Argo CD
+  hosts: control_plane[0]
+  become: true
+  gather_facts: false
+  roles:
+    - argocd_bootstrap

@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: argocd_bootstrap
+  author: guru-bharadwaj20
+  description: Install Argo CD and hand over to the GitOps app-of-apps root
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []
