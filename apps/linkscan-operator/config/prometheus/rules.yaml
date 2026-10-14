@@ -25,3 +25,21 @@ spec:
       annotations:
         summary: linkscan-operator cannot create sandbox pods
         runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-008-linkscan-sandbox-failures.md
+    - alert: LinkScanQueueBacklog
+      expr: max(nats_consumer_num_pending{consumer_name="linkscan-operator"}) > 50
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: Link-scan job queue has more than 50 pending jobs
+        runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-007-scan-queue-backlog.md
+    - alert: LinkScanQueueStalled
+      expr: |
+        max(nats_consumer_num_pending{consumer_name="linkscan-operator"}) > 0
+          and sum(increase(satark_linkscan_jobs_received_total[10m])) == 0
+      for: 10m
+      labels:
+        severity: critical
+      annotations:
+        summary: Scan jobs are queued but the operator admitted none in 10 minutes
+        runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-007-scan-queue-backlog.md
