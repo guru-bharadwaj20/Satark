@@ -105,6 +105,17 @@ def get_provider(name: str | None = None) -> LLMProvider:
     return factory()
 
 
+DISABLED_NAMES = {"none", "disabled", "off"}
+
+
+def get_provider_or_none(name: str | None = None) -> LLMProvider | None:
+    """Like get_provider, but SATARK_LLM_PROVIDER=none disables the LLM (rules-only)."""
+    name = name or os.environ.get("SATARK_LLM_PROVIDER", "ollama")
+    if name.lower() in DISABLED_NAMES:
+        return None
+    return get_provider(name)
+
+
 def _load_builtin() -> None:
     """Import built-in provider modules so they self-register.
 
