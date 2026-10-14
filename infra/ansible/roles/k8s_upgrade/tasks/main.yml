@@ -1,3 +1,7 @@
 ---
 - name: Switch package repository
   ansible.builtin.import_tasks: repo.yml
+
+- name: Upgrade control plane
+  ansible.builtin.include_tasks: control_plane.yml
+  when: inventory_hostname in groups[k8s_upgrade_cp_group]

@@ -1,0 +1,36 @@
+---
+- name: Unhold kubelet and kubectl
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  loop: [kubelet, kubectl]
+
+- name: Install target kubelet and kubectl
+  ansible.builtin.apt:
+    name:
+      - "kubelet={{ k8s_upgrade_pkg_version }}"
+      - "kubectl={{ k8s_upgrade_pkg_version }}"
+    state: present
+
+- name: Hold kubelet and kubectl
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop: [kubelet, kubectl]
+
+- name: Restart kubelet
+  ansible.builtin.systemd:
+    name: kubelet
+    state: restarted
+    daemon_reload: true
+
+- name: Wait for node to report target kubelet version and Ready
+  ansible.builtin.command: >-
+    kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} get node {{ k8s_node_name }}
+    -o jsonpath='{.status.nodeInfo.kubeletVersion} {.status.conditions[?(@.type=="Ready")].status}'
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  register: node_state
+  changed_when: false
+  until: node_state.stdout == k8s_upgrade_kube_version ~ ' True'
+  retries: "{{ (k8s_upgrade_ready_timeout | int / 10) | int }}"
+  delay: 10
