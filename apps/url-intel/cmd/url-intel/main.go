@@ -13,6 +13,7 @@ import (
 
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/ctlog"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/dnscheck"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/domainage"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/expand"
@@ -37,6 +38,7 @@ func main() {
 			dnscheck.New(),
 			&domainage.Check{L: domainage.New(lookupClient)},
 			tlscheck.New(),
+			ctlog.New(lookupClient),
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
