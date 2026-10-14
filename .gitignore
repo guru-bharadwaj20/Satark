@@ -1,0 +1,83 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+*~
+
+# Secrets and local env (never commit)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!**/testdata/**/*.key
+kubeconfig
+*.kubeconfig
+age.key
+*.agekey
+
+# Go
+/bin/
+apps/*/bin/
+tools/*/bin/
+*.exe
+*.test
+*.out
+coverage.*
+go.work
+go.work.sum
+vendor/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Node / TypeScript
+node_modules/
+apps/pwa/dist/
+.next/
+*.tsbuildinfo
+npm-debug.log*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+*.auto.tfvars
+!*.auto.tfvars.example
+
+# Vagrant / Ansible
+.vagrant/
+*.retry
+infra/ansible/inventory/*.local.ini
+
+# Helm
+charts/*/charts/*.tgz
+charts/*/Chart.lock.bak
+
+# Test, load and eval artefacts
+tests/load/results/
+eval/results/
+*.log
