@@ -63,3 +63,42 @@ app = FastAPI()
 app.add_middleware(PrometheusMiddleware, metrics=metrics)
 mount_endpoints(app, metrics, checks={"valkey": ping_valkey})
 ```
+
+## Business metrics (task 6.5)
+
+| Series | Type | Labels |
+|--------|------|--------|
+| `satark_scans_total` | counter | `service`, `kind`, `verdict`, `category`, `channel` |
+| `satark_llm_calls_total` | counter | `service`, `provider`, `model`, `outcome` |
+| `satark_llm_call_duration_seconds` | histogram | `service`, `provider` |
+| `satark_llm_tokens_total` | counter | `service`, `provider`, `direction` |
+| `satark_cache_requests_total` | counter | `service`, `cache`, `result` |
+
+Allowed values (anything else is recorded as `other`):
+
+- `kind`: `url`, `text`, `qr`, `image`
+- `verdict`: `low_risk`, `suspicious`, `high_risk`, `unknown` (there is no "safe" verdict)
+- `category`: `phishing`, `lottery_prize`, `kyc_update`, `job_offer`, `investment`,
+  `loan_app`, `digital_arrest`, `sextortion`, `courier_customs`, `upi_collect`,
+  `impersonation`, `malware_apk`, `none`
+- `channel`: `pwa`, `telegram`, `api`
+- `outcome`: `ok`, `error`, `timeout`, `skipped`; `result`: `hit`, `miss`, `error`
+
+Record a scan **once**, in the service that produces the final verdict
+(`gateway-api`), so totals are not double counted. Downstream services record
+their own LLM and cache metrics. Never put user content, URLs or phone numbers
+in a label.
+
+```go
+biz := observability.NewBusinessMetrics(reg, "gateway-api")
+biz.Scan("url", verdict, category, "telegram")
+biz.Cache("url_intel", "hit")
+```
+
+```python
+biz = BusinessMetrics("text-analyzer", metrics.registry)
+with biz.time_llm("anthropic", "claude-haiku") as call:
+    resp = await client.messages.create(...)
+    call["in_tokens"], call["out_tokens"] = resp.usage.input_tokens, resp.usage.output_tokens
+biz.cache_lookup("verdict", "miss")
+```
