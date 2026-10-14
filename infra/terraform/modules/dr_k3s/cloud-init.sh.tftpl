@@ -1,0 +1,18 @@
+#!/bin/bash
+set -euxo pipefail
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y curl jq unzip
+
+TOKEN=$(curl -sX PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 300')
+PUBLIC_IP=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/public-ipv4)
+
+# Single-node k3s. Traefik and the built-in LB are disabled; the restored
+# Envoy Gateway takes over 80/443 via hostPort/ServiceLB replacement.
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="${k3s_version}" sh -s - server \
+  --disable traefik \
+  --write-kubeconfig-mode 0600 \
+  --tls-san "$PUBLIC_IP"
+
+until /usr/local/bin/kubectl get nodes >/dev/null 2>&1; do sleep 5; done
+touch /var/lib/satark-dr-ready

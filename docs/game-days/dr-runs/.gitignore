@@ -1,0 +1,2 @@
+# Drill outputs contain a kubeconfig; keep only the summaries.
+*/kubeconfig

@@ -1,0 +1,26 @@
+# Recreates satark-pg on the DR cluster from the S3 WAL archive, replaying to
+# the end of the archive (no recoveryTarget = latest).
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: satark-pg
+  namespace: satark-data
+spec:
+  instances: 1
+  storage:
+    size: 20Gi
+  bootstrap:
+    recovery:
+      source: prod-archive
+      database: app
+      owner: app
+  externalClusters:
+    - name: prod-archive
+      barmanObjectStore:
+        destinationPath: s3://satark-backups-prod/cnpg/satark-pg
+        serverName: satark-pg
+        # DR VM uses its EC2 instance role (read-only on the bucket).
+        s3Credentials:
+          inheritFromIAMRole: true
+        wal:
+          maxParallel: 8
