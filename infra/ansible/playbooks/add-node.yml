@@ -11,7 +11,7 @@
   become: true
   vars:
     # Base roles applied to every node by site.yml before kubeadm join.
-    add_node_prep_roles: [common, containerd, kubernetes]
+    add_node_prep_roles: [common, hardening, k8s_prereqs, containerd]
   tasks:
     - name: Apply base roles
       ansible.builtin.include_role:
