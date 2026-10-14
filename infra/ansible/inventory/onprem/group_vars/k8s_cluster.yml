@@ -1,0 +1,11 @@
+---
+# Cluster-wide settings shared by the Kubernetes roles.
+cluster_name: satark-onprem
+control_plane_endpoint: "{{ hostvars[groups['control_plane'][0]].ansible_host }}:6443"
+pod_network_cidr: 10.244.0.0/16
+service_cidr: 10.96.0.0/12
+cluster_dns_domain: cluster.local
+
+# MetalLB L2 pool: top of the host-only subnet, outside the VM and DHCP range.
+metallb_address_pool:
+  - 192.168.56.240-192.168.56.250
