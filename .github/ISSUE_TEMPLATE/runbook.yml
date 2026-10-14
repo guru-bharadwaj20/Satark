@@ -1,0 +1,36 @@
+name: Runbook request or update
+description: Propose a new runbook or report a gap in an existing one.
+title: "runbook: "
+labels: ["docs", "runbook"]
+body:
+  - type: input
+    id: runbook
+    attributes:
+      label: Runbook ID (if existing)
+      placeholder: e.g. RB-001
+  - type: input
+    id: alert
+    attributes:
+      label: Alert or failure scenario
+      placeholder: e.g. KubePodCrashLooping, Node NotReady
+    validations:
+      required: true
+  - type: textarea
+    id: symptoms
+    attributes:
+      label: Symptoms
+      description: What does an on-call engineer see?
+    validations:
+      required: true
+  - type: textarea
+    id: gap
+    attributes:
+      label: What is missing or wrong?
+      description: Which section (Symptoms, Impact, Diagnosis, Fix, Verify, Escalation, Prevention) needs work?
+    validations:
+      required: true
+  - type: textarea
+    id: incident
+    attributes:
+      label: Related incident or game day
+      description: Link a postmortem or game-day report, if any.
