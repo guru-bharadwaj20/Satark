@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Satark contributors
+  description: Cluster add-ons (MetalLB, metrics-server, local-path-provisioner)
+  license: MIT
+  min_ansible_version: "2.16"
+  platforms:
+    - name: Ubuntu
+      versions: [noble]
+dependencies: []

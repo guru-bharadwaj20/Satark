@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: {{ addons_metallb_pool_name }}
+  namespace: {{ addons_metallb_namespace }}
+spec:
+  addresses:
+{% for range in addons_metallb_addresses %}
+    - {{ range }}
+{% endfor %}
+  autoAssign: true
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: {{ addons_metallb_pool_name }}-l2
+  namespace: {{ addons_metallb_namespace }}
+spec:
+  ipAddressPools:
+    - {{ addons_metallb_pool_name }}
+{% if addons_metallb_interfaces | length > 0 %}
+  interfaces:
+{% for iface in addons_metallb_interfaces %}
+    - {{ iface }}
+{% endfor %}
+{% endif %}
