@@ -11,8 +11,10 @@ import (
 )
 
 type fakeAPI struct {
-	mu   sync.Mutex
-	sent []telegram.SendMessage
+	mu         sync.Mutex
+	sent       []telegram.SendMessage
+	downloaded []string
+	dlErr      error
 }
 
 func (f *fakeAPI) SendMessage(_ context.Context, m telegram.SendMessage) (telegram.Message, error) {
@@ -20,6 +22,16 @@ func (f *fakeAPI) SendMessage(_ context.Context, m telegram.SendMessage) (telegr
 	defer f.mu.Unlock()
 	f.sent = append(f.sent, m)
 	return telegram.Message{MessageID: int64(len(f.sent))}, nil
+}
+
+func (f *fakeAPI) DownloadFile(_ context.Context, fileID string, _ int64) ([]byte, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.downloaded = append(f.downloaded, fileID)
+	if f.dlErr != nil {
+		return nil, f.dlErr
+	}
+	return []byte("img:" + fileID), nil
 }
 
 func (f *fakeAPI) last() telegram.SendMessage {
@@ -110,5 +122,60 @@ func TestLongTextTruncated(t *testing.T) {
 	b.Handle(context.Background(), privateText(strings.Repeat("क", MaxTextChars+10)))
 	if n := len([]rune(gw.text)); n != MaxTextChars {
 		t.Fatalf("sent %d runes", n)
+	}
+}
+
+func photoUpdate(caption string) telegram.Update {
+	return telegram.Update{UpdateID: 2, Message: &telegram.Message{
+		MessageID: 11, Chat: telegram.Chat{ID: 42, Type: "private"}, Caption: caption,
+		Photo: []telegram.PhotoSize{
+			{FileID: "small", Width: 90, Height: 90, FileSize: 1000},
+			{FileID: "large", Width: 1280, Height: 1280, FileSize: 200000},
+			{FileID: "huge", Width: 4000, Height: 4000, FileSize: MaxImageBytes + 1},
+		},
+	}}
+}
+
+func TestPhotoPicksLargestUnderLimit(t *testing.T) {
+	b, api, gw := newBot()
+	gw.resp = gateway.ScanResponse{Verdict: "likely_scam", RiskScore: 80,
+		QR: []gateway.QRResult{{Kind: "upi", UPI: &gateway.UPIIntent{Summary: "This SENDS ₹14,999 FROM your account"}}}}
+	b.Handle(context.Background(), photoUpdate(" scan to receive refund "))
+	if len(api.downloaded) != 1 || api.downloaded[0] != "large" {
+		t.Fatalf("downloaded %v", api.downloaded)
+	}
+	if string(gw.image) != "img:large" || gw.caption != "scan to receive refund" {
+		t.Fatalf("gateway got %q %q", gw.image, gw.caption)
+	}
+	if !strings.Contains(api.last().Text, "SENDS") {
+		t.Fatalf("reply %q", api.last().Text)
+	}
+}
+
+func TestPhotoWithoutQR(t *testing.T) {
+	b, api, gw := newBot()
+	gw.resp = gateway.ScanResponse{Verdict: "no_red_flags"}
+	b.Handle(context.Background(), photoUpdate(""))
+	if !strings.Contains(api.last().Text, "couldn't find a QR") {
+		t.Fatalf("reply %q", api.last().Text)
+	}
+}
+
+func TestImageDocumentAccepted(t *testing.T) {
+	b, api, _ := newBot()
+	u := privateText("")
+	u.Message.Document = &telegram.Document{FileID: "doc", MimeType: "image/png", FileSize: 10}
+	b.Handle(context.Background(), u)
+	if len(api.downloaded) != 1 || api.downloaded[0] != "doc" {
+		t.Fatalf("downloaded %v", api.downloaded)
+	}
+}
+
+func TestPhotoTooLarge(t *testing.T) {
+	b, api, gw := newBot()
+	api.dlErr = telegram.ErrFileTooLarge
+	b.Handle(context.Background(), photoUpdate(""))
+	if gw.image != nil || !strings.Contains(api.last().Text, "too large") {
+		t.Fatalf("reply %q", api.last().Text)
 	}
 }

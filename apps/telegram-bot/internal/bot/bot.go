@@ -23,6 +23,7 @@ var scansTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 // API is the part of the Telegram client the bot uses.
 type API interface {
 	SendMessage(ctx context.Context, m telegram.SendMessage) (telegram.Message, error)
+	DownloadFile(ctx context.Context, fileID string, limit int64) ([]byte, error)
 }
 
 // Gateway is the part of the gateway-api client the bot uses.
@@ -31,8 +32,11 @@ type Gateway interface {
 	ScanQR(ctx context.Context, image []byte, caption, lang string) (gateway.ScanResponse, error)
 }
 
-// MaxTextChars matches gateway-api's limit.
-const MaxTextChars = 5000
+// Limits matching gateway-api.
+const (
+	MaxTextChars  = 5000
+	MaxImageBytes = 5 << 20
+)
 
 // Bot handles updates.
 type Bot struct {
@@ -64,9 +68,63 @@ func (b *Bot) Handle(ctx context.Context, u telegram.Update) {
 		}
 		return
 	}
+	if fileID, ok := imageFileID(m); ok {
+		b.handlePhoto(ctx, m, fileID)
+		return
+	}
+	if m.Document != nil {
+		b.send(ctx, m.Chat.ID, "Please send the QR code as a photo or an image file (PNG or JPEG).", nil)
+		return
+	}
 	if strings.TrimSpace(m.Text) != "" {
 		b.handleText(ctx, m)
 	}
+}
+
+// imageFileID picks the best image in a message: the largest photo size
+// under the limit, or an image sent as a document.
+func imageFileID(m *telegram.Message) (string, bool) {
+	best := ""
+	bestArea := 0
+	for _, p := range m.Photo {
+		if p.FileSize > MaxImageBytes {
+			continue
+		}
+		if a := p.Width * p.Height; a > bestArea {
+			best, bestArea = p.FileID, a
+		}
+	}
+	if best != "" {
+		return best, true
+	}
+	if d := m.Document; d != nil && strings.HasPrefix(d.MimeType, "image/") && d.FileSize <= MaxImageBytes {
+		return d.FileID, true
+	}
+	return "", false
+}
+
+func (b *Bot) handlePhoto(ctx context.Context, m *telegram.Message, fileID string) {
+	img, err := b.API.DownloadFile(ctx, fileID, MaxImageBytes)
+	if err != nil {
+		if errors.Is(err, telegram.ErrFileTooLarge) {
+			b.send(ctx, m.Chat.ID, "That image is too large. Please send a screenshot under 5 MB.", nil)
+			return
+		}
+		b.scanFailed(ctx, m.Chat.ID, "qr", err)
+		return
+	}
+	caption := strings.TrimSpace(m.Caption)
+	resp, err := b.Gateway.ScanQR(ctx, img, caption, "en")
+	if err != nil {
+		b.scanFailed(ctx, m.Chat.ID, "qr", err)
+		return
+	}
+	scansTotal.WithLabelValues("qr", resp.Verdict).Inc()
+	if len(resp.QR) == 0 {
+		b.send(ctx, m.Chat.ID, "I couldn't find a QR code in that image. Try a sharper, closer screenshot.", nil)
+		return
+	}
+	b.send(ctx, m.Chat.ID, plainReply(resp), nil)
 }
 
 func (b *Bot) handleText(ctx context.Context, m *telegram.Message) {
@@ -101,6 +159,11 @@ func (b *Bot) scanFailed(ctx context.Context, chatID int64, kind string, err err
 func plainReply(r gateway.ScanResponse) string {
 	var sb strings.Builder
 	fmt.Fprintf(&sb, "%s (risk %d/100)\n", r.Verdict, r.RiskScore)
+	for _, q := range r.QR {
+		if q.UPI != nil && q.UPI.Summary != "" {
+			fmt.Fprintf(&sb, "%s\n", q.UPI.Summary)
+		}
+	}
 	for _, reason := range r.Reasons {
 		fmt.Fprintf(&sb, "- %s\n", reason.Message)
 	}
