@@ -1,0 +1,52 @@
+# Daily cluster backup. Volumes are backed up with kopia file-system backup
+# (no CSI snapshots on the on-prem cluster). CNPG instance pods should carry
+# `backup.velero.io/backup-volumes-excludes: pgdata,pg-wal` because CNPG ships
+# its own WAL + base backups (see backups/cnpg); restoring raw PGDATA files
+# taken from a running server is not crash-consistent.
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: daily
+  namespace: velero
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  schedule: "15 2 * * *"
+  useOwnerReferencesInBackup: false
+  template:
+    ttl: 720h0m0s
+    storageLocation: default
+    includedNamespaces:
+      - satark
+      - satark-sandbox
+      - satark-data
+      - monitoring
+      - argocd
+      - cert-manager
+    excludedResources:
+      - events
+      - events.events.k8s.io
+    defaultVolumesToFsBackup: true
+    snapshotVolumes: false
+    labelSelector:
+      matchExpressions:
+        - key: velero.io/exclude-from-backup
+          operator: DoesNotExist
+---
+# Hourly lightweight backup of Kubernetes objects only, for quick rollbacks
+# of accidental deletes.
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: hourly-resources
+  namespace: velero
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  schedule: "5 * * * *"
+  template:
+    ttl: 48h0m0s
+    storageLocation: default
+    includedNamespaces: ["satark", "satark-data"]
+    defaultVolumesToFsBackup: false
+    snapshotVolumes: false
