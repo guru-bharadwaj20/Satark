@@ -23,8 +23,12 @@ def test_success_maps_tokens_and_payload():
         assert request.url.path == "/api/chat"
         return httpx.Response(
             200,
-            json={"model": "m", "message": {"role": "assistant", "content": "{}"},
-                  "prompt_eval_count": 12, "eval_count": 5},
+            json={
+                "model": "m",
+                "message": {"role": "assistant", "content": "{}"},
+                "prompt_eval_count": 12,
+                "eval_count": 5,
+            },
         )
 
     resp = asyncio.run(_provider(handler).complete(REQ))
