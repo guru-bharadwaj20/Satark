@@ -16,6 +16,9 @@ type Config struct {
 	MaxRedirects  int
 	ExpandTimeout time.Duration
 	LookupTimeout time.Duration
+
+	SafeBrowsingAPIKey string
+	Version            string
 }
 
 // FromEnv builds a Config from the environment, applying defaults.
@@ -27,6 +30,9 @@ func FromEnv() Config {
 		MaxRedirects:    getInt("URL_INTEL_MAX_REDIRECTS", 5),
 		ExpandTimeout:   getDuration("URL_INTEL_EXPAND_TIMEOUT", 4*time.Second),
 		LookupTimeout:   getDuration("URL_INTEL_LOOKUP_TIMEOUT", 4*time.Second),
+
+		SafeBrowsingAPIKey: os.Getenv("URL_INTEL_SAFE_BROWSING_API_KEY"),
+		Version:            getEnv("URL_INTEL_VERSION", "dev"),
 	}
 }
 

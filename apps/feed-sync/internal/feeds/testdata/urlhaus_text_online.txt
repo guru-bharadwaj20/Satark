@@ -1,0 +1,17 @@
+################################################################
+# abuse.ch URLhaus Database Dump (CSV - online URLs only)      #
+# Recorded fixture, hosts replaced with reserved test domains  #
+################################################################
+http://203.0.113.10/bins/sora.arm7
+http://203.0.113.10/bins/sora.arm7
+http://malware-dl.example/Electricity_Bill.apk
+https://files.bad-cdn.example:443/kyc/update.apk
+http://198.51.100.23:8080/i
+http://drop.example.test/payload.exe#x
+HTTP://UPPER.EXAMPLE/Path
+ftp://ignored.example/file
+http://203.0.113.11/a
+http://203.0.113.12/b
+http://203.0.113.13/c
+http://203.0.113.14/d
+http://203.0.113.15/e

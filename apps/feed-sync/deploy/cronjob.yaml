@@ -1,0 +1,55 @@
+# feed-sync CronJob: refreshes URLhaus and OpenPhish every 30 minutes.
+# The Helm chart (charts/feed-sync) should render an equivalent object; this
+# manifest is the reference and works with `kubectl apply -n satark`.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: feed-sync
+  namespace: satark
+  labels:
+    app.kubernetes.io/name: feed-sync
+    app.kubernetes.io/part-of: satark
+spec:
+  schedule: "*/30 * * * *"
+  timeZone: Asia/Kolkata
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 900
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: feed-sync
+            app.kubernetes.io/part-of: satark
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: feed-sync
+              image: ghcr.io/guru-bharadwaj20/satark/feed-sync:latest
+              imagePullPolicy: IfNotPresent
+              env:
+                - name: FEED_SYNC_TIMEOUT
+                  value: "10m"
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  memory: 256Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop: ["ALL"]

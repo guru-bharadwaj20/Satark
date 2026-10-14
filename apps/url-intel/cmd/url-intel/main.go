@@ -22,6 +22,7 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/lookalike"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/netguard"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/safebrowsing"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/tlscheck"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/urlheur"
@@ -34,6 +35,11 @@ func main() {
 	lookupClient := netguard.NewHTTPClient(cfg.LookupTimeout)
 
 	brands := lookalike.Default()
+
+	sb := safebrowsing.New(lookupClient, cfg.SafeBrowsingAPIKey, cfg.Version)
+	if !sb.Enabled() {
+		log.Warn("Safe Browsing disabled: URL_INTEL_SAFE_BROWSING_API_KEY not set")
+	}
 
 	an := analyzer.New(
 		analyzer.WithPreparers(
@@ -49,6 +55,7 @@ func main() {
 			&lookalike.Check{D: brands},
 			&homoglyph.Check{Brands: brands},
 			urlheur.Check{},
+			&safebrowsing.Check{C: sb},
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
