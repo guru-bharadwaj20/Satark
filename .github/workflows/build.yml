@@ -41,6 +41,7 @@ jobs:
       contents: read
       packages: write
       security-events: write
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -118,3 +119,26 @@ jobs:
           format: spdx-json
           output-file: sbom-${{ matrix.service }}.spdx.json
           artifact-name: sbom-${{ matrix.service }}.spdx.json
+      - uses: sigstore/cosign-installer@v3
+        if: env.PUSH == 'true'
+      - name: cosign keyless sign and attest SBOM
+        if: env.PUSH == 'true'
+        env:
+          IMAGE: ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}@${{ steps.build.outputs.digest }}
+        run: |
+          # Keyless: the signing certificate is issued by Fulcio for this
+          # workflow's GitHub OIDC identity and logged in Rekor.
+          cosign sign --yes "$IMAGE"
+          cosign attest --yes --type spdxjson \
+            --predicate "sbom-${{ matrix.service }}.spdx.json" "$IMAGE"
+      - name: how to verify
+        if: env.PUSH == 'true'
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ### ${{ matrix.service }}
+          \`\`\`
+          cosign verify ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}@${{ steps.build.outputs.digest }} \\
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/.github/workflows/build.yml@refs/heads/main$' \\
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com
+          \`\`\`
+          EOF
