@@ -1,0 +1,39 @@
+# Cilium Helm values that enable Hubble Relay, the Hubble UI and Hubble
+# flow metrics (task 6.3). Cilium itself is installed during cluster bootstrap
+# (Ansible); these values are layered on top with `helm upgrade --reuse-values`
+# by scripts/enable-hubble.sh so the CNI is never re-installed from scratch.
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+    resources:
+      requests: {cpu: 20m, memory: 64Mi}
+      limits: {memory: 128Mi}
+  ui:
+    enabled: true
+    replicas: 1
+    service:
+      type: ClusterIP   # reach it with: kubectl -n kube-system port-forward svc/hubble-ui 12000:80
+  metrics:
+    enableOpenMetrics: true
+    enabled:
+      - dns:query
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - "httpV2:exemplars=true;labelsContext=source_namespace,destination_namespace"
+    serviceMonitor:
+      enabled: true
+      labels:
+        release: kube-prometheus-stack
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+operator:
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
