@@ -15,6 +15,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/bot"
+	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/gateway"
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/telegram"
 )
 
@@ -50,7 +51,12 @@ func run() error {
 	}
 
 	tg := telegram.New(getenv("TELEGRAM_API_URL", telegram.DefaultAPIURL), token, nil)
-	b := &bot.Bot{API: tg, Log: log}
+	gwTimeout, err := time.ParseDuration(getenv("GATEWAY_TIMEOUT", "10s"))
+	if err != nil {
+		return fmt.Errorf("GATEWAY_TIMEOUT: %w", err)
+	}
+	gw := gateway.New(getenv("GATEWAY_API_URL", "http://gateway-api:8080"), gwTimeout)
+	b := &bot.Bot{API: tg, Gateway: gw, Log: log}
 	poller := &bot.Poller{API: tg, Handler: b, Log: log, PollTimeout: pollTimeout, Workers: 8}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
