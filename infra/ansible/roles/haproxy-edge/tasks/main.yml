@@ -1,0 +1,57 @@
+---
+- name: Install HAProxy
+  ansible.builtin.apt:
+    name: haproxy
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Render HAProxy config
+  ansible.builtin.template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+    owner: root
+    group: root
+    mode: "0644"
+    validate: haproxy -c -f %s
+  notify: Reload haproxy
+
+- name: Ensure systemd drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/system/haproxy.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Start HAProxy only after the tunnel is up
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/haproxy.service.d/10-wireguard.conf
+    content: |
+      [Unit]
+      After=wg-quick@wg0.service
+      Wants=wg-quick@wg0.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: haproxy_edge_dropin
+
+- name: Reload systemd units
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: haproxy_edge_dropin.changed
+
+- name: Enable and start HAProxy
+  ansible.builtin.systemd_service:
+    name: haproxy
+    enabled: true
+    state: started
+
+- name: Check the local health endpoint
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:{{ haproxy_edge_stats_port }}/healthz"
+    status_code: 200
+  register: haproxy_edge_health
+  retries: 5
+  delay: 2
+  until: haproxy_edge_health.status == 200

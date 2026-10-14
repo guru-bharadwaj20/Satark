@@ -40,3 +40,9 @@
     - role: wireguard
       vars:
         wireguard_role: client
+
+- name: Configure HAProxy SNI passthrough on the edge
+  hosts: edge
+  become: true
+  roles:
+    - role: haproxy-edge
