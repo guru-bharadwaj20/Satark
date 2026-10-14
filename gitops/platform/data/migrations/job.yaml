@@ -1,0 +1,77 @@
+# Runs golang-migrate against satark-pg-rw. The SQL files are mounted from the
+# ConfigMap satark-migrations, built from apps/gateway-api/migrations by
+# scripts/platform/run-migrations.sh. Job names are suffixed per run so the
+# Job is immutable and its logs are kept until the TTL expires.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: satark-migrate
+  namespace: satark-data
+  labels:
+    app.kubernetes.io/name: satark-migrate
+    app.kubernetes.io/part-of: satark
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 600
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: satark-migrate
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: wait-for-postgres
+          image: ghcr.io/cloudnative-pg/postgresql:16.4
+          command:
+            - sh
+            - -c
+            - until pg_isready -h satark-pg-rw -p 5432; do echo waiting; sleep 2; done
+          securityContext: &restricted
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources: &res
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+      containers:
+        - name: migrate
+          image: migrate/migrate:v4.18.1
+          args:
+            - -path=/migrations
+            - -database=$(DATABASE_URL)
+            - up
+          env:
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: satark-pg-app
+                  key: username
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: satark-pg-app
+                  key: password
+            - name: DATABASE_URL
+              value: postgres://$(PGUSER):$(PGPASSWORD)@satark-pg-rw:5432/satark?sslmode=require
+          securityContext: *restricted
+          resources: *res
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+              readOnly: true
+      volumes:
+        - name: migrations
+          configMap:
+            name: satark-migrations
