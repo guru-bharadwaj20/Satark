@@ -12,6 +12,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/gateway"
+	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/i18n"
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/telegram"
 )
 
@@ -24,6 +25,7 @@ var scansTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 type API interface {
 	SendMessage(ctx context.Context, m telegram.SendMessage) (telegram.Message, error)
 	DownloadFile(ctx context.Context, fileID string, limit int64) ([]byte, error)
+	AnswerCallbackQuery(ctx context.Context, id, text string) error
 }
 
 // Gateway is the part of the gateway-api client the bot uses.
@@ -38,46 +40,98 @@ const (
 	MaxImageBytes = 5 << 20
 )
 
+// Callback data prefixes. Telegram limits callback data to 64 bytes.
+const (
+	cbLang = "lang:"
+)
+
 // Bot handles updates.
 type Bot struct {
 	API     API
 	Gateway Gateway
+	Prefs   *Prefs
 	Log     *slog.Logger
 }
 
-const welcome = "Namaste! I'm Satark.\n\n" +
-	"Forward me a suspicious SMS or message, or send a screenshot of a QR code, " +
-	"and I'll tell you how risky it looks and what to do.\n\n" +
-	"I will never ask for your OTP, UPI PIN or password."
-
 // Handle implements Handler.
 func (b *Bot) Handle(ctx context.Context, u telegram.Update) {
-	if u.Message == nil {
-		return
+	if b.Prefs == nil {
+		b.Prefs = NewPrefs()
 	}
-	m := u.Message
+	switch {
+	case u.Message != nil:
+		b.handleMessage(ctx, u.Message)
+	case u.CallbackQuery != nil:
+		b.handleCallback(ctx, u.CallbackQuery)
+	}
+}
+
+func (b *Bot) langFor(chatID int64, from *telegram.User) string {
+	code := ""
+	if from != nil {
+		code = from.LanguageCode
+	}
+	return b.Prefs.Lang(chatID, code)
+}
+
+func (b *Bot) handleMessage(ctx context.Context, m *telegram.Message) {
 	if m.Chat.Type != "private" {
 		return // the bot only talks in private chats
 	}
-	if cmd, _ := command(m.Text); cmd != "" {
+	lang := b.langFor(m.Chat.ID, m.From)
+	if cmd, arg := command(m.Text); cmd != "" {
 		switch cmd {
 		case "/start", "/help":
-			b.send(ctx, m.Chat.ID, welcome, nil)
+			b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.Welcome), nil)
+		case "/language", "/lang", "/bhasha":
+			if b.Prefs.SetLang(m.Chat.ID, strings.ToLower(arg)) {
+				b.send(ctx, m.Chat.ID, i18n.T(strings.ToLower(arg), i18n.LanguageSet), nil)
+				return
+			}
+			b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.ChooseLanguage), languageKeyboard())
 		default:
-			b.send(ctx, m.Chat.ID, "Sorry, I don't know that command. Send /help to see what I can do.", nil)
+			b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.UnknownCommand), nil)
 		}
 		return
 	}
 	if fileID, ok := imageFileID(m); ok {
-		b.handlePhoto(ctx, m, fileID)
+		b.handlePhoto(ctx, m, fileID, lang)
 		return
 	}
 	if m.Document != nil {
-		b.send(ctx, m.Chat.ID, "Please send the QR code as a photo or an image file (PNG or JPEG).", nil)
+		b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.SendAsPhoto), nil)
 		return
 	}
 	if strings.TrimSpace(m.Text) != "" {
-		b.handleText(ctx, m)
+		b.handleText(ctx, m, lang)
+	}
+}
+
+func languageKeyboard() *telegram.InlineKeyboardMarkup {
+	row := make([]telegram.InlineKeyboardButton, 0, len(i18n.Langs))
+	for _, l := range i18n.Langs {
+		row = append(row, telegram.InlineKeyboardButton{Text: i18n.LangNames[l], CallbackData: cbLang + l})
+	}
+	return &telegram.InlineKeyboardMarkup{InlineKeyboard: [][]telegram.InlineKeyboardButton{row}}
+}
+
+func (b *Bot) handleCallback(ctx context.Context, q *telegram.CallbackQuery) {
+	if q.Message == nil || q.Message.Chat.Type != "private" {
+		b.answer(ctx, q.ID, "")
+		return
+	}
+	chatID := q.Message.Chat.ID
+	switch {
+	case strings.HasPrefix(q.Data, cbLang):
+		l := strings.TrimPrefix(q.Data, cbLang)
+		if !b.Prefs.SetLang(chatID, l) {
+			b.answer(ctx, q.ID, "")
+			return
+		}
+		b.answer(ctx, q.ID, i18n.T(l, i18n.LanguageSet))
+		b.send(ctx, chatID, i18n.T(l, i18n.LanguageSet), nil)
+	default:
+		b.answer(ctx, q.ID, "")
 	}
 }
 
@@ -103,56 +157,52 @@ func imageFileID(m *telegram.Message) (string, bool) {
 	return "", false
 }
 
-func (b *Bot) handlePhoto(ctx context.Context, m *telegram.Message, fileID string) {
+func (b *Bot) handlePhoto(ctx context.Context, m *telegram.Message, fileID, lang string) {
 	img, err := b.API.DownloadFile(ctx, fileID, MaxImageBytes)
 	if err != nil {
 		if errors.Is(err, telegram.ErrFileTooLarge) {
-			b.send(ctx, m.Chat.ID, "That image is too large. Please send a screenshot under 5 MB.", nil)
+			b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.ImageTooLarge), nil)
 			return
 		}
-		b.scanFailed(ctx, m.Chat.ID, "qr", err)
+		b.scanFailed(ctx, m.Chat.ID, "qr", lang, err)
 		return
 	}
 	caption := strings.TrimSpace(m.Caption)
-	resp, err := b.Gateway.ScanQR(ctx, img, caption, "en")
+	resp, err := b.Gateway.ScanQR(ctx, img, caption, lang)
 	if err != nil {
-		b.scanFailed(ctx, m.Chat.ID, "qr", err)
+		b.scanFailed(ctx, m.Chat.ID, "qr", lang, err)
 		return
 	}
 	scansTotal.WithLabelValues("qr", resp.Verdict).Inc()
 	if len(resp.QR) == 0 {
-		b.send(ctx, m.Chat.ID, "I couldn't find a QR code in that image. Try a sharper, closer screenshot.", nil)
+		b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.NoQRFound), nil)
 		return
 	}
 	b.send(ctx, m.Chat.ID, plainReply(resp), nil)
 }
 
-func (b *Bot) handleText(ctx context.Context, m *telegram.Message) {
+func (b *Bot) handleText(ctx context.Context, m *telegram.Message, lang string) {
 	text := strings.TrimSpace(m.Text)
 	if utf8.RuneCountInString(text) > MaxTextChars {
 		text = string([]rune(text)[:MaxTextChars])
 	}
-	sender := "unknown"
-	resp, err := b.Gateway.ScanText(ctx, text, "en", sender)
+	resp, err := b.Gateway.ScanText(ctx, text, lang, "unknown")
 	if err != nil {
-		b.scanFailed(ctx, m.Chat.ID, "text", err)
+		b.scanFailed(ctx, m.Chat.ID, "text", lang, err)
 		return
 	}
 	scansTotal.WithLabelValues("text", resp.Verdict).Inc()
 	b.send(ctx, m.Chat.ID, plainReply(resp), nil)
 }
 
-func (b *Bot) scanFailed(ctx context.Context, chatID int64, kind string, err error) {
-	outcome := "error"
-	msg := "Sorry, I couldn't check that right now. Please try again in a minute.\n\n" +
-		"Meanwhile: never share your OTP, UPI PIN or password."
+func (b *Bot) scanFailed(ctx context.Context, chatID int64, kind, lang string, err error) {
+	outcome, key := "error", i18n.ScanFailed
 	if errors.Is(err, gateway.ErrBadInput) {
-		outcome = "bad_input"
-		msg = "Sorry, I couldn't read that. Please send the message text, or a clear screenshot of the QR code."
+		outcome, key = "bad_input", i18n.BadInput
 	}
 	scansTotal.WithLabelValues(kind, outcome).Inc()
 	b.Log.Warn("scan failed", "kind", kind, "err", err)
-	b.send(ctx, chatID, msg, nil)
+	b.send(ctx, chatID, i18n.T(lang, key), nil)
 }
 
 // plainReply is a minimal verdict rendering.
@@ -189,5 +239,11 @@ func (b *Bot) send(ctx context.Context, chatID int64, text string, kb *telegram.
 	})
 	if err != nil {
 		b.Log.Warn("sendMessage failed", "err", err)
+	}
+}
+
+func (b *Bot) answer(ctx context.Context, id, text string) {
+	if err := b.API.AnswerCallbackQuery(ctx, id, text); err != nil {
+		b.Log.Debug("answerCallbackQuery failed", "err", err)
 	}
 }

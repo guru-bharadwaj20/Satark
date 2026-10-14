@@ -178,3 +178,12 @@ func (c *Client) DownloadFile(ctx context.Context, fileID string, limit int64) (
 	}
 	return data, nil
 }
+
+// AnswerCallbackQuery acknowledges a button press, optionally with a toast.
+func (c *Client) AnswerCallbackQuery(ctx context.Context, id, text string) error {
+	params := map[string]string{"callback_query_id": id}
+	if text != "" {
+		params["text"] = text
+	}
+	return c.call(ctx, "answerCallbackQuery", params, nil)
+}

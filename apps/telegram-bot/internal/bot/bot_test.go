@@ -15,6 +15,7 @@ type fakeAPI struct {
 	sent       []telegram.SendMessage
 	downloaded []string
 	dlErr      error
+	answered   []string
 }
 
 func (f *fakeAPI) SendMessage(_ context.Context, m telegram.SendMessage) (telegram.Message, error) {
@@ -32,6 +33,13 @@ func (f *fakeAPI) DownloadFile(_ context.Context, fileID string, _ int64) ([]byt
 		return nil, f.dlErr
 	}
 	return []byte("img:" + fileID), nil
+}
+
+func (f *fakeAPI) AnswerCallbackQuery(_ context.Context, id, _ string) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.answered = append(f.answered, id)
+	return nil
 }
 
 func (f *fakeAPI) last() telegram.SendMessage {
@@ -76,7 +84,7 @@ func privateText(text string) telegram.Update {
 
 func newBot() (*Bot, *fakeAPI, *fakeGateway) {
 	api, gw := &fakeAPI{}, &fakeGateway{}
-	return &Bot{API: api, Gateway: gw, Log: discard}, api, gw
+	return &Bot{API: api, Gateway: gw, Prefs: NewPrefs(), Log: discard}, api, gw
 }
 
 func TestForwardedTextIsScanned(t *testing.T) {
@@ -177,5 +185,60 @@ func TestPhotoTooLarge(t *testing.T) {
 	b.Handle(context.Background(), photoUpdate(""))
 	if gw.image != nil || !strings.Contains(api.last().Text, "too large") {
 		t.Fatalf("reply %q", api.last().Text)
+	}
+}
+
+func callback(data string) telegram.Update {
+	return telegram.Update{UpdateID: 3, CallbackQuery: &telegram.CallbackQuery{
+		ID: "cb1", From: telegram.User{ID: 7}, Data: data,
+		Message: &telegram.Message{MessageID: 12, Chat: telegram.Chat{ID: 42, Type: "private"}},
+	}}
+}
+
+func TestLanguageDefaultsFromTelegramClient(t *testing.T) {
+	b, _, gw := newBot()
+	u := privateText("hello")
+	u.Message.From.LanguageCode = "kn-IN"
+	b.Handle(context.Background(), u)
+	if gw.lang != "kn" {
+		t.Fatalf("lang %q", gw.lang)
+	}
+}
+
+func TestLanguageMenuAndCallback(t *testing.T) {
+	b, api, gw := newBot()
+	b.Handle(context.Background(), privateText("/language"))
+	kb := api.last().ReplyMarkup
+	if kb == nil || len(kb.InlineKeyboard[0]) != 3 || kb.InlineKeyboard[0][1].CallbackData != "lang:hi" {
+		t.Fatalf("keyboard %+v", kb)
+	}
+	b.Handle(context.Background(), callback("lang:hi"))
+	if len(api.answered) != 1 || !strings.Contains(api.last().Text, "हिन्दी") {
+		t.Fatalf("reply %q", api.last().Text)
+	}
+	b.Handle(context.Background(), privateText("hello"))
+	if gw.lang != "hi" {
+		t.Fatalf("lang %q", gw.lang)
+	}
+	b.Handle(context.Background(), privateText("/start"))
+	if !strings.Contains(api.last().Text, "नमस्ते") {
+		t.Fatalf("welcome not localized: %q", api.last().Text)
+	}
+}
+
+func TestLanguageCommandArgument(t *testing.T) {
+	b, _, gw := newBot()
+	b.Handle(context.Background(), privateText("/lang KN"))
+	b.Handle(context.Background(), privateText("hello"))
+	if gw.lang != "kn" {
+		t.Fatalf("lang %q", gw.lang)
+	}
+}
+
+func TestBadLanguageCallbackIgnored(t *testing.T) {
+	b, api, _ := newBot()
+	b.Handle(context.Background(), callback("lang:fr"))
+	if len(api.answered) != 1 || len(api.sent) != 0 {
+		t.Fatal("unsupported language should only be acknowledged")
 	}
 }
