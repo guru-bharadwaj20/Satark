@@ -1,0 +1,64 @@
+# One Argo CD Application per service per environment.
+#
+# Environments are discovered from gitops/envs/<env>/env.json and services
+# from the gitops/envs/<env>/apps/<service>/ folders, so adding a service to
+# an environment is just adding a values folder. Each Application renders
+# charts/<service> with the environment's values file layered on top.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: satark-services
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - matrix:
+        generators:
+          - git:
+              repoURL: https://github.com/guru-bharadwaj20/satark.git
+              revision: main
+              files:
+                - path: gitops/envs/*/env.json
+          - git:
+              repoURL: https://github.com/guru-bharadwaj20/satark.git
+              revision: main
+              directories:
+                - path: "gitops/envs/{{ .env }}/apps/*"
+  template:
+    metadata:
+      name: "{{ .path.basename }}-{{ .env }}"
+      labels:
+        satark.dev/env: "{{ .env }}"
+        satark.dev/service: "{{ .path.basename }}"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: satark
+      sources:
+        - repoURL: https://github.com/guru-bharadwaj20/satark.git
+          targetRevision: "{{ .targetRevision }}"
+          path: "charts/{{ .path.basename }}"
+          helm:
+            releaseName: "{{ .path.basename }}"
+            valueFiles:
+              - "$values/{{ .path.path }}/values.yaml"
+        - repoURL: https://github.com/guru-bharadwaj20/satark.git
+          targetRevision: "{{ .targetRevision }}"
+          ref: values
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{ .namespace }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 10s
+            factor: 2
+            maxDuration: 3m
