@@ -74,6 +74,12 @@ variable "user_data" {
   default     = null
 }
 
+variable "log_retention_days" {
+  description = "Retention for edge CloudWatch log groups."
+  type        = number
+  default     = 30
+}
+
 variable "tags" {
   description = "Tags applied to every resource. Must include Project, Environment, Owner and ManagedBy."
   type        = map(string)

@@ -11,6 +11,7 @@ resource "aws_instance" "edge" {
   instance_type          = var.instance_type
   subnet_id              = aws_subnet.public.id
   vpc_security_group_ids = [aws_security_group.edge.id]
+  iam_instance_profile   = aws_iam_instance_profile.edge.name
   monitoring             = var.detailed_monitoring
   ebs_optimized          = true
   # The edge forwards tunnel traffic for other addresses.

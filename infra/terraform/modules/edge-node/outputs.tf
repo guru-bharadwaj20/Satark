@@ -8,6 +8,16 @@ output "instance_id" {
   value       = aws_instance.edge.id
 }
 
+output "instance_role_name" {
+  description = "Name of the edge instance IAM role."
+  value       = aws_iam_role.edge.name
+}
+
+output "ssm_session_document" {
+  description = "Session Manager preferences document for start-session --document-name."
+  value       = aws_ssm_document.session_prefs.name
+}
+
 output "public_ip" {
   description = "Elastic IP of the edge node."
   value       = aws_eip.edge.public_ip
