@@ -1,0 +1,301 @@
+openapi: 3.1.0
+info:
+  title: Satark Public API
+  version: 0.1.0-draft
+  summary: Scam-check API for SMS text and UPI QR codes.
+  description: |
+    First draft of the public Satark REST API served by `gateway-api`.
+
+    Satark returns a *risk assessment*, never a guarantee. The most
+    favourable verdict is `no_red_flags`; the API never claims that an
+    input is "100% safe" and never labels a person.
+
+    Personal data (phone numbers, card numbers, Aadhaar, PAN, e-mail,
+    account numbers, UPI IDs) is redacted by `text-analyzer` before any
+    further processing. Raw message text is not stored unless the caller
+    opts in (`store: true`, honoured from Phase 3 onward).
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: http://localhost:8080
+    description: Local development (docker compose)
+tags:
+  - name: scan
+    description: Check a message or QR code.
+  - name: ops
+    description: Health and metrics endpoints.
+paths:
+  /v1/scan/text:
+    post:
+      tags: [scan]
+      operationId: scanText
+      summary: Check a suspicious text message.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TextScanRequest'
+            example:
+              text: "Dear Customer, your electricity connection will be disconnected tonight at 9:30 PM. Contact our officer 98XXXXXX21"
+              lang: en
+      responses:
+        '200':
+          description: Scan result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '413':
+          $ref: '#/components/responses/TooLarge'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /v1/scan/qr:
+    post:
+      tags: [scan]
+      operationId: scanQR
+      summary: Check a QR code image (photo or screenshot).
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/QRScanRequest'
+            encoding:
+              image:
+                contentType: image/png, image/jpeg, image/webp
+      responses:
+        '200':
+          description: Scan result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '413':
+          $ref: '#/components/responses/TooLarge'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+  /healthz:
+    get:
+      tags: [ops]
+      operationId: healthz
+      summary: Liveness probe.
+      responses:
+        '200':
+          description: Process is alive.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+  /readyz:
+    get:
+      tags: [ops]
+      operationId: readyz
+      summary: Readiness probe.
+      responses:
+        '200':
+          description: Ready to serve traffic.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+        '503':
+          description: Not ready.
+  /metrics:
+    get:
+      tags: [ops]
+      operationId: metrics
+      summary: Prometheus metrics (prefix `satark_`).
+      responses:
+        '200':
+          description: Prometheus text exposition format.
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  responses:
+    BadRequest:
+      description: The request is malformed.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    TooLarge:
+      description: The text or image exceeds the size limit.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unavailable:
+      description: No analyzer could be reached in time.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Language:
+      type: string
+      enum: [en, hi, kn]
+      default: en
+      description: Language for reasons and next steps.
+    TextScanRequest:
+      type: object
+      required: [text]
+      additionalProperties: false
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 5000
+          description: Message text exactly as received.
+        lang:
+          $ref: '#/components/schemas/Language'
+        sender_type:
+          $ref: '#/components/schemas/SenderType'
+        store:
+          type: boolean
+          default: false
+          description: Opt in to storing the redacted text for research.
+    QRScanRequest:
+      type: object
+      required: [image]
+      properties:
+        image:
+          type: string
+          format: binary
+          description: PNG, JPEG or WebP image, at most 5 MiB.
+        lang:
+          $ref: '#/components/schemas/Language'
+    SenderType:
+      type: string
+      enum: [unknown, saved_contact, unknown_number, business_sender, group]
+      default: unknown
+      description: Answer to the "Who sent this?" follow-up question.
+    Verdict:
+      type: string
+      enum: [no_red_flags, suspicious, likely_scam]
+      description: |
+        Verdict bucket derived from `risk_score`:
+        `no_red_flags` (0-29), `suspicious` (30-69), `likely_scam` (70-100).
+    Reason:
+      type: object
+      required: [code, message, weight]
+      properties:
+        code:
+          type: string
+          description: Stable machine-readable reason code, e.g. `urgency.deadline`.
+          examples: [urgency.deadline]
+        message:
+          type: string
+          description: Plain-language explanation in the requested language.
+        weight:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Contribution of this reason to the risk score.
+        source:
+          type: string
+          enum: [rules, qr, sender, url, reputation, llm]
+    UPIIntent:
+      type: object
+      description: Parsed `upi://pay` deep link.
+      properties:
+        payee_address:
+          type: string
+          description: "`pa` parameter, masked (e.g. `xy***@examplebank`)."
+        payee_name:
+          type: string
+          description: "`pn` parameter."
+        amount:
+          type: string
+          description: "`am` parameter as a decimal string."
+        currency:
+          type: string
+          description: "`cu` parameter, normally INR."
+        note:
+          type: string
+          description: "`tn` parameter (transaction note)."
+        direction:
+          type: string
+          enum: [send]
+          description: Scanning a UPI QR always SENDS money from the scanner.
+        summary:
+          type: string
+          description: Plain-language description, e.g. "This SENDS ₹14,999 FROM your account to xy***@examplebank".
+    QRResult:
+      type: object
+      required: [kind]
+      properties:
+        kind:
+          type: string
+          enum: [upi, url, text]
+        format:
+          type: string
+          description: Barcode format reported by the decoder, e.g. QRCode.
+        upi:
+          $ref: '#/components/schemas/UPIIntent'
+        url:
+          type: string
+          description: URL contained in the QR (only when kind is url).
+    ScanResponse:
+      type: object
+      required: [scan_id, verdict, risk_score, reasons, next_steps, lang]
+      properties:
+        scan_id:
+          type: string
+          description: Opaque identifier for feedback and reports.
+        verdict:
+          $ref: '#/components/schemas/Verdict'
+        risk_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reason'
+        next_steps:
+          type: array
+          items:
+            type: string
+        lang:
+          $ref: '#/components/schemas/Language'
+        redacted_text:
+          type: string
+          description: Input text with personal data replaced by placeholders such as `[PHONE]`.
+        qr:
+          type: array
+          items:
+            $ref: '#/components/schemas/QRResult'
+        partial:
+          type: boolean
+          description: True when at least one analyzer failed or timed out and the verdict is based on partial data.
+        disclaimer:
+          type: string
+          description: Reminder that the result is an assessment, not a guarantee.
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [ok, degraded]
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              examples: [invalid_request]
+            message:
+              type: string
