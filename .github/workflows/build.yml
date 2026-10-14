@@ -41,6 +41,7 @@ jobs:
       contents: read
       packages: write
       security-events: write
+      id-token: write
     strategy:
       fail-fast: false
       matrix:
@@ -118,3 +119,69 @@ jobs:
           format: spdx-json
           output-file: sbom-${{ matrix.service }}.spdx.json
           artifact-name: sbom-${{ matrix.service }}.spdx.json
+      - uses: sigstore/cosign-installer@v3
+        if: env.PUSH == 'true'
+      - name: cosign keyless sign and attest SBOM
+        if: env.PUSH == 'true'
+        env:
+          IMAGE: ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}@${{ steps.build.outputs.digest }}
+        run: |
+          # Keyless: the signing certificate is issued by Fulcio for this
+          # workflow's GitHub OIDC identity and logged in Rekor.
+          cosign sign --yes "$IMAGE"
+          cosign attest --yes --type spdxjson \
+            --predicate "sbom-${{ matrix.service }}.spdx.json" "$IMAGE"
+      - name: how to verify
+        if: env.PUSH == 'true'
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<EOF
+          ### ${{ matrix.service }}
+          \`\`\`
+          cosign verify ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}@${{ steps.build.outputs.digest }} \\
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/.github/workflows/build.yml@refs/heads/main$' \\
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com
+          \`\`\`
+          EOF
+
+  bump-dev:
+    name: bump image tags in gitops/envs/dev
+    needs: [services, image]
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && needs.services.outputs.services != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: gitops-dev-bump
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: install yq
+        run: |
+          sudo curl -sSL -o /usr/local/bin/yq \
+            https://github.com/mikefarah/yq/releases/download/v4.44.6/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: update tags
+        env:
+          SERVICES: ${{ needs.services.outputs.services }}
+        run: |
+          tag="${GITHUB_SHA::7}"
+          for svc in $(echo "$SERVICES" | jq -r '.[]'); do
+            f="gitops/envs/dev/apps/$svc/values.yaml"
+            [ -f "$f" ] || { echo "skip $svc: no $f"; continue; }
+            TAG="$tag" yq -i '.image.tag = strenv(TAG)' "$f"
+            echo "$svc -> $tag"
+          done
+      - name: commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add gitops/envs/dev
+          if git diff --cached --quiet; then echo "nothing to bump"; exit 0; fi
+          git commit -m "chore(gitops): bump dev images to ${GITHUB_SHA::7} [skip ci]"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
