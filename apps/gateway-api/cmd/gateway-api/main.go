@@ -11,7 +11,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/guru-bharadwaj20/satark/apps/gateway-api/internal/analyzers"
 	"github.com/guru-bharadwaj20/satark/apps/gateway-api/internal/config"
+	"github.com/guru-bharadwaj20/satark/apps/gateway-api/internal/scan"
 	"github.com/guru-bharadwaj20/satark/apps/gateway-api/internal/server"
 )
 
@@ -31,7 +33,14 @@ func run() error {
 	log = log.With("service", "gateway-api")
 	slog.SetDefault(log)
 
-	srv := server.New(cfg, log)
+	scanner := &scan.Service{
+		Text:    analyzers.TextAnalyzer{Client: analyzers.NewClient("text-analyzer", cfg.TextAnalyzerURL, cfg.AnalyzerTimeout, nil)},
+		QR:      analyzers.QRDecoder{Client: analyzers.NewClient("qr-decoder", cfg.QRDecoderURL, cfg.AnalyzerTimeout, nil)},
+		Scorer:  scan.EngineScorer{},
+		Timeout: cfg.ScanTimeout,
+		Log:     log,
+	}
+	srv := server.New(cfg, log).WithScanner(scanner)
 	httpSrv := &http.Server{
 		Addr:              cfg.Addr,
 		Handler:           srv.Handler(),
