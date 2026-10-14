@@ -11,6 +11,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/allowlist"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/ctlog"
@@ -39,6 +40,7 @@ func main() {
 			normalize.Preparer{},
 			expand.Preparer{E: expand.New(cfg.ExpandTimeout, cfg.MaxRedirects)},
 		),
+		analyzer.WithAllowlist(allowlist.Default(brands.OfficialDomains()...)),
 		analyzer.WithChecks(
 			dnscheck.New(),
 			&domainage.Check{L: domainage.New(lookupClient)},

@@ -61,6 +61,15 @@ func Parse(r io.Reader) (*Detector, error) {
 	return d, sc.Err()
 }
 
+// OfficialDomains lists every official domain of every brand.
+func (d *Detector) OfficialDomains() []string {
+	var out []string
+	for _, b := range d.brands {
+		out = append(out, b.Official...)
+	}
+	return out
+}
+
 // IsOfficial reports whether host belongs to any listed brand.
 func (d *Detector) IsOfficial(host string) bool {
 	for _, b := range d.brands {

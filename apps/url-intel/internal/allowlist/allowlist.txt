@@ -1,0 +1,25 @@
+# Official allowlist for url-intel.
+#
+# "suffix <zone>"  matches the zone and every name below it. Only zones whose
+#                  registration is restricted to verified entities belong here.
+# "domain <name>"  matches the name and its subdomains (verified organisations).
+#
+# Changes need a reviewer to confirm the domain on the organisation's own
+# official channels. Allowlisting lowers the risk score but threat-feed and
+# Safe Browsing hits still apply (official sites do get compromised).
+
+# Government of India (registrations restricted by NIC / MeitY).
+suffix gov.in
+suffix nic.in
+suffix mil.in
+# Reserved by RBI exclusively for regulated Indian banks.
+suffix bank.in
+suffix fin.in
+
+# Regulators and payment infrastructure.
+domain rbi.org.in
+domain npci.org.in
+domain sebi.gov.in
+domain bhimupi.org.in
+domain cybercrime.gov.in
+domain sancharsaathi.gov.in
