@@ -1,0 +1,9 @@
+apiVersion: scan.satark.io/v1alpha1
+kind: LinkScan
+metadata:
+  name: linkscan-sample
+  namespace: satark-sandbox
+spec:
+  url: https://example.com/
+  timeoutSeconds: 60
+  ttlSecondsAfterFinished: 3600

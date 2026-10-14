@@ -1,2 +1,3 @@
-resources: []
+resources:
+- bases/scan.satark.io_linkscans.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
