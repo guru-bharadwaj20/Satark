@@ -1,0 +1,74 @@
+controller:
+  type: daemonset
+serviceMonitor:
+  enabled: true
+alloy:
+  mounts:
+    varlog: true
+  resources:
+    requests: {cpu: 50m, memory: 96Mi}
+    limits: {memory: 256Mi}
+  configMap:
+    content: |
+      // Discover pods scheduled on this node only.
+      discovery.kubernetes "pods" {
+        role = "pod"
+        selectors {
+          role  = "pod"
+          field = "spec.nodeName=" + coalesce(sys.env("HOSTNAME"), constants.hostname)
+        }
+      }
+
+      discovery.relabel "pods" {
+        targets = discovery.kubernetes.pods.targets
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+          target_label  = "app"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_node_name"]
+          target_label  = "node"
+        }
+      }
+
+      loki.source.kubernetes "pods" {
+        targets    = discovery.relabel.pods.output
+        forward_to = [loki.process.satark.receiver]
+      }
+
+      // Satark services log one JSON object per line (libs/go/observability,
+      // libs/python/satark_obs). Promote level/service to labels and keep
+      // trace_id as structured metadata (high cardinality, not a label).
+      loki.process "satark" {
+        stage.match {
+          selector = "{namespace=~\"satark|satark-sandbox\"}"
+          stage.json {
+            expressions = { level = "level", service = "service", trace_id = "trace_id" }
+          }
+          stage.labels {
+            values = { level = "", service = "" }
+          }
+          stage.structured_metadata {
+            values = { trace_id = "" }
+          }
+        }
+        forward_to = [loki.write.default.receiver]
+      }
+
+      loki.write "default" {
+        endpoint {
+          url = "http://loki.monitoring.svc:3100/loki/api/v1/push"
+        }
+      }
