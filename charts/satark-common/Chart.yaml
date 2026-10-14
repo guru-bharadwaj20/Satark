@@ -1,0 +1,8 @@
+apiVersion: v2
+name: satark-common
+description: Library chart with the shared Kubernetes templates for every Satark service
+type: library
+version: 0.1.0
+keywords: [satark, library]
+maintainers:
+  - name: guru-bharadwaj20
