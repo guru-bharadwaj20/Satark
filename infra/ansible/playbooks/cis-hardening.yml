@@ -1,0 +1,168 @@
+---
+# Remediate high-severity kube-bench (CIS Kubernetes Benchmark) findings on a
+# kubeadm cluster (task 9.10). Every change here maps to a CIS check ID so the
+# result can be confirmed with scripts/kube-bench/run.sh.
+#
+#   ansible-playbook -i infra/ansible/inventory/hosts.yml \
+#     infra/ansible/playbooks/cis-hardening.yml --check --diff   # preview
+#   ansible-playbook -i infra/ansible/inventory/hosts.yml \
+#     infra/ansible/playbooks/cis-hardening.yml                  # apply
+#
+# Control-plane static pod manifests are edited one node at a time (serial: 1)
+# so the API server stays available while kubelet restarts each component.
+
+- name: CIS hardening - file permissions (all nodes)
+  hosts: k8s_cluster
+  become: true
+  tasks:
+    - name: "CIS 4.1.1/4.1.5/4.1.9: kubelet config and kubeconfig files are 0600 root:root"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0600"
+        owner: root
+        group: root
+      loop:
+        - /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+        - /etc/kubernetes/kubelet.conf
+        - /var/lib/kubelet/config.yaml
+      failed_when: false
+
+    - name: "CIS 4.1.7/4.1.8: client CA file is 0600 root:root"
+      ansible.builtin.file:
+        path: /etc/kubernetes/pki/ca.crt
+        mode: "0600"
+        owner: root
+        group: root
+
+    - name: "CIS 4.2.1/4.2.2/4.2.6: kubelet auth, authz and kernel defaults"
+      ansible.builtin.blockinfile:
+        path: /var/lib/kubelet/config.yaml
+        marker: "# {mark} satark cis-hardening"
+        block: |
+          readOnlyPort: 0
+          protectKernelDefaults: true
+          eventRecordQPS: 5
+          rotateCertificates: true
+          serverTLSBootstrap: true
+          tlsCipherSuites:
+            - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+            - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+            - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+            - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+            - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+      notify: Restart kubelet
+
+    - name: "CIS 4.2.6 prerequisite: kernel parameters kubelet expects"
+      ansible.posix.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/90-kubelet.conf
+        reload: true
+      loop: "{{ kubelet_sysctls | dict2items }}"
+      vars:
+        kubelet_sysctls:
+          vm.overcommit_memory: 1
+          vm.panic_on_oom: 0
+          kernel.panic: 10
+          kernel.panic_on_oops: 1
+          kernel.keys.root_maxkeys: 1000000
+          kernel.keys.root_maxbytes: 25000000
+
+  handlers:
+    - name: Restart kubelet
+      ansible.builtin.systemd:
+        name: kubelet
+        state: restarted
+
+- name: CIS hardening - control plane
+  hosts: control_plane
+  become: true
+  serial: 1
+  vars:
+    manifests: /etc/kubernetes/manifests
+  tasks:
+    - name: "CIS 1.1.1-1.1.8, 1.1.13-1.1.18: control-plane manifests and kubeconfigs are 0600"
+      ansible.builtin.file:
+        path: "{{ item }}"
+        mode: "0600"
+        owner: root
+        group: root
+      loop:
+        - "{{ manifests }}/kube-apiserver.yaml"
+        - "{{ manifests }}/kube-controller-manager.yaml"
+        - "{{ manifests }}/kube-scheduler.yaml"
+        - "{{ manifests }}/etcd.yaml"
+        - /etc/kubernetes/admin.conf
+        - /etc/kubernetes/scheduler.conf
+        - /etc/kubernetes/controller-manager.conf
+
+    - name: "CIS 1.1.19-1.1.21: PKI directory owned by root, keys 0600"
+      ansible.builtin.shell: |
+        set -e
+        chown -R root:root /etc/kubernetes/pki
+        find /etc/kubernetes/pki -name '*.key' -exec chmod 0600 {} +
+        find /etc/kubernetes/pki -name '*.crt' -exec chmod 0600 {} +
+      changed_when: false
+
+    - name: "CIS 1.1.11/1.1.12: etcd data directory 0700 owned by etcd"
+      block:
+        - name: Ensure etcd system user exists
+          ansible.builtin.user:
+            name: etcd
+            system: true
+            shell: /usr/sbin/nologin
+            create_home: false
+        - name: Set etcd data dir permissions
+          ansible.builtin.file:
+            path: /var/lib/etcd
+            state: directory
+            mode: "0700"
+            owner: etcd
+            group: etcd
+
+    - name: "CIS 1.2.x: kube-apiserver flags"
+      ansible.builtin.lineinfile:
+        path: "{{ manifests }}/kube-apiserver.yaml"
+        regexp: '^(\s*)- --{{ item.flag }}=.*$'
+        line: "    - --{{ item.flag }}={{ item.value }}"
+        insertafter: '^\s*- kube-apiserver$'
+      loop:
+        - {flag: profiling, value: "false"}                                  # 1.2.15
+        - {flag: anonymous-auth, value: "false"}                             # 1.2.1
+        - {flag: kubelet-certificate-authority, value: /etc/kubernetes/pki/ca.crt}  # 1.2.5
+        - {flag: enable-admission-plugins, value: "NodeRestriction"}         # 1.2.13
+        - {flag: request-timeout, value: "60s"}                              # 1.2.21
+        - {flag: service-account-lookup, value: "true"}                      # 1.2.22
+        - {flag: tls-min-version, value: "VersionTLS12"}                     # 1.2.29
+
+    - name: "CIS 1.3.2 / 1.3.7: kube-controller-manager profiling off, bound to localhost"
+      ansible.builtin.lineinfile:
+        path: "{{ manifests }}/kube-controller-manager.yaml"
+        regexp: '^(\s*)- --{{ item.flag }}=.*$'
+        line: "    - --{{ item.flag }}={{ item.value }}"
+        insertafter: '^\s*- kube-controller-manager$'
+      loop:
+        - {flag: profiling, value: "false"}
+        - {flag: bind-address, value: "127.0.0.1"}
+        - {flag: terminated-pod-gc-threshold, value: "1000"}
+
+    - name: "CIS 1.4.1 / 1.4.2: kube-scheduler profiling off, bound to localhost"
+      ansible.builtin.lineinfile:
+        path: "{{ manifests }}/kube-scheduler.yaml"
+        regexp: '^(\s*)- --{{ item.flag }}=.*$'
+        line: "    - --{{ item.flag }}={{ item.value }}"
+        insertafter: '^\s*- kube-scheduler$'
+      loop:
+        - {flag: profiling, value: "false"}
+        - {flag: bind-address, value: "127.0.0.1"}
+
+    - name: Wait for the API server to come back on this node
+      ansible.builtin.uri:
+        url: "https://127.0.0.1:6443/readyz"
+        validate_certs: false
+        status_code: [200, 401, 403]
+      register: readyz
+      retries: 30
+      delay: 10
+      until: readyz.status in [200, 401, 403]
