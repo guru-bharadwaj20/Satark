@@ -1,0 +1,17 @@
+# pwa values for dev. Overrides charts/pwa/values.yaml.
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/pwa
+  # Updated automatically by CI (dev) or by a promotion PR (prod).
+  tag: "0.1.0"
+replicaCount: 1
+service:
+  port: 8080
+resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 192Mi
+env:
+  SATARK_ENV: dev
+  LOG_LEVEL: debug

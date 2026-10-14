@@ -1,0 +1,17 @@
+# telegram-bot values for prod. Overrides charts/telegram-bot/values.yaml.
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/telegram-bot
+  # Updated automatically by CI (dev) or by a promotion PR (prod).
+  tag: "0.1.0"
+replicaCount: 1
+service:
+  port: 8082
+resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+env:
+  SATARK_ENV: prod
+  LOG_LEVEL: info

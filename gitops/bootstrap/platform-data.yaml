@@ -1,0 +1,29 @@
+# Sync wave 20: Data layer (CloudNativePG cluster satark-pg, Valkey, NATS).
+# Argo CD waits for this Application to be Healthy before the next wave.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-data
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    path: gitops/platform/data
+    directory:
+      recurse: true
+      exclude: "{README.md,*.json}"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true

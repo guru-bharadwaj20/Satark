@@ -9,6 +9,9 @@ kind: ApplicationSet
 metadata:
   name: satark-services
   namespace: argocd
+  annotations:
+    # Wave 30: after CRDs (0), platform (10) and data (20).
+    argocd.argoproj.io/sync-wave: "30"
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]

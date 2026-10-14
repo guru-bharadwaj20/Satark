@@ -1,0 +1,24 @@
+# Argo CD managing its own installation (wave -5, before everything else).
+# prune is off: a bad change must never let Argo CD delete itself.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  project: platform
+  source:
+    repoURL: https://github.com/guru-bharadwaj20/satark.git
+    targetRevision: main
+    path: gitops/platform/argocd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
