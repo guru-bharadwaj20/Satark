@@ -1,0 +1,23 @@
+# Let's Encrypt staging. Use it first: its rate limits are generous and its
+# certificates are untrusted, so a misconfiguration costs nothing.
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-staging
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: ops@satark.example.in
+    privateKeySecretRef:
+      name: letsencrypt-staging-account-key
+    solvers:
+      - dns01:
+          route53:
+            region: ap-south-1
+            # IAM user from infra/terraform/modules/cert-manager-dns01.
+            accessKeyIDSecretRef:
+              name: route53-credentials
+              key: access-key-id
+            secretAccessKeySecretRef:
+              name: route53-credentials
+              key: secret-access-key
