@@ -7,8 +7,10 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -62,6 +64,23 @@ func TestReportAndLookup(t *testing.T) {
 	}
 	if strings.Contains(strings.ToLower(out["message"].(string)), "scammer") {
 		t.Fatal("message must not label anyone")
+	}
+}
+
+func TestRateLimit(t *testing.T) {
+	s := New(Config{
+		Store:   store.NewMemory(),
+		Hasher:  identifier.NewHasher("test"),
+		Limiter: ratelimit.New(nil, ratelimit.Window{Max: 2, Period: time.Hour}),
+	})
+	report(t, s, "tg:9", "9000000001")
+	report(t, s, "tg:9", "9000000002")
+	rec := report(t, s, "tg:9", "9000000003")
+	if rec.Code != http.StatusTooManyRequests || rec.Header().Get("Retry-After") == "" {
+		t.Fatalf("want 429 with Retry-After, got %d", rec.Code)
+	}
+	if rec := report(t, s, "tg:10", "9000000003"); rec.Code != http.StatusAccepted {
+		t.Fatalf("other reporter limited: %d", rec.Code)
 	}
 }
 

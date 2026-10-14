@@ -11,10 +11,12 @@ import (
 	"log/slog"
 	"net/http"
 	"sort"
+	"strconv"
 	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/metrics"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -34,6 +36,8 @@ type Config struct {
 	// MinReporters is the distinct-reporter threshold below which a
 	// lookup reveals nothing (default 3).
 	MinReporters int
+	// Limiter caps reports per reporter; nil disables limiting.
+	Limiter *ratelimit.Limiter
 }
 
 // Server implements http.Handler.
@@ -99,10 +103,19 @@ func (s *Server) report(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "reporter_id is required")
 		return
 	}
+	reporter := s.cfg.Hasher.Reporter(req.ReporterID)
+	if s.cfg.Limiter != nil {
+		if ok, wait := s.cfg.Limiter.Allow(reporter); !ok {
+			s.cfg.Metrics.Inc("satark_reputation_reports_total", "kind", string(kind), "result", "rate_limited")
+			w.Header().Set("Retry-After", strconv.Itoa(int(wait.Seconds())+1))
+			writeErr(w, http.StatusTooManyRequests, "too many reports from this reporter; try again later")
+			return
+		}
+	}
 	added, err := s.cfg.Store.AddReport(r.Context(), store.Report{
 		Kind:         string(kind),
 		SubjectHash:  s.cfg.Hasher.Subject(kind, norm),
-		ReporterHash: s.cfg.Hasher.Reporter(req.ReporterID),
+		ReporterHash: reporter,
 		Category:     req.Category,
 		CreatedAt:    s.cfg.Now().UTC(),
 	})

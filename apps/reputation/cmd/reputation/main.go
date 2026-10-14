@@ -15,6 +15,7 @@ import (
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/api"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -69,6 +70,10 @@ func run(log *slog.Logger) error {
 			Hasher:       identifier.NewHasher(pepper),
 			Logger:       log,
 			MinReporters: envInt("REPUTATION_MIN_REPORTERS", 3),
+			Limiter: ratelimit.New(nil,
+				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_HOUR", 5), Period: time.Hour},
+				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_DAY", 20), Period: 24 * time.Hour},
+			),
 		}),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
