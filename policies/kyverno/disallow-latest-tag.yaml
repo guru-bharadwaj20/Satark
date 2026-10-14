@@ -1,0 +1,49 @@
+# Task 9.4: images must be pinned to an explicit, non-latest tag or digest.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Latest Tag
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The `:latest` tag (or no tag) is mutable, breaks rollbacks and makes
+      signature verification meaningless. Pin a version tag or a digest.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-image-tag
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [satark, satark-data, satark-sandbox]
+      validate:
+        message: "An explicit image tag or digest is required."
+        foreach:
+          - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
+            deny:
+              conditions:
+                all:
+                  - key: "{{ contains(element.image, '@sha256:') || regex_match('^.+:[^/:]+$', element.image) }}"
+                    operator: Equals
+                    value: false
+    - name: disallow-latest
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [satark, satark-data, satark-sandbox]
+      validate:
+        message: "Using the mutable ':latest' tag is not allowed."
+        foreach:
+          - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
+            deny:
+              conditions:
+                any:
+                  - key: "{{ regex_match(':latest(@sha256:[a-f0-9]+)?$', element.image) }}"
+                    operator: Equals
+                    value: true
