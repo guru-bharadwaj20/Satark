@@ -13,6 +13,7 @@ from pydantic import BaseModel
 
 from app import __version__
 from app.decode import DecodeError, decode_image
+from app.upi import UPIParseError, parse_upi
 
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(5 * 1024 * 1024)))
 
@@ -42,10 +43,23 @@ async def observe(request: Request, call_next: Callable[[Request], Awaitable[Res
     return response
 
 
+class UPIOut(BaseModel):
+    payee_address: str | None = None
+    payee_name: str | None = None
+    amount: str | None = None
+    currency: str | None = None
+    note: str | None = None
+    action: str
+    direction: str
+    issues: list[str]
+    summary: str
+
+
 class DecodedCode(BaseModel):
     format: str
-    text: str
     kind: str
+    text: str | None = None
+    upi: UPIOut | None = None
 
 
 class DecodeResponse(BaseModel):
@@ -90,6 +104,16 @@ async def decode(image: UploadFile = File(...)) -> DecodeResponse:  # noqa: B008
     out: list[DecodedCode] = []
     for c in codes:
         kind = classify(c.text)
-        CODES.labels(kind).inc()
-        out.append(DecodedCode(format=c.format, text=c.text, kind=kind))
+        if kind == "upi":
+            try:
+                intent = parse_upi(c.text)
+            except UPIParseError:
+                kind = "text"
+            else:
+                # The raw link contains an unmasked UPI ID, so it is not echoed.
+                out.append(DecodedCode(format=c.format, kind=kind, upi=UPIOut(**intent.as_dict())))
+                continue
+        out.append(DecodedCode(format=c.format, kind=kind, text=c.text))
+    for code in out:
+        CODES.labels(code.kind).inc()
     return DecodeResponse(codes=out)
