@@ -24,3 +24,10 @@ k8s_prereqs_packages:
   - kubelet
   - kubeadm
   - kubectl
+
+# Kernel defaults expected by the kubelet with protectKernelDefaults: true.
+k8s_prereqs_kubelet_kernel_defaults:
+  vm.overcommit_memory: 1
+  vm.panic_on_oom: 0
+  kernel.panic: 10
+  kernel.panic_on_oops: 1

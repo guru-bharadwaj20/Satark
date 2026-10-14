@@ -25,3 +25,10 @@ kubeadm_cp_audit_log_dir: /var/log/kubernetes/audit
 kubeadm_cp_audit_log_maxage: 30
 kubeadm_cp_audit_log_maxbackup: 10
 kubeadm_cp_audit_log_maxsize: 100
+
+# --- kubeadm init and kubeconfig distribution -------------------------
+kubeadm_cp_init_timeout: 600
+# Node users that get a copy of admin.conf in ~/.kube/config.
+kubeadm_cp_kubeconfig_users: "{{ ['vagrant'] + (admin_users | default([]) | map(attribute='name') | list) }}"
+# Where admin.conf is written on the Ansible control node (never committed).
+kubeadm_cp_local_kubeconfig: "{{ lookup('ansible.builtin.env', 'HOME') }}/.kube/{{ kubeadm_cp_cluster_name }}.conf"

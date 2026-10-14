@@ -1,0 +1,44 @@
+---
+- name: Check whether the control plane is already initialised
+  ansible.builtin.stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubeadm_cp_admin_conf
+
+- name: Pre-pull control-plane images
+  ansible.builtin.command: kubeadm config images pull --config {{ kubeadm_cp_config_path }}
+  when: not kubeadm_cp_admin_conf.stat.exists
+  changed_when: true
+
+- name: Run kubeadm init
+  ansible.builtin.command: >-
+    kubeadm init
+    --config {{ kubeadm_cp_config_path }}
+    --upload-certs
+  when: not kubeadm_cp_admin_conf.stat.exists
+  register: kubeadm_cp_init
+  changed_when: true
+  async: "{{ kubeadm_cp_init_timeout }}"
+  poll: 10
+
+- name: Wait for the API server to become healthy
+  ansible.builtin.uri:
+    url: "https://{{ kubeadm_cp_advertise_address }}:6443/readyz"
+    validate_certs: false
+    status_code: 200
+  register: kubeadm_cp_readyz
+  until: kubeadm_cp_readyz.status == 200
+  retries: 30
+  delay: 5
+
+- name: Approve pending kubelet serving certificates
+  ansible.builtin.shell: |
+    set -o pipefail
+    kubectl get csr --no-headers \
+      | awk '$NF == "Pending" && $0 ~ /kubelet-serving/ {print $1}' \
+      | xargs -r kubectl certificate approve
+  args:
+    executable: /bin/bash
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: kubeadm_cp_csr
+  changed_when: "'approved' in kubeadm_cp_csr.stdout"
