@@ -20,6 +20,24 @@ variable "availability_zone" {
   default     = null
 }
 
+variable "public_ingress_cidrs" {
+  description = "CIDRs allowed on 80/443."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
+variable "wireguard_port" {
+  description = "UDP port WireGuard listens on."
+  type        = number
+  default     = 51820
+}
+
+variable "wireguard_peer_cidrs" {
+  description = "Source CIDRs allowed to reach WireGuard. Home ISPs often rotate IPs, so this defaults to anywhere; WireGuard drops unauthenticated packets silently."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
+
 variable "tags" {
   description = "Tags applied to every resource. Must include Project, Environment, Owner and ManagedBy."
   type        = map(string)
