@@ -1,0 +1,107 @@
+# Hindi (Devanagari and common romanised Hinglish) scam-detection rules.
+# Note: Python's \b does not work reliably inside Devanagari words because
+# vowel signs are not "word" characters, so these patterns use plain
+# substrings instead of word boundaries.
+version: 1
+lang: hi
+rules:
+  - id: urgency.deadline_hi
+    category: urgency
+    weight: 20
+    patterns:
+      - 'आज रात|आज ही|तुरंत|फ़ौरन|फौरन|अभी तुरंत|24 घंटे|अंतिम चेतावनी|आखिरी मौका'
+      - '(?i)\b(aaj raat|turant|abhi turant|jaldi karein)\b'
+    reason:
+      en: It gives a tight deadline to rush you
+      hi: यह आपको जल्दबाज़ी कराने के लिए बहुत कम समय देता है
+      kn: ನಿಮ್ಮನ್ನು ಅವಸರಪಡಿಸಲು ಇದು ತುಂಬಾ ಕಡಿಮೆ ಗಡುವು ನೀಡುತ್ತದೆ
+
+  - id: urgency.threat_hi
+    category: urgency
+    weight: 20
+    patterns:
+      - '(बंद|ब्लॉक|निलंबित) (कर दिया जाएगा|हो जाएगा|हो जायेगा|किया जाएगा)'
+      - 'कानूनी कार्रवाई|गिरफ़्तारी|गिरफ्तारी|डिजिटल अरेस्ट|पुलिस केस'
+      - '(?i)\b(band ho jayega|block ho jayega|digital arrest)\b'
+    reason:
+      en: It threatens that something will be blocked or that legal action will follow
+      hi: यह धमकी देता है कि कुछ बंद कर दिया जाएगा या कानूनी कार्रवाई होगी
+      kn: ಏನನ್ನಾದರೂ ನಿರ್ಬಂಧಿಸಲಾಗುವುದು ಅಥವಾ ಕಾನೂನು ಕ್ರಮ ಆಗುತ್ತದೆ ಎಂದು ಇದು ಬೆದರಿಸುತ್ತದೆ
+
+  - id: kyc.update_hi
+    category: kyc
+    weight: 30
+    patterns:
+      - '(केवाईसी|KYC|kyc|पैन कार्ड|आधार).{0,30}(अपडेट|अपडेट करें|सत्यापन|लंबित|समाप्त|लिंक)'
+    reason:
+      en: Banks do not ask you to update KYC through a link or a phone call
+      hi: बैंक लिंक या फ़ोन कॉल से KYC अपडेट करने को नहीं कहते
+      kn: ಬ್ಯಾಂಕುಗಳು ಲಿಂಕ್ ಅಥವಾ ಫೋನ್ ಕರೆಯ ಮೂಲಕ KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಹೇಳುವುದಿಲ್ಲ
+
+  - id: utility.disconnection_hi
+    category: utility
+    weight: 35
+    patterns:
+      - 'बिजली|बिजली का कनेक्शन|बिजली बिल|गैस कनेक्शन'
+      - '(?i)\b(bijli|bijlee)\b'
+    requires:
+      - 'काट|कट जाएगा|कट जायेगा|बंद|अपडेट नहीं|बकाया|(?i:kat jayega|kaat diya|band)'
+    reason:
+      en: Power and utility companies do not threaten disconnection over SMS with a personal number
+      hi: बिजली या अन्य सेवा कंपनियाँ SMS पर निजी नंबर देकर कनेक्शन काटने की धमकी नहीं देतीं
+      kn: ವಿದ್ಯುತ್ ಅಥವಾ ಇತರ ಸೇವಾ ಕಂಪನಿಗಳು SMS ಮೂಲಕ ವೈಯಕ್ತಿಕ ಸಂಖ್ಯೆ ನೀಡಿ ಸಂಪರ್ಕ ಕಡಿತದ ಬೆದರಿಕೆ ಹಾಕುವುದಿಲ್ಲ
+
+  - id: utility.call_officer_hi
+    category: utility
+    weight: 25
+    patterns:
+      - '(अधिकारी|ऑफिसर|विभाग).{0,40}\[PHONE\]'
+      - '\[PHONE\].{0,30}(पर कॉल करें|पर संपर्क करें|पर बात करें)'
+    reason:
+      en: It asks you to call a personal mobile number instead of an official helpline
+      hi: यह आधिकारिक हेल्पलाइन के बजाय एक निजी मोबाइल नंबर पर कॉल करने को कहता है
+      kn: ಅಧಿಕೃತ ಸಹಾಯವಾಣಿಯ ಬದಲು ವೈಯಕ್ತಿಕ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಲು ಇದು ಹೇಳುತ್ತದೆ
+
+  - id: remote_access.app_hi
+    category: remote_access
+    weight: 40
+    patterns:
+      - 'एनीडेस्क|टीमव्यूअर|स्क्रीन शेयर'
+    reason:
+      en: It asks you to install a screen-sharing app, which gives a stranger control of your phone
+      hi: यह स्क्रीन-शेयरिंग ऐप इंस्टॉल करने को कहता है, जिससे किसी अजनबी को आपके फ़ोन का नियंत्रण मिल जाता है
+      kn: ಇದು ಸ್ಕ್ರೀನ್-ಶೇರಿಂಗ್ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಹೇಳುತ್ತದೆ, ಇದರಿಂದ ಅಪರಿಚಿತರಿಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ ನಿಯಂತ್ರಣ ಸಿಗುತ್ತದೆ
+
+  - id: otp.share_hi
+    category: otp
+    weight: 45
+    patterns:
+      - '(ओटीपी|OTP|otp|पिन|PIN|पासवर्ड).{0,30}(बताएं|बताइए|बताओ|शेयर करें|भेजें|दें|दीजिए)'
+      - '(?i)\b(otp|pin)\b.{0,20}\b(batayein|bataiye|bata do|bhejo|share karo)\b'
+    reason:
+      en: It asks for an OTP, PIN or password. No bank or government office ever asks for these
+      hi: यह OTP, PIN या पासवर्ड माँगता है। कोई बैंक या सरकारी दफ़्तर इन्हें कभी नहीं माँगता
+      kn: ಇದು OTP, PIN ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ಕೇಳುತ್ತದೆ. ಯಾವುದೇ ಬ್ಯಾಂಕ್ ಅಥವಾ ಸರ್ಕಾರಿ ಕಚೇರಿ ಇವುಗಳನ್ನು ಎಂದಿಗೂ ಕೇಳುವುದಿಲ್ಲ
+
+  - id: lottery.prize_hi
+    category: lottery
+    weight: 35
+    patterns:
+      - 'लॉटरी|इनाम जीत|आपने जीत|लकी ड्रा|केबीसी|कौन बनेगा करोड़पति'
+      - '(?i)\b(lottery lagi|inaam jeeta|lucky draw)\b'
+    reason:
+      en: It claims you won a prize or lottery you never entered
+      hi: यह दावा करता है कि आपने ऐसा इनाम या लॉटरी जीती है जिसमें आपने भाग ही नहीं लिया
+      kn: ನೀವು ಭಾಗವಹಿಸದ ಬಹುಮಾನ ಅಥವಾ ಲಾಟರಿ ಗೆದ್ದಿದ್ದೀರಿ ಎಂದು ಇದು ಹೇಳುತ್ತದೆ
+
+  - id: task_job.earn_daily_hi
+    category: task_job
+    weight: 35
+    patterns:
+      - '(रोज़|रोज|प्रतिदिन|हर दिन).{0,30}(कमाएं|कमाई|कमाइए)'
+      - '(घर बैठे|पार्ट टाइम).{0,30}(कमाएं|कमाई|नौकरी|काम)'
+      - '(?i)\b(ghar baithe|roz kamayein|part time kaam)\b'
+    reason:
+      en: It promises easy daily earnings for simple online work
+      hi: यह आसान ऑनलाइन काम के लिए रोज़ की आसान कमाई का वादा करता है
+      kn: ಸುಲಭ ಆನ್‌ಲೈನ್ ಕೆಲಸಕ್ಕೆ ದಿನನಿತ್ಯದ ಸುಲಭ ಗಳಿಕೆಯ ಭರವಸೆ ನೀಡುತ್ತದೆ

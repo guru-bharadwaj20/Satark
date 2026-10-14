@@ -1,0 +1,100 @@
+# Kannada scam-detection rules.
+# As with hi.yaml, Kannada vowel signs are not "word" characters for
+# Python's \b, so patterns use plain substrings.
+version: 1
+lang: kn
+rules:
+  - id: urgency.deadline_kn
+    category: urgency
+    weight: 20
+    patterns:
+      - 'ಇಂದು ರಾತ್ರಿ|ಇಂದೇ|ತಕ್ಷಣ|ಕೂಡಲೇ|24 ಗಂಟೆ|ಕೊನೆಯ ಎಚ್ಚರಿಕೆ|ಕೊನೆಯ ಅವಕಾಶ'
+    reason:
+      en: It gives a tight deadline to rush you
+      hi: यह आपको जल्दबाज़ी कराने के लिए बहुत कम समय देता है
+      kn: ನಿಮ್ಮನ್ನು ಅವಸರಪಡಿಸಲು ಇದು ತುಂಬಾ ಕಡಿಮೆ ಗಡುವು ನೀಡುತ್ತದೆ
+
+  - id: urgency.threat_kn
+    category: urgency
+    weight: 20
+    patterns:
+      - '(ಸ್ಥಗಿತ|ಬ್ಲಾಕ್|ನಿರ್ಬಂಧ|ರದ್ದು)(ಗೊಳಿಸಲಾಗುವುದು|ಮಾಡಲಾಗುವುದು|ಆಗುತ್ತದೆ| ಮಾಡಲಾಗುವುದು| ಆಗುತ್ತದೆ)'
+      - 'ಕಾನೂನು ಕ್ರಮ|ಬಂಧನ|ಡಿಜಿಟಲ್ ಅರೆಸ್ಟ್|ಪೊಲೀಸ್ ಕೇಸ್'
+    reason:
+      en: It threatens that something will be blocked or that legal action will follow
+      hi: यह धमकी देता है कि कुछ बंद कर दिया जाएगा या कानूनी कार्रवाई होगी
+      kn: ಏನನ್ನಾದರೂ ನಿರ್ಬಂಧಿಸಲಾಗುವುದು ಅಥವಾ ಕಾನೂನು ಕ್ರಮ ಆಗುತ್ತದೆ ಎಂದು ಇದು ಬೆದರಿಸುತ್ತದೆ
+
+  - id: kyc.update_kn
+    category: kyc
+    weight: 30
+    patterns:
+      - '(ಕೆವೈಸಿ|KYC|kyc|ಪ್ಯಾನ್ ಕಾರ್ಡ್|ಆಧಾರ್).{0,30}(ಅಪ್‌ಡೇಟ್|ಅಪ್ಡೇಟ್|ನವೀಕರಿಸಿ|ಪರಿಶೀಲನೆ|ಬಾಕಿ|ಲಿಂಕ್)'
+    reason:
+      en: Banks do not ask you to update KYC through a link or a phone call
+      hi: बैंक लिंक या फ़ोन कॉल से KYC अपडेट करने को नहीं कहते
+      kn: ಬ್ಯಾಂಕುಗಳು ಲಿಂಕ್ ಅಥವಾ ಫೋನ್ ಕರೆಯ ಮೂಲಕ KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಹೇಳುವುದಿಲ್ಲ
+
+  - id: utility.disconnection_kn
+    category: utility
+    weight: 35
+    patterns:
+      - 'ವಿದ್ಯುತ್|ಕರೆಂಟ್|ಬೆಸ್ಕಾಂ|ವಿದ್ಯುತ್ ಬಿಲ್'
+    requires:
+      - 'ಕಡಿತ|ಸ್ಥಗಿತ|ಕಟ್|ಬಾಕಿ|ಅಪ್‌ಡೇಟ್ ಆಗಿಲ್ಲ'
+    reason:
+      en: Power and utility companies do not threaten disconnection over SMS with a personal number
+      hi: बिजली या अन्य सेवा कंपनियाँ SMS पर निजी नंबर देकर कनेक्शन काटने की धमकी नहीं देतीं
+      kn: ವಿದ್ಯುತ್ ಅಥವಾ ಇತರ ಸೇವಾ ಕಂಪನಿಗಳು SMS ಮೂಲಕ ವೈಯಕ್ತಿಕ ಸಂಖ್ಯೆ ನೀಡಿ ಸಂಪರ್ಕ ಕಡಿತದ ಬೆದರಿಕೆ ಹಾಕುವುದಿಲ್ಲ
+
+  - id: utility.call_officer_kn
+    category: utility
+    weight: 25
+    patterns:
+      - '(ಅಧಿಕಾರಿ|ಆಫೀಸರ್|ಇಲಾಖೆ).{0,40}\[PHONE\]'
+      - '\[PHONE\].{0,30}(ಕರೆ ಮಾಡಿ|ಸಂಪರ್ಕಿಸಿ)'
+    reason:
+      en: It asks you to call a personal mobile number instead of an official helpline
+      hi: यह आधिकारिक हेल्पलाइन के बजाय एक निजी मोबाइल नंबर पर कॉल करने को कहता है
+      kn: ಅಧಿಕೃತ ಸಹಾಯವಾಣಿಯ ಬದಲು ವೈಯಕ್ತಿಕ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಲು ಇದು ಹೇಳುತ್ತದೆ
+
+  - id: remote_access.app_kn
+    category: remote_access
+    weight: 40
+    patterns:
+      - 'ಎನಿಡೆಸ್ಕ್|ಟೀಮ್‌ವ್ಯೂವರ್|ಟೀಮ್ ವ್ಯೂವರ್|ಸ್ಕ್ರೀನ್ ಶೇರ್'
+    reason:
+      en: It asks you to install a screen-sharing app, which gives a stranger control of your phone
+      hi: यह स्क्रीन-शेयरिंग ऐप इंस्टॉल करने को कहता है, जिससे किसी अजनबी को आपके फ़ोन का नियंत्रण मिल जाता है
+      kn: ಇದು ಸ್ಕ್ರೀನ್-ಶೇರಿಂಗ್ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಹೇಳುತ್ತದೆ, ಇದರಿಂದ ಅಪರಿಚಿತರಿಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ ನಿಯಂತ್ರಣ ಸಿಗುತ್ತದೆ
+
+  - id: otp.share_kn
+    category: otp
+    weight: 45
+    patterns:
+      - '(ಒಟಿಪಿ|OTP|otp|ಪಿನ್|PIN|ಪಾಸ್‌ವರ್ಡ್).{0,30}(ತಿಳಿಸಿ|ಹೇಳಿ|ಕಳುಹಿಸಿ|ಶೇರ್ ಮಾಡಿ|ನೀಡಿ|ಕೊಡಿ)'
+    reason:
+      en: It asks for an OTP, PIN or password. No bank or government office ever asks for these
+      hi: यह OTP, PIN या पासवर्ड माँगता है। कोई बैंक या सरकारी दफ़्तर इन्हें कभी नहीं माँगता
+      kn: ಇದು OTP, PIN ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ಕೇಳುತ್ತದೆ. ಯಾವುದೇ ಬ್ಯಾಂಕ್ ಅಥವಾ ಸರ್ಕಾರಿ ಕಚೇರಿ ಇವುಗಳನ್ನು ಎಂದಿಗೂ ಕೇಳುವುದಿಲ್ಲ
+
+  - id: lottery.prize_kn
+    category: lottery
+    weight: 35
+    patterns:
+      - 'ಲಾಟರಿ|ಬಹುಮಾನ ಗೆದ್ದ|ನೀವು ಗೆದ್ದಿದ್ದೀರಿ|ಲಕ್ಕಿ ಡ್ರಾ'
+    reason:
+      en: It claims you won a prize or lottery you never entered
+      hi: यह दावा करता है कि आपने ऐसा इनाम या लॉटरी जीती है जिसमें आपने भाग ही नहीं लिया
+      kn: ನೀವು ಭಾಗವಹಿಸದ ಬಹುಮಾನ ಅಥವಾ ಲಾಟರಿ ಗೆದ್ದಿದ್ದೀರಿ ಎಂದು ಇದು ಹೇಳುತ್ತದೆ
+
+  - id: task_job.earn_daily_kn
+    category: task_job
+    weight: 35
+    patterns:
+      - '(ಪ್ರತಿದಿನ|ದಿನಕ್ಕೆ|ದಿನಾಲೂ).{0,30}(ಗಳಿಸಿ|ಸಂಪಾದಿಸಿ|ಗಳಿಕೆ|ಆದಾಯ)'
+      - '(ಮನೆಯಿಂದಲೇ|ಪಾರ್ಟ್ ಟೈಮ್).{0,30}(ಕೆಲಸ|ಗಳಿಸಿ|ಸಂಪಾದಿಸಿ)'
+    reason:
+      en: It promises easy daily earnings for simple online work
+      hi: यह आसान ऑनलाइन काम के लिए रोज़ की आसान कमाई का वादा करता है
+      kn: ಸುಲಭ ಆನ್‌ಲೈನ್ ಕೆಲಸಕ್ಕೆ ದಿನನಿತ್ಯದ ಸುಲಭ ಗಳಿಕೆಯ ಭರವಸೆ ನೀಡುತ್ತದೆ
