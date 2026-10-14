@@ -1,0 +1,71 @@
+---
+- name: Check whether the CloudWatch agent is installed
+  ansible.builtin.stat:
+    path: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+  register: cloudwatch_agent_bin
+
+- name: Download the CloudWatch agent package
+  ansible.builtin.get_url:
+    url: "{{ cloudwatch_agent_package_url }}"
+    dest: /tmp/amazon-cloudwatch-agent.deb
+    mode: "0644"
+  when: not cloudwatch_agent_bin.stat.exists
+
+- name: Install the CloudWatch agent
+  ansible.builtin.apt:
+    deb: /tmp/amazon-cloudwatch-agent.deb
+  when: not cloudwatch_agent_bin.stat.exists
+
+- name: Render agent configuration
+  ansible.builtin.template:
+    src: amazon-cloudwatch-agent.json.j2
+    dest: /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Reload cloudwatch agent
+
+- name: Let the agent read HAProxy and system logs
+  ansible.builtin.user:
+    name: cwagent
+    groups: adm
+    append: true
+
+- name: Start the agent with the rendered config
+  ansible.builtin.command: >-
+    /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl
+    -a fetch-config -m ec2 -s
+    -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json
+  changed_when: false
+  when: not cloudwatch_agent_bin.stat.exists
+
+- name: Install the handshake-age publisher
+  ansible.builtin.template:
+    src: wg-handshake-metric.sh.j2
+    dest: /usr/local/bin/wg-handshake-metric
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install the publisher systemd units
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop:
+    - wg-handshake-metric.service
+    - wg-handshake-metric.timer
+  register: cloudwatch_agent_units
+
+- name: Reload systemd
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+  when: cloudwatch_agent_units.changed
+
+- name: Enable the publisher timer
+  ansible.builtin.systemd_service:
+    name: wg-handshake-metric.timer
+    enabled: true
+    state: started

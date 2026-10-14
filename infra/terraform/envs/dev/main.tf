@@ -31,6 +31,7 @@ module "edge" {
   vpc_cidr             = var.edge_vpc_cidr
   instance_type        = var.edge_instance_type
   wireguard_peer_cidrs = var.wireguard_peer_cidrs
+  alarm_emails         = var.alarm_emails
   tags                 = local.tags
 }
 

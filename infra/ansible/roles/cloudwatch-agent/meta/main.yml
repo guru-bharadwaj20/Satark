@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  role_name: cloudwatch_agent
+  author: guru-bharadwaj20
+  description: CloudWatch agent on the edge plus a WireGuard handshake-age metric
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - noble
+dependencies: []

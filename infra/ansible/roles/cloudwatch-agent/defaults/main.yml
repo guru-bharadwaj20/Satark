@@ -1,0 +1,15 @@
+---
+cloudwatch_agent_package_url: https://amazoncloudwatch-agent.s3.amazonaws.com/ubuntu/arm64/latest/amazon-cloudwatch-agent.deb
+cloudwatch_agent_namespace: Satark/Edge
+cloudwatch_agent_metrics_interval: 60
+cloudwatch_agent_statsd_port: 8125
+
+# Log group prefix. Must match the edge-node module, which pre-creates
+# /satark/<name>/haproxy and /satark/<name>/syslog with their retention.
+# The namespace above must match local.metric_namespace there.
+cloudwatch_agent_log_group_prefix: "/satark/{{ edge_name | default('satark-prod-edge') }}"
+
+# WireGuard handshake-age metric (task 5.23).
+wireguard_metric_interface: wg0
+# Reported when the peer has never completed a handshake, so the alarm fires.
+wireguard_metric_never_value: 999999

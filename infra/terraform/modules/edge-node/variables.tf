@@ -80,6 +80,18 @@ variable "log_retention_days" {
   default     = 30
 }
 
+variable "alarm_emails" {
+  description = "Email addresses subscribed to edge alarms. Each must confirm the SNS subscription."
+  type        = list(string)
+  default     = []
+}
+
+variable "tunnel_down_threshold_seconds" {
+  description = "Handshake age (seconds) above which the tunnel counts as down."
+  type        = number
+  default     = 300
+}
+
 variable "tags" {
   description = "Tags applied to every resource. Must include Project, Environment, Owner and ManagedBy."
   type        = map(string)

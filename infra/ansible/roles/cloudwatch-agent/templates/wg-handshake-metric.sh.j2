@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+# Publishes the age (seconds) of the most recent WireGuard handshake on
+# {{ wireguard_metric_interface }} to the CloudWatch agent's StatsD listener as the gauge
+# wireguard_handshake_age_seconds. WireGuard re-handshakes about every 2
+# minutes while traffic or keepalives flow, so an age well above 180s means
+# the tunnel is down.
+set -euo pipefail
+
+iface="{{ wireguard_metric_interface }}"
+never={{ wireguard_metric_never_value }}
+now=$(date +%s)
+
+latest=0
+if out=$(wg show "$iface" latest-handshakes 2>/dev/null); then
+  while read -r _peer ts; do
+    [[ -n "${ts:-}" && "$ts" -gt "$latest" ]] && latest=$ts
+  done <<<"$out"
+fi
+
+if [[ "$latest" -eq 0 ]]; then
+  age=$never
+else
+  age=$((now - latest))
+fi
+
+printf 'wireguard_handshake_age_seconds:%s|g\n' "$age" |
+  timeout 2 bash -c 'cat > /dev/udp/127.0.0.1/{{ cloudwatch_agent_statsd_port }}'
