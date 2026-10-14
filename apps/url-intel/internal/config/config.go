@@ -3,6 +3,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -11,6 +12,9 @@ type Config struct {
 	ListenAddr      string
 	ShutdownTimeout time.Duration
 	RequestTimeout  time.Duration
+
+	MaxRedirects  int
+	ExpandTimeout time.Duration
 }
 
 // FromEnv builds a Config from the environment, applying defaults.
@@ -19,6 +23,8 @@ func FromEnv() Config {
 		ListenAddr:      getEnv("URL_INTEL_LISTEN_ADDR", ":8081"),
 		ShutdownTimeout: getDuration("URL_INTEL_SHUTDOWN_TIMEOUT", 10*time.Second),
 		RequestTimeout:  getDuration("URL_INTEL_REQUEST_TIMEOUT", 15*time.Second),
+		MaxRedirects:    getInt("URL_INTEL_MAX_REDIRECTS", 5),
+		ExpandTimeout:   getDuration("URL_INTEL_EXPAND_TIMEOUT", 4*time.Second),
 	}
 }
 
@@ -36,6 +42,17 @@ func getDuration(key string, def time.Duration) time.Duration {
 	}
 	if d, err := time.ParseDuration(v); err == nil {
 		return d
+	}
+	return def
+}
+
+func getInt(key string, def int) int {
+	v := os.Getenv(key)
+	if v == "" {
+		return def
+	}
+	if n, err := strconv.Atoi(v); err == nil {
+		return n
 	}
 	return def
 }
