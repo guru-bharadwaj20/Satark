@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f5132" />
+    <meta name="description" content="Check a suspicious message, link or QR code before you act on it." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <title>Satark</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Satark</h1>
+      <p class="tag">Check before you click, pay or scan.</p>
+    </header>
+    <main>
+      <form id="check-form" novalidate>
+        <label for="input">Paste a message or link</label>
+        <textarea id="input" name="input" rows="6" maxlength="5000"
+          placeholder="e.g. Dear customer, your account will be blocked today. Update KYC at ..."></textarea>
+        <div class="row">
+          <button type="submit" id="check-btn">Check</button>
+          <label class="file-btn" for="qr">Scan a QR code
+            <input id="qr" type="file" accept="image/*" capture="environment" hidden />
+          </label>
+        </div>
+      </form>
+      <section id="result" aria-live="polite"></section>
+    </main>
+    <footer>
+      <p>Satark gives a risk assessment, not a guarantee. It can be wrong.
+        Banks never ask for your OTP, UPI PIN or password.
+        Lost money? Call <a href="tel:1930">1930</a> or report at
+        <a href="https://cybercrime.gov.in" rel="noopener">cybercrime.gov.in</a>.</p>
+      <p><a href="/privacy.html">Privacy</a></p>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -3,7 +3,10 @@ package store
 import (
 	"context"
 	_ "embed"
+	"errors"
+	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -66,6 +69,57 @@ func (p *Postgres) Summary(ctx context.Context, kind, subject string) (Summary, 
 		}
 	}
 	return s, rows.Err()
+}
+
+func (p *Postgres) DeleteSubject(ctx context.Context, kind, subject string) (int, error) {
+	tag, err := p.pool.Exec(ctx,
+		`DELETE FROM reputation_reports WHERE kind = $1 AND subject_hash = $2`, kind, subject)
+	return int(tag.RowsAffected()), err
+}
+
+const delistCols = `id, kind, subject_hash, subject_masked, reason, contact, status, review_note, created_at, decided_at`
+
+func scanDelisting(row pgx.Row) (Delisting, error) {
+	var d Delisting
+	err := row.Scan(&d.ID, &d.Kind, &d.SubjectHash, &d.SubjectMasked, &d.Reason,
+		&d.Contact, &d.Status, &d.ReviewNote, &d.CreatedAt, &d.DecidedAt)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return d, ErrNotFound
+	}
+	return d, err
+}
+
+func (p *Postgres) CreateDelisting(ctx context.Context, d Delisting) (Delisting, error) {
+	return scanDelisting(p.pool.QueryRow(ctx, `
+		INSERT INTO reputation_delistings (kind, subject_hash, subject_masked, reason, contact, status, created_at)
+		VALUES ($1, $2, $3, $4, $5, 'pending', $6)
+		RETURNING `+delistCols,
+		d.Kind, d.SubjectHash, d.SubjectMasked, d.Reason, d.Contact, d.CreatedAt))
+}
+
+func (p *Postgres) ListDelistings(ctx context.Context, status string) ([]Delisting, error) {
+	rows, err := p.pool.Query(ctx, `SELECT `+delistCols+` FROM reputation_delistings
+		WHERE $1 = '' OR status = $1 ORDER BY created_at LIMIT 500`, status)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []Delisting
+	for rows.Next() {
+		d, err := scanDelisting(rows)
+		if err != nil {
+			return nil, err
+		}
+		out = append(out, d)
+	}
+	return out, rows.Err()
+}
+
+func (p *Postgres) DecideDelisting(ctx context.Context, id int64, status, note string, at time.Time) (Delisting, error) {
+	return scanDelisting(p.pool.QueryRow(ctx, `
+		UPDATE reputation_delistings SET status = $2, review_note = $3, decided_at = $4
+		WHERE id = $1 AND status = 'pending'
+		RETURNING `+delistCols, id, status, note, at))
 }
 
 func (p *Postgres) Ping(ctx context.Context) error { return p.pool.Ping(ctx) }
