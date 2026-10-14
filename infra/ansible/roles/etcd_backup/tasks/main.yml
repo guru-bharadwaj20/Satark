@@ -1,0 +1,69 @@
+---
+- name: Install packages needed for snapshot upload
+  ansible.builtin.apt:
+    name: [awscli, curl, tar]
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Check installed etcdctl version
+  ansible.builtin.command: /usr/local/bin/etcdctl version
+  register: etcdctl_installed
+  changed_when: false
+  failed_when: false
+
+- name: Install etcdctl
+  when: etcdctl_version[1:] not in (etcdctl_installed.stdout | default(''))
+  block:
+    - name: Download etcd release
+      ansible.builtin.get_url:
+        url: "https://github.com/etcd-io/etcd/releases/download/{{ etcdctl_version }}/etcd-{{ etcdctl_version }}-linux-amd64.tar.gz"
+        dest: "/tmp/etcd-{{ etcdctl_version }}.tar.gz"
+        mode: "0644"
+    - name: Extract etcdctl
+      ansible.builtin.unarchive:
+        src: "/tmp/etcd-{{ etcdctl_version }}.tar.gz"
+        dest: /usr/local/bin
+        remote_src: true
+        extra_opts: [--strip-components=1, --wildcards, "*/etcdctl", "*/etcdutl"]
+
+- name: Create backup directory
+  ansible.builtin.file:
+    path: "{{ etcd_backup_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Write AWS credentials for the backup job
+  ansible.builtin.copy:
+    dest: /etc/etcd-backup.env
+    owner: root
+    group: root
+    mode: "0600"
+    content: |
+      AWS_ACCESS_KEY_ID={{ etcd_backup_aws_access_key_id }}
+      AWS_SECRET_ACCESS_KEY={{ etcd_backup_aws_secret_access_key }}
+      AWS_DEFAULT_REGION={{ etcd_backup_region }}
+  no_log: true
+
+- name: Install backup script
+  ansible.builtin.template:
+    src: etcd-backup.sh.j2
+    dest: /usr/local/sbin/etcd-backup
+    mode: "0750"
+
+- name: Install systemd units
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: "0644"
+  loop: [etcd-backup.service, etcd-backup.timer]
+  notify: Restart etcd-backup timer
+
+- name: Enable timer
+  ansible.builtin.systemd:
+    name: etcd-backup.timer
+    enabled: true
+    state: started
+    daemon_reload: true

@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Snapshot etcd and upload to S3
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=/etc/etcd-backup.env
+ExecStart=/usr/local/sbin/etcd-backup
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
