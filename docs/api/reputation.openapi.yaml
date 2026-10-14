@@ -1,0 +1,210 @@
+openapi: 3.1.0
+info:
+  title: Satark reputation service (internal)
+  version: 0.1.0
+  description: |
+    Community reports for phone numbers, UPI IDs and domains. Internal to the
+    cluster (http://reputation.satark.svc:8083). Subjects and reporters are
+    stored only as peppered HMAC hashes. Lookups reveal nothing until enough
+    independent people have reported a subject, and never label anyone.
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+  - url: http://reputation.satark.svc:8083
+security: []
+tags:
+  - name: reports
+    description: Community reports and lookups
+  - name: delisting
+    description: Public review requests
+  - name: admin
+    description: Reviewer endpoints (bearer token)
+
+paths:
+  /v1/reports:
+    post:
+      tags: [reports]
+      operationId: createReport
+      summary: Record a community report
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReportRequest" }
+            example: { kind: upi, value: "xy***@examplebank", category: upi_collect, reporter_id: "tg:000000" }
+      responses:
+        "202":
+          description: Accepted (or a duplicate from the same reporter)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, enum: [accepted, duplicate] }
+        "400": { $ref: "#/components/responses/Error" }
+        "429":
+          description: Reporter exceeded their hourly or daily limit
+          headers:
+            Retry-After: { schema: { type: integer }, description: Seconds to wait }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /v1/lookup:
+    get:
+      tags: [reports]
+      operationId: lookup
+      summary: Aggregate reports for a subject
+      parameters:
+        - { name: kind, in: query, required: true, schema: { $ref: "#/components/schemas/Kind" } }
+        - { name: value, in: query, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: Thresholded, masked summary
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LookupResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+  /v1/delisting-requests:
+    post:
+      tags: [delisting]
+      operationId: createDelisting
+      summary: Ask for reports about a subject to be reviewed (SOP-07)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [kind, value, reason]
+              properties:
+                kind: { $ref: "#/components/schemas/Kind" }
+                value: { type: string }
+                reason: { type: string, minLength: 10, maxLength: 2000 }
+                contact: { type: string, maxLength: 200, description: Optional email or phone for the reply }
+      responses:
+        "202":
+          description: Request queued for review
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: integer }
+                  status: { type: string, enum: [pending] }
+                  message: { type: string }
+        "400": { $ref: "#/components/responses/Error" }
+  /v1/admin/delisting-requests:
+    get:
+      tags: [admin]
+      operationId: listDelistings
+      summary: List delisting requests
+      security: [{ adminToken: [] }]
+      parameters:
+        - { name: status, in: query, schema: { type: string, enum: [pending, approved, rejected] } }
+      responses:
+        "200":
+          description: Requests (subjects masked)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  requests: { type: array, items: { $ref: "#/components/schemas/Delisting" } }
+        "401": { $ref: "#/components/responses/Error" }
+  /v1/admin/delisting-requests/{id}:
+    post:
+      tags: [admin]
+      operationId: decideDelisting
+      summary: Approve or reject a delisting request
+      security: [{ adminToken: [] }]
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision]
+              properties:
+                decision: { type: string, enum: [approve, reject] }
+                note: { type: string }
+      responses:
+        "200":
+          description: Decision recorded; approval removes all reports for the subject
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  request: { $ref: "#/components/schemas/Delisting" }
+                  reports_removed: { type: integer }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /healthz:
+    get:
+      operationId: healthz
+      summary: Liveness probe
+      responses: { "200": { description: Process is alive } }
+  /readyz:
+    get:
+      operationId: readyz
+      summary: Readiness probe
+      responses: { "200": { description: Store reachable }, "503": { description: Store unavailable } }
+components:
+  securitySchemes:
+    adminToken:
+      type: http
+      scheme: bearer
+  responses:
+    Error:
+      description: Error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+  schemas:
+    Kind:
+      type: string
+      enum: [phone, upi, domain]
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+    ReportRequest:
+      type: object
+      required: [kind, value, reporter_id]
+      properties:
+        kind: { $ref: "#/components/schemas/Kind" }
+        value: { type: string }
+        category:
+          type: string
+          enum: [kyc_fraud, upi_collect, fake_job, lottery, impersonation, investment, loan_app, other]
+          default: other
+        reporter_id:
+          type: string
+          maxLength: 128
+          description: Opaque caller-scoped ID such as "tg:<user id>"; hashed before storage
+    LookupResponse:
+      type: object
+      properties:
+        kind: { $ref: "#/components/schemas/Kind" }
+        subject: { type: string, examples: ["98XXXXXX21", "xy***@examplebank"] }
+        status: { type: string, enum: [insufficient_reports, reported] }
+        reporters: { type: string, enum: ["fewer than 10", "10-49", "50-99", "100+"] }
+        categories: { type: array, items: { type: string } }
+        first_seen: { type: string, description: "Month, YYYY-MM" }
+        last_seen: { type: string, description: "Month, YYYY-MM" }
+        message: { type: string }
+    Delisting:
+      type: object
+      properties:
+        id: { type: integer }
+        kind: { $ref: "#/components/schemas/Kind" }
+        subject: { type: string }
+        reason: { type: string }
+        contact: { type: string }
+        status: { type: string, enum: [pending, approved, rejected] }
+        review_note: { type: string }
+        created_at: { type: string, format: date-time }
+        decided_at: { type: string, format: date-time }
