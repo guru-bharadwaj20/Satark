@@ -44,6 +44,8 @@ class Settings(BaseSettings):
 
     # Telegram
     telegram_bot_token: SecretStr = SecretStr("")
+    # Sent by Telegram as X-Telegram-Bot-Api-Secret-Token (set via setWebhook).
+    telegram_webhook_secret: SecretStr = SecretStr("")
     telegram_ops_chat_id: str = ""
     telegram_allowed_user_ids: list[int] = Field(default_factory=list)
 

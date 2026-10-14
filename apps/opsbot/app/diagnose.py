@@ -48,7 +48,9 @@ class Diagnoser:
     def __init__(self, gatherer: ContextGatherer, retriever: Retriever | None, llm: LLMClient):
         self.gatherer, self.retriever, self.llm = gatherer, retriever, llm
 
-    async def diagnose(self, alert: Alert) -> Diagnosis:
+    async def diagnose(
+        self, alert: Alert, use_llm: bool = True, fallback_note: str = "LLM unavailable"
+    ) -> Diagnosis:
         ctx = await self.gatherer.gather(alert)
         ctx_text = ctx.render()
         hits: list[Hit] = []
@@ -57,6 +59,8 @@ class Diagnoser:
                 hits = await self.retriever.for_alert(alert, ctx_text)
             except Exception as exc:
                 log.warning("runbook retrieval failed: %s", type(exc).__name__)
+        if not use_llm:
+            return Diagnosis(alert, fallback_text(ctx, hits, fallback_note), hits, 0, llm_ok=False)
         user = f"CLUSTER CONTEXT\n{ctx_text}\n\nRUNBOOK SECTIONS\n{format_sources(hits)}"
         try:
             reply = await self.llm.chat(SYSTEM, user, max_tokens=700)
@@ -66,8 +70,8 @@ class Diagnoser:
         return Diagnosis(alert, reply.text.strip(), hits, reply.total_tokens)
 
 
-def fallback_text(ctx: IncidentContext, hits: list[Hit]) -> str:
-    lines = ["LLM unavailable - raw context only.", ""]
+def fallback_text(ctx: IncidentContext, hits: list[Hit], note: str = "LLM unavailable") -> str:
+    lines = [f"{note} - raw context only.", ""]
     for name, body in list(ctx.sections.items())[:3]:
         lines += [f"{name}:", "\n".join(body.splitlines()[:8]), ""]
     if hits:

@@ -9,20 +9,51 @@ from prometheus_client import Counter
 from app.alerts import Alert
 from app.config import Settings
 from app.diagnose import Diagnoser, format_for_telegram
+from app.limits import Cooldown, DailyTokenBudget
 
 log = logging.getLogger("satark.opsbot.pipeline")
 
 DIAGNOSES = Counter("satark_opsbot_diagnoses_total", "Diagnoses posted.", ["result"])
 
 
+SKIPPED = Counter("satark_opsbot_alerts_skipped_total", "Alerts not diagnosed.", ["reason"])
+
+
 class AlertPipeline:
-    def __init__(self, diagnoser: Diagnoser, telegram, chat_id: str) -> None:
+    def __init__(
+        self,
+        diagnoser: Diagnoser,
+        telegram,
+        chat_id: str,
+        cooldown: Cooldown | None = None,
+        budget: DailyTokenBudget | None = None,
+    ) -> None:
         self.diagnoser, self.telegram, self.chat_id = diagnoser, telegram, chat_id
+        self.cooldown = cooldown or Cooldown(1800)
+        self.budget = budget or DailyTokenBudget(200_000)
+        self._budget_notice_day = None
 
     async def __call__(self, alert: Alert) -> None:
-        d = await self.diagnoser.diagnose(alert)
+        if not self.cooldown.try_acquire(alert.key):
+            SKIPPED.labels("cooldown").inc()
+            log.info("skipping %s: cooling down", alert.name)
+            return
+        use_llm = self.budget.allows()
+        if not use_llm:
+            SKIPPED.labels("budget").inc()
+        d = await self.diagnoser.diagnose(
+            alert, use_llm=use_llm, fallback_note="Daily LLM token budget reached"
+        )
+        self.budget.record(d.tokens)
         await self.telegram.send(self.chat_id, format_for_telegram(d))
         DIAGNOSES.labels("llm" if d.llm_ok else "fallback").inc()
+        if not use_llm and self._budget_notice_day != self.budget._day:
+            self._budget_notice_day = self.budget._day
+            await self.telegram.send(
+                self.chat_id,
+                "Daily LLM token budget reached; diagnoses are context-only until 00:00 UTC "
+                "(see RB-012).",
+            )
 
 
 def build_handler(s: Settings):  # pragma: no cover - production wiring
@@ -39,7 +70,13 @@ def build_handler(s: Settings):  # pragma: no cover - production wiring
     if s.database_url.get_secret_value():
         retriever = _lazy_retriever(s)
     tg = TelegramClient(s.telegram_bot_token.get_secret_value())
-    return AlertPipeline(Diagnoser(gatherer, retriever, llm), tg, s.telegram_ops_chat_id)
+    return AlertPipeline(
+        Diagnoser(gatherer, retriever, llm),
+        tg,
+        s.telegram_ops_chat_id,
+        Cooldown(s.cooldown_s),
+        DailyTokenBudget(s.daily_token_budget),
+    )
 
 
 class _lazy_retriever:  # pragma: no cover - connects on first use
@@ -59,3 +96,17 @@ class _lazy_retriever:  # pragma: no cover - connects on first use
                 OllamaEmbedder(self.s.llm_url, self.s.embed_model, self.s.embed_dim), store
             )
         return await self._r.for_alert(alert, context_text)
+
+
+def build_router(s: Settings, pipeline: AlertPipeline):  # pragma: no cover - production wiring
+    from app.ask import AskAgent, PrometheusClient
+    from app.commands import CommandRouter, ask_handler
+    from app.context import LokiClient
+
+    llm = pipeline.diagnoser.llm
+    router = CommandRouter(
+        pipeline.telegram, s.telegram_ops_chat_id, s.telegram_allowed_user_ids, pipeline.budget
+    )
+    agent = AskAgent(llm, PrometheusClient(s.prometheus_url), LokiClient(s.loki_url))
+    router.register("/ask", ask_handler(agent, pipeline.budget))
+    return router
