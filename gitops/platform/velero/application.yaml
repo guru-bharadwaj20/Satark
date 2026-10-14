@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: velero
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  project: platform
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: velero
+  source:
+    repoURL: https://vmware-tanzu.github.io/helm-charts
+    chart: velero
+    targetRevision: 8.1.0
+    helm:
+      valuesObject:
+        initContainers:
+          - name: velero-plugin-for-aws
+            image: velero/velero-plugin-for-aws:v1.11.0
+            volumeMounts:
+              - mountPath: /target
+                name: plugins
+        credentials:
+          useSecret: true
+          # Secret synced by External Secrets; key `cloud` holds an AWS
+          # shared-credentials file for the velero IAM user.
+          existingSecret: velero-s3
+        configuration:
+          backupStorageLocation:
+            - name: default
+              provider: aws
+              bucket: satark-backups-prod
+              prefix: velero
+              config:
+                region: ap-south-1
+          volumeSnapshotLocation: []
+          defaultVolumesToFsBackup: false
+          uploaderType: kopia
+        deployNodeAgent: true
+        nodeAgent:
+          resources:
+            requests: {cpu: 50m, memory: 128Mi}
+            limits: {memory: 1Gi}
+        resources:
+          requests: {cpu: 50m, memory: 128Mi}
+          limits: {memory: 512Mi}
+        metrics:
+          enabled: true
+          serviceMonitor:
+            enabled: true
+            additionalLabels:
+              release: kube-prometheus-stack
+        snapshotsEnabled: false
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
