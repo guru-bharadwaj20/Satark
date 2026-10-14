@@ -71,11 +71,15 @@ data "aws_iam_policy_document" "apply" {
       "iam:CreatePolicyVersion", "iam:DeletePolicyVersion", "iam:TagPolicy", "iam:UntagPolicy",
       "iam:CreateInstanceProfile", "iam:DeleteInstanceProfile", "iam:GetInstanceProfile",
       "iam:AddRoleToInstanceProfile", "iam:RemoveRoleFromInstanceProfile", "iam:TagInstanceProfile",
+      "iam:CreateUser", "iam:DeleteUser", "iam:GetUser", "iam:TagUser", "iam:UntagUser",
+      "iam:AttachUserPolicy", "iam:DetachUserPolicy", "iam:ListAttachedUserPolicies", "iam:ListGroupsForUser",
+      "iam:ListUserPolicies", "iam:ListAccessKeys",
     ]
     resources = [
       "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:role/${var.name_prefix}-*",
       "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:policy/${var.name_prefix}-*",
       "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:instance-profile/${var.name_prefix}-*",
+      "arn:${data.aws_partition.current.partition}:iam::${local.account_id}:user/satark/${var.name_prefix}-*",
     ]
   }
 
