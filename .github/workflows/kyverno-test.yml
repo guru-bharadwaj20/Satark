@@ -1,0 +1,41 @@
+name: kyverno-test
+
+on:
+  pull_request:
+    paths:
+      - "policies/kyverno/**"
+      - ".github/workflows/kyverno-test.yml"
+  push:
+    branches: [main]
+    paths:
+      - "policies/kyverno/**"
+      - ".github/workflows/kyverno-test.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kyverno-test-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  KYVERNO_VERSION: v1.13.4
+
+jobs:
+  kyverno-test:
+    name: kyverno test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Kyverno CLI
+        run: |
+          curl -sSfL -o /tmp/kyverno.tgz \
+            "https://github.com/kyverno/kyverno/releases/download/${KYVERNO_VERSION}/kyverno-cli_${KYVERNO_VERSION}_linux_x86_64.tar.gz"
+          tar -xzf /tmp/kyverno.tgz -C /tmp kyverno
+          sudo install -m 0755 /tmp/kyverno /usr/local/bin/kyverno
+          kyverno version
+
+      - name: Run policy unit tests
+        run: kyverno test policies/kyverno/tests --detailed-results
