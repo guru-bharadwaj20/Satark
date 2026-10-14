@@ -69,7 +69,35 @@ def _is_phone(value: str) -> bool:
 PHONE = Detector("PHONE", _PHONE, _is_phone)
 LANDLINE = Detector("PHONE", _LANDLINE)
 
-DETECTORS: tuple[Detector, ...] = (PHONE, LANDLINE)
+
+def luhn_valid(number: str) -> bool:
+    """Return True if the digits of ``number`` pass the Luhn checksum."""
+    digits = _digits(number)
+    if not digits:
+        return False
+    total = 0
+    for i, ch in enumerate(reversed(digits)):
+        d = int(ch)
+        if i % 2 == 1:
+            d *= 2
+            if d > 9:
+                d -= 9
+        total += d
+    return total % 10 == 0
+
+
+# 13-19 digit payment card numbers, optionally grouped by spaces or dashes.
+_CARD = re.compile(r"(?<![\w])\d(?:[\s-]?\d){12,18}(?![\w])")
+
+
+def _is_card(value: str) -> bool:
+    digits = _digits(value)
+    return 13 <= len(digits) <= 19 and len(set(digits)) > 1 and luhn_valid(digits)
+
+
+CARD = Detector("CARD", _CARD, _is_card)
+
+DETECTORS: tuple[Detector, ...] = (CARD, PHONE, LANDLINE)
 
 
 def redact(text: str, detectors: tuple[Detector, ...] = DETECTORS) -> RedactionResult:
