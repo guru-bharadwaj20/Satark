@@ -50,6 +50,17 @@ module "budget" {
   tags              = local.tags
 }
 
+# CI identities live here, not in envs/*, so the apply role can never modify
+# its own permissions.
+module "ci_roles" {
+  source = "../modules/ci-roles"
+
+  name_prefix  = var.name_prefix
+  repository   = var.github_repository
+  state_bucket = aws_s3_bucket.state.bucket
+  tags         = local.tags
+}
+
 resource "aws_s3_bucket" "state" {
   bucket = local.state_bucket
 
