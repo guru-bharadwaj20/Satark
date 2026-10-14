@@ -1,0 +1,64 @@
+name: python
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: python-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  projects:
+    name: discover Python projects
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: find
+        run: |
+          projs=$(find apps eval -maxdepth 2 -name pyproject.toml 2>/dev/null \
+            | xargs -r -n1 dirname | sort | jq -R . | jq -cs .)
+          echo "projects=${projs:-[]}" >> "$GITHUB_OUTPUT"
+          echo "Python projects: ${projs:-[]}"
+
+  lint-test:
+    name: ${{ matrix.project }}
+    needs: projects
+    if: needs.projects.outputs.projects != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.projects.outputs.projects) }}
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: ${{ matrix.project }}/pyproject.toml
+      - name: install
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest pytest-cov
+          pip install -e ".[dev]" || pip install -e .
+      - name: ruff check
+        run: ruff check --output-format=github .
+      - name: ruff format
+        run: ruff format --check .
+      - name: pytest
+        run: |
+          if [ -d tests ]; then
+            pytest -q --cov=app --cov-report=term-missing
+          else
+            echo "no tests/ folder"
+          fi
