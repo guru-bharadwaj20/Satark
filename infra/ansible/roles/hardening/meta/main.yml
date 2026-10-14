@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Satark contributors
+  description: SSH hardening, fail2ban, nftables default-deny and kernel sysctl hardening
+  license: MIT
+  min_ansible_version: "2.16"
+  platforms:
+    - name: Ubuntu
+      versions: [noble]
+dependencies: []

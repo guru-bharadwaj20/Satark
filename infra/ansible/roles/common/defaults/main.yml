@@ -35,3 +35,18 @@ common_admin_users: "{{ admin_users | default([]) }}"
 common_journald_system_max_use: 500M
 common_journald_system_max_file_size: 50M
 common_journald_max_retention: 14day
+
+# Unattended security upgrades.
+common_unattended_upgrades_enabled: true
+# Never reboot automatically: node reboots must go through drain/uncordon.
+common_unattended_upgrades_auto_reboot: false
+common_unattended_upgrades_auto_reboot_time: "03:30"
+# Kubernetes and runtime packages are upgraded only by the k8s_upgrade role.
+common_unattended_upgrades_blacklist:
+  - kubeadm
+  - kubelet
+  - kubectl
+  - cri-tools
+  - kubernetes-cni
+  - containerd
+  - containerd.io
