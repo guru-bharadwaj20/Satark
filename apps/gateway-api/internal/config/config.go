@@ -26,7 +26,7 @@ type Config struct {
 // Load reads configuration from the environment, applying defaults.
 func Load() (Config, error) {
 	c := Config{
-		Addr:            env("ADDR", ":8080"),
+		Addr:            env("ADDR", ":"+env("PORT", "8080")),
 		TextAnalyzerURL: strings.TrimRight(env("TEXT_ANALYZER_URL", "http://text-analyzer:8000"), "/"),
 		QRDecoderURL:    strings.TrimRight(env("QR_DECODER_URL", "http://qr-decoder:8001"), "/"),
 	}

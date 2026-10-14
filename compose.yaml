@@ -1,0 +1,85 @@
+# Local development stack for the Satark MVP.
+#
+#   cp .env.example .env          # add TELEGRAM_BOT_TOKEN to run the bot
+#   docker compose up --build     # API only: http://localhost:8080
+#   docker compose --profile bot up --build   # API + Telegram bot
+#
+# Try it:
+#   curl -s localhost:8080/v1/scan/text -H 'content-type: application/json' \
+#     -d '{"text":"Your electricity will be disconnected tonight. Call officer 98XXXXXX21","lang":"en"}'
+#   curl -s localhost:8080/v1/scan/qr -F image=@apps/qr-decoder/tests/fixtures/upi_receive_scam.png
+
+name: satark
+
+x-hardening: &hardening
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  tmpfs: ["/tmp:size=64m"]
+  restart: unless-stopped
+
+x-py-healthcheck: &py-healthcheck
+  interval: 10s
+  timeout: 3s
+  retries: 5
+  start_period: 10s
+
+services:
+  text-analyzer:
+    <<: *hardening
+    build:
+      context: .
+      dockerfile: apps/text-analyzer/Dockerfile
+    image: satark/text-analyzer:dev
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: "8000"
+    ports: ["127.0.0.1:8000:8000"]
+    healthcheck:
+      <<: *py-healthcheck
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(urllib.request.urlopen('http://127.0.0.1:8000/readyz', timeout=2).status != 200)"]
+
+  qr-decoder:
+    <<: *hardening
+    build:
+      context: apps/qr-decoder
+    image: satark/qr-decoder:dev
+    environment:
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      PORT: "8001"
+    ports: ["127.0.0.1:8001:8001"]
+    healthcheck:
+      <<: *py-healthcheck
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(urllib.request.urlopen('http://127.0.0.1:8001/readyz', timeout=2).status != 200)"]
+
+  gateway-api:
+    <<: *hardening
+    build:
+      context: apps/gateway-api
+    image: satark/gateway-api:dev
+    environment:
+      PORT: "8080"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TEXT_ANALYZER_URL: http://text-analyzer:8000
+      QR_DECODER_URL: http://qr-decoder:8001
+      ANALYZER_TIMEOUT: ${ANALYZER_TIMEOUT:-2s}
+      SCAN_TIMEOUT: ${SCAN_TIMEOUT:-4s}
+    ports: ["127.0.0.1:8080:8080"]
+    depends_on:
+      text-analyzer: {condition: service_healthy}
+      qr-decoder: {condition: service_healthy}
+
+  telegram-bot:
+    <<: *hardening
+    profiles: [bot]
+    build:
+      context: apps/telegram-bot
+    image: satark/telegram-bot:dev
+    environment:
+      PORT: "8082"
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      GATEWAY_API_URL: http://gateway-api:8080
+    ports: ["127.0.0.1:8082:8082"]
+    depends_on:
+      gateway-api: {condition: service_started}
