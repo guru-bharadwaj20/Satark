@@ -22,6 +22,8 @@ type Config struct {
 	ValkeyPassword     string
 	CacheTTL           time.Duration
 	CacheRiskyTTL      time.Duration
+	Workers            int
+	CheckTimeout       time.Duration
 	Version            string
 }
 
@@ -41,6 +43,8 @@ func FromEnv() Config {
 		ValkeyPassword:     os.Getenv("URL_INTEL_VALKEY_PASSWORD"),
 		CacheTTL:           getDuration("URL_INTEL_CACHE_TTL", 30*time.Minute),
 		CacheRiskyTTL:      getDuration("URL_INTEL_CACHE_RISKY_TTL", 6*time.Hour),
+		Workers:            getInt("URL_INTEL_WORKERS", 64),
+		CheckTimeout:       getDuration("URL_INTEL_CHECK_TIMEOUT", 5*time.Second),
 	}
 }
 

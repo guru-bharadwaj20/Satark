@@ -53,7 +53,19 @@ func main() {
 	defer vk.Close()
 	feedStore := &threatfeed.Store{C: vk, Feeds: threatfeed.DefaultFeeds}
 
+	reg := prometheus.NewRegistry()
+	checkDuration := prometheus.NewHistogramVec(prometheus.HistogramOpts{
+		Name: "satark_url_intel_check_duration_seconds", Help: "Duration of individual checks by outcome.",
+		Buckets: []float64{0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5, 10},
+	}, []string{"check", "outcome"})
+	reg.MustRegister(checkDuration)
+
 	an := analyzer.New(
+		analyzer.WithWorkers(cfg.Workers),
+		analyzer.WithCheckTimeout(cfg.CheckTimeout),
+		analyzer.WithObserver(func(c string, d time.Duration, o string) {
+			checkDuration.WithLabelValues(c, o).Observe(d.Seconds())
+		}),
 		analyzer.WithPreparers(
 			normalize.Preparer{},
 			expand.Preparer{E: expand.New(cfg.ExpandTimeout, cfg.MaxRedirects)},
@@ -72,7 +84,6 @@ func main() {
 		),
 	)
 	ready := func(ctx context.Context) error { return vk.Ping(ctx).Err() }
-	reg := prometheus.NewRegistry()
 	cached := cache.New(an, vk, cfg.CacheTTL, cfg.CacheRiskyTTL, log, reg)
 	srv := server.New(cached, ready, cfg.RequestTimeout, log)
 	srv.Registry().MustRegister(threatfeed.NewCollector(feedStore), reg)
