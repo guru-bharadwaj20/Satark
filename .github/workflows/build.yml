@@ -40,6 +40,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      security-events: write
     strategy:
       fail-fast: false
       matrix:
@@ -70,6 +71,36 @@ jobs:
           labels: |
             org.opencontainers.image.title=${{ matrix.service }}
             org.opencontainers.image.licenses=MIT
+      # Build once for the runner's architecture and scan it before anything
+      # is pushed, so a CRITICAL finding blocks the release.
+      - name: build image for scanning
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/${{ matrix.service }}
+          load: true
+          tags: scan/${{ matrix.service }}:${{ github.sha }}
+      - name: Trivy scan (fail on CRITICAL)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: scan/${{ matrix.service }}:${{ github.sha }}
+          severity: CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+      - name: Trivy SARIF report (all severities)
+        if: always()
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: scan/${{ matrix.service }}:${{ github.sha }}
+          format: sarif
+          output: trivy-${{ matrix.service }}.sarif
+          exit-code: "0"
+      - name: upload SARIF
+        if: always() && hashFiles(format('trivy-{0}.sarif', matrix.service)) != ''
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-${{ matrix.service }}.sarif
+          category: trivy-${{ matrix.service }}
       - name: build multi-arch image
         id: build
         uses: docker/build-push-action@v6
@@ -80,3 +111,10 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: mode=max
+      - name: Syft SBOM (SPDX)
+        uses: anchore/sbom-action@v0
+        with:
+          image: scan/${{ matrix.service }}:${{ github.sha }}
+          format: spdx-json
+          output-file: sbom-${{ matrix.service }}.spdx.json
+          artifact-name: sbom-${{ matrix.service }}.spdx.json
