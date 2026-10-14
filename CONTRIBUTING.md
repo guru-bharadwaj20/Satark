@@ -139,8 +139,8 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **0.10** Write the contribution guidelines
 - ✅ **0.11** Add the MIT license
 - ✅ **0.12** Break the roadmap into phases and subtasks
-- ❌ **0.13** Set up branch protection on `main`
-- ❌ **0.14** Create a GitHub Projects board (Backlog, Sprint, In Progress, Review, Done)
+- ❌ **0.13** Set up branch protection on `main` — *pending: needs your confirmation and repo admin access in GitHub settings (rules in `.github/CODEOWNERS`)*
+- ❌ **0.14** Create a GitHub Projects board (Backlog, Sprint, In Progress, Review, Done) — *pending: needs your confirmation; create it in the GitHub UI under Projects*
 - ✅ **0.15** Add issue templates (bug, feature request, scam sample, runbook)
 - ✅ **0.16** Add a pull request template
 - ✅ **0.17** Add `.gitignore` and `.editorconfig`
@@ -172,7 +172,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **1.19** Install local-path-provisioner as the default StorageClass
 - ✅ **1.20** Write `playbooks/site.yml` to run all roles in order
 - ✅ **1.21** Write `scripts/bootstrap.sh` (`vagrant up` followed by `site.yml`)
-- ❌ **1.22** Verify the cluster: all nodes Ready, in-cluster DNS works, a test LoadBalancer gets an IP
+- ❌ **1.22** Verify the cluster: all nodes Ready, in-cluster DNS works, a test LoadBalancer gets an IP — *pending: needs the running Vagrant/kubeadm cluster; run `scripts/verify-cluster.sh`*
 - ✅ **1.23** ADR-001: kubeadm instead of k3s
 - ✅ **1.24** ADR-003: Cilium as the CNI
 - ✅ **1.25** SOP-06: onboarding, from zero to a running cluster
@@ -225,7 +225,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **3.15** Install Envoy Gateway and the Gateway API CRDs
 - ✅ **3.16** Gateway and HTTPRoutes for the API and the bot
 - ✅ **3.17** Probes, resource requests and resource limits for every service
-- ❌ **3.18** Deploy the MVP to the cluster with Helm and run smoke tests
+- ❌ **3.18** Deploy the MVP to the cluster with Helm and run smoke tests — *pending: needs a live cluster; run `scripts/deploy-mvp.sh` then `scripts/smoke-test.sh`*
 - ✅ **3.19** ADR-002: Gateway API instead of ingress-nginx
 - ✅ **3.20** ADR-004: CloudNativePG on-prem instead of managed RDS
 
@@ -247,13 +247,13 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **4.14** Automatic image tag bump in `gitops/envs/dev`
 - ✅ **4.15** Prod promotion through a PR with required review
 - ✅ **4.16** Path filters and layer caching so only changed services rebuild
-- ❌ **4.17** Test rollback with `git revert` and record how long it takes
+- ❌ **4.17** Test rollback with `git revert` and record how long it takes — *pending: needs Argo CD on the live cluster; run `scripts/rollback-drill.sh`*
 - ✅ **4.18** ADR-007: pull-based GitOps
 - ✅ **4.19** SOP-04: promote a release to prod and roll back
 
 ### Phase 5: Cloud infrastructure with Terraform
 
-- ❌ **5.1** Set up the AWS account (MFA on root, separate admin identity)
+- ❌ **5.1** Set up the AWS account (MFA on root, separate admin identity) — *pending: needs your AWS account; manual console steps*
 - ✅ **5.2** Module `budget-alarm`, applied before anything else
 - ✅ **5.3** Bootstrap the S3 bucket for Terraform state with `use_lockfile`
 - ✅ **5.4** Module `secure-bucket` (encryption, versioning, public access block, TLS-only, lifecycle)
@@ -344,7 +344,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **8.17** Role `gvisor`: install `runsc` and the containerd runtime handler
 - ✅ **8.18** `gvisor` RuntimeClass
 - ✅ **8.19** Sandbox NetworkPolicy: deny all ingress; block RFC 1918, cluster CIDRs and `169.254.169.254` egress
-- ❌ **8.20** Verify the SSRF block with Hubble
+- ❌ **8.20** Verify the SSRF block with Hubble — *pending: needs Cilium/Hubble on a live cluster*
 - ✅ **8.21** KEDA NATS JetStream scaler for sandbox capacity
 - ✅ **8.22** `telegram-bot` edits its reply when the sandbox result arrives
 - ✅ **8.23** ADR-006: sandbox isolation model
@@ -361,15 +361,15 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **9.6** Run `kyverno test` in CI
 - ✅ **9.7** Install Trivy Operator
 - ✅ **9.8** kube-bench CIS benchmark Job
-- ❌ **9.9** Track kube-bench findings as GitHub issues
-- ❌ **9.10** Remediate high-severity findings
+- ❌ **9.9** Track kube-bench findings as GitHub issues — *pending: needs a kube-bench run on the live cluster, then issues filed with your confirmation*
+- ❌ **9.10** Remediate high-severity findings — *pending: depends on 9.9 findings*
 - ✅ **9.11** Install Sealed Secrets (or SOPS with age)
 - ✅ **9.12** Move all secrets to sealed form
 - ✅ **9.13** gitleaks in CI and as a pre-commit hook
 - ✅ **9.14** Ship Kubernetes audit logs to Loki
 - ✅ **9.15** Default-deny NetworkPolicies for all application namespaces
 - ✅ **9.16** Bucket-scoped IAM user for Velero and CNPG backups
-- ❌ **9.17** Run IAM Access Analyzer and fix its findings
+- ❌ **9.17** Run IAM Access Analyzer and fix its findings — *pending: needs the applied AWS account; run `scripts/access-analyzer-report.sh`*
 - ✅ **9.18** Weekly compliance snapshot CronJob
 - ✅ **9.19** OWASP ZAP baseline scan against the API
 - ✅ **9.20** SOP-03: Rotate secrets and credentials
@@ -405,7 +405,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 ### Phase 11: Reliability, backups and disaster recovery
 
 - ✅ **11.1** CNPG WAL archiving and base backups to S3
-- ❌ **11.2** Test point-in-time recovery for Postgres
+- ❌ **11.2** Test point-in-time recovery for Postgres — *pending: needs CNPG and S3 backups running*
 - ✅ **11.3** Install Velero with the S3 backend
 - ✅ **11.4** Daily Velero schedule, including file-system backups of volumes
 - ✅ **11.5** Role `etcd_backup`: systemd timer that uploads etcd snapshots to S3
@@ -413,27 +413,27 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **11.7** Role `k8s_upgrade`: control-plane upgrade steps
 - ✅ **11.8** Role `k8s_upgrade`: worker drain, upgrade and uncordon
 - ✅ **11.9** `playbooks/upgrade.yml` with `serial: 1`
-- ❌ **11.10** Run an N-1 → N upgrade under k6 load and record the error count
+- ❌ **11.10** Run an N-1 → N upgrade under k6 load and record the error count — *pending: needs a live cluster under k6 load*
 - ✅ **11.11** SOP-01: Kubernetes minor-version upgrade
 - ✅ **11.12** `add-node.yml` and `remove-node.yml` playbooks
 - ✅ **11.13** SOP-02: Add or remove a node
 - ✅ **11.14** Terraform for a temporary DR VM running k3s
-- ❌ **11.15** DR drill: Velero restore and DNS switch, recording RTO and RPO
+- ❌ **11.15** DR drill: Velero restore and DNS switch, recording RTO and RPO — *pending: needs Velero and Route 53 live; run `scripts/dr-drill.sh`*
 - ✅ **11.16** SOP-05: Disaster recovery drill
-- ❌ **11.17** k6 load tests; find and fix the first bottleneck
+- ❌ **11.17** k6 load tests; find and fix the first bottleneck — *pending: needs a deployed stack to load test (scripts in `tests/load`)*
 - ✅ **11.18** `kubectl-satark doctor`: nodes, pods, PVCs and deployments
 - ✅ **11.19** `kubectl-satark doctor`: certificate expiry, PDBs, Argo CD status and `--json` output
-- ❌ **11.20** Game day 1: lose a worker node
-- ❌ **11.21** Game day 2: lose the Postgres primary
-- ❌ **11.22** Game day 3: break in-cluster DNS
-- ❌ **11.23** Game day 4: apply a bad NetworkPolicy
-- ❌ **11.24** Game day 5: ship a bad deploy and roll back
-- ❌ **11.25** Game day 6: container runtime failure
-- ❌ **11.26** Game day 7: disk pressure on a node
-- ❌ **11.27** Game day 8: WireGuard tunnel down
-- ❌ **11.28** Game day 9: image pull failure
-- ❌ **11.29** Game day 10: certificate expiry drill
-- ❌ **11.30** Measure time to diagnose with and without `opsbot`
+- ❌ **11.20** Game day 1: lose a worker node — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.21** Game day 2: lose the Postgres primary — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.22** Game day 3: break in-cluster DNS — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.23** Game day 4: apply a bad NetworkPolicy — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.24** Game day 5: ship a bad deploy and roll back — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.25** Game day 6: container runtime failure — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.26** Game day 7: disk pressure on a node — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.27** Game day 8: WireGuard tunnel down — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.28** Game day 9: image pull failure — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.29** Game day 10: certificate expiry drill — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ❌ **11.30** Measure time to diagnose with and without `opsbot` — *pending: needs the game days above to be run with and without opsbot*
 - ✅ **11.31** Runbooks RB-003 (Postgres), RB-004 (certificates), RB-006 (backups) and RB-010 (tunnel)
 
 ### Phase 12: Polish, documentation and launch
@@ -451,12 +451,12 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **12.11** Data retention CronJob
 - ✅ **12.12** Privacy policy and disclaimer
 - ✅ **12.13** Architecture document with diagrams
-- ❌ **12.14** Update the README with screenshots and a demo GIF
-- ❌ **12.15** Record a three-minute demo video
+- ❌ **12.14** Update the README with screenshots and a demo GIF — *pending: needs the deployed app to capture real screenshots*
+- ❌ **12.15** Record a three-minute demo video — *pending: needs a recording by you*
 - ✅ **12.16** Write the launch blog post
-- ❌ **12.17** Launch to family, college and residents' association groups
-- ❌ **12.18** Track weekly active users, scans and the helpful-rating rate
-- ❌ **12.19** Publish a monthly anonymised scam-trends report
+- ❌ **12.17** Launch to family, college and residents' association groups — *pending: real-world launch by you*
+- ❌ **12.18** Track weekly active users, scans and the helpful-rating rate — *pending: needs live usage after launch (run `scripts/kpi-report.sh`)*
+- ❌ **12.19** Publish a monthly anonymised scam-trends report — *pending: needs a month of live data (template in `docs/reports/`)*
 
 ## License
 

@@ -80,7 +80,7 @@ flowchart LR
 
   subgraph OnPrem["On-prem Kubernetes (kubeadm + Ansible)"]
     GW[Envoy Gateway]
-    BOT[telegram-bot<br/>Python]
+    BOT[telegram-bot<br/>Go]
     GAPI[gateway-api<br/>Go]
     TXT[text-analyzer<br/>Python]
     QR[qr-decoder<br/>Python]
@@ -121,14 +121,14 @@ flowchart LR
 | Service | Language | Responsibility |
 |---|---|---|
 | `gateway-api` | Go | Public REST API, API keys, rate limiting, fan-out to analyzers, risk scoring |
-| `telegram-bot` | Python | Conversation flow, language choice, follow-up buttons |
+| `telegram-bot` | Go | Conversation flow, language choice, follow-up buttons |
 | `text-analyzer` | Python (FastAPI) | PII redaction, rule engine, LLM classification and explanations |
 | `qr-decoder` | Python | QR decoding and UPI deep-link parsing |
 | `url-intel` | Go | Redirect expansion, DNS/RDAP/TLS checks, lookalike detection, threat feeds |
 | `reputation` | Go | Community reports for phone numbers, UPI IDs and domains |
 | `linkscan-operator` | Go (kubebuilder) | Runs each suspicious link in a short-lived, isolated pod |
 | `sandbox-browser` | Python + Playwright | Headless Chromium: redirects, screenshot, form detection |
-| `feed-sync` | Python | CronJob that pulls threat feeds |
+| `feed-sync` | Go | CronJob that pulls threat feeds |
 | `opsbot` | Python | GenAI on-call assistant that diagnoses platform alerts using runbooks |
 | `web` | TypeScript | PWA frontend |
 
