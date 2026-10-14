@@ -1,0 +1,10 @@
+---
+galaxy_info:
+  author: Satark contributors
+  description: Install the Cilium CNI (kube-proxy replacement) with Hubble
+  license: MIT
+  min_ansible_version: "2.16"
+  platforms:
+    - name: Ubuntu
+      versions: [noble]
+dependencies: []

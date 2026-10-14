@@ -1,0 +1,36 @@
+# {{ ansible_managed }}
+k8sServiceHost: {{ cilium_k8s_service_host }}
+k8sServicePort: {{ cilium_k8s_service_port }}
+kubeProxyReplacement: {{ cilium_kube_proxy_replacement | bool | lower }}
+devices: {{ cilium_devices }}
+
+routingMode: tunnel
+tunnelProtocol: vxlan
+
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4PodCIDRList:
+      - {{ cilium_cluster_pool_cidr }}
+    clusterPoolIPv4MaskSize: {{ cilium_cluster_pool_mask_size }}
+
+operator:
+  replicas: 1
+  prometheus:
+    enabled: true
+
+prometheus:
+  enabled: true
+
+hubble:
+  enabled: true
+  metrics:
+    enableOpenMetrics: true
+    enabled:
+{% for m in cilium_hubble_metrics %}
+      - "{{ m }}"
+{% endfor %}
+  relay:
+    enabled: {{ cilium_hubble_relay | bool | lower }}
+  ui:
+    enabled: {{ cilium_hubble_ui | bool | lower }}

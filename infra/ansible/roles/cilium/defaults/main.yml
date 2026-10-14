@@ -1,0 +1,34 @@
+---
+# Helm binary installed on the control-plane node to manage platform charts.
+cilium_helm_version: v3.18.6
+cilium_helm_checksum_url: "https://get.helm.sh/helm-{{ cilium_helm_version }}-linux-amd64.tar.gz.sha256sum"
+
+# Cilium chart.
+cilium_chart_repo: https://helm.cilium.io/
+cilium_chart_version: 1.18.2
+cilium_namespace: kube-system
+cilium_kubeconfig: /etc/kubernetes/admin.conf
+
+# API server reachable without kube-proxy (required for kube-proxy replacement).
+cilium_k8s_service_host: "{{ hostvars[groups['control_plane'][0]].ansible_host }}"
+cilium_k8s_service_port: 6443
+cilium_kube_proxy_replacement: true
+
+# Pod IPAM: Cilium cluster-pool carved out of the kubeadm pod CIDR.
+cilium_cluster_pool_cidr: "{{ pod_network_cidr | default('10.244.0.0/16') }}"
+cilium_cluster_pool_mask_size: 24
+
+# Host-only NIC that carries node-to-node traffic (Vagrant: second adapter).
+cilium_devices: enp0s8
+
+# Hubble observability.
+cilium_hubble_relay: true
+cilium_hubble_ui: true
+cilium_hubble_metrics:
+  - dns
+  - drop
+  - tcp
+  - flow
+  - port-distribution
+  - icmp
+  - "httpV2:exemplars=true;labelsContext=source_ip,source_namespace,source_workload,destination_ip,destination_namespace,destination_workload,traffic_direction"

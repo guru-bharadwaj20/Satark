@@ -1,0 +1,38 @@
+---
+- name: Install helm on the control plane
+  ansible.builtin.import_tasks: helm.yml
+
+- name: Render Cilium Helm values
+  ansible.builtin.template:
+    src: values.yaml.j2
+    dest: /etc/kubernetes/cilium-values.yaml
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Install or upgrade Cilium with Hubble
+  kubernetes.core.helm:
+    name: cilium
+    chart_ref: cilium
+    chart_repo_url: "{{ cilium_chart_repo }}"
+    chart_version: "{{ cilium_chart_version }}"
+    release_namespace: "{{ cilium_namespace }}"
+    values_files:
+      - /etc/kubernetes/cilium-values.yaml
+    kubeconfig: "{{ cilium_kubeconfig }}"
+    wait: true
+    wait_timeout: 10m
+
+- name: Wait for the Cilium DaemonSet to be ready on every node
+  ansible.builtin.command: >-
+    kubectl -n {{ cilium_namespace }} rollout status daemonset/cilium --timeout=5m
+  environment:
+    KUBECONFIG: "{{ cilium_kubeconfig }}"
+  changed_when: false
+
+- name: Wait for CoreDNS now that pod networking is up
+  ansible.builtin.command: >-
+    kubectl -n kube-system rollout status deployment/coredns --timeout=5m
+  environment:
+    KUBECONFIG: "{{ cilium_kubeconfig }}"
+  changed_when: false
