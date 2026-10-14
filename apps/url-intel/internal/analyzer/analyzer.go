@@ -54,6 +54,18 @@ type Check interface {
 	Run(ctx context.Context, t *Target) Finding
 }
 
+// ThreatCheck marks checks that must run even for allowlisted hosts,
+// such as threat-feed lookups (official sites can be compromised).
+type ThreatCheck interface {
+	Check
+	ThreatIntel()
+}
+
+// Allowlist recognises official domains.
+type Allowlist interface {
+	Match(host string) (reason string, ok bool)
+}
+
 // Preparer turns the raw input into a Target (normalisation, expansion, ...).
 // Preparers run in order before any check.
 type Preparer interface {
@@ -62,11 +74,14 @@ type Preparer interface {
 
 // Report is the aggregated result returned to callers.
 type Report struct {
-	Target    Target    `json:"target"`
-	Signals   []Signal  `json:"signals"`
-	Findings  []Finding `json:"findings"`
-	Score     int       `json:"score"`
-	CheckedAt time.Time `json:"checked_at"`
+	Target   Target    `json:"target"`
+	Signals  []Signal  `json:"signals"`
+	Findings []Finding `json:"findings"`
+	Score    int       `json:"score"`
+	// Allowlisted explains why the host is considered official, if it is.
+	// Only threat-intel checks run for allowlisted hosts.
+	Allowlisted string    `json:"allowlisted,omitempty"`
+	CheckedAt   time.Time `json:"checked_at"`
 }
 
 // ErrInvalidInput is returned when the input cannot be analysed.
@@ -76,7 +91,13 @@ var ErrInvalidInput = errors.New("invalid input")
 type Analyzer struct {
 	preparers []Preparer
 	checks    []Check
+	allow     Allowlist
 	now       func() time.Time
+}
+
+// WithAllowlist sets the official-domain allowlist.
+func WithAllowlist(l Allowlist) Option {
+	return func(a *Analyzer) { a.allow = l }
 }
 
 // Option configures an Analyzer.
@@ -124,7 +145,21 @@ func (a *Analyzer) Analyze(ctx context.Context, raw string) (*Report, error) {
 		t.URL = u
 	}
 	t.Host = strings.ToLower(t.URL.Hostname())
-	rep.Findings = a.runChecks(ctx, t)
+	checks := a.checks
+	if a.allow != nil {
+		if reason, ok := a.allow.Match(t.Host); ok {
+			rep.Allowlisted = reason
+			rep.Signals = append(rep.Signals, Signal{ID: "allowlist.official", Severity: SeverityInfo, Weight: -40,
+				Detail: "link goes to an " + reason})
+			checks = nil
+			for _, c := range a.checks {
+				if _, ok := c.(ThreatCheck); ok {
+					checks = append(checks, c)
+				}
+			}
+		}
+	}
+	rep.Findings = a.runChecks(ctx, t, checks)
 	for _, f := range rep.Findings {
 		rep.Signals = append(rep.Signals, f.Signals...)
 	}
@@ -133,9 +168,9 @@ func (a *Analyzer) Analyze(ctx context.Context, raw string) (*Report, error) {
 	return rep, nil
 }
 
-func (a *Analyzer) runChecks(ctx context.Context, t *Target) []Finding {
-	out := make([]Finding, 0, len(a.checks))
-	for _, c := range a.checks {
+func (a *Analyzer) runChecks(ctx context.Context, t *Target, checks []Check) []Finding {
+	out := make([]Finding, 0, len(checks))
+	for _, c := range checks {
 		start := time.Now()
 		f := c.Run(ctx, t)
 		f.Check = c.Name()
