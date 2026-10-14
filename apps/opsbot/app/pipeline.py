@@ -96,3 +96,17 @@ class _lazy_retriever:  # pragma: no cover - connects on first use
                 OllamaEmbedder(self.s.llm_url, self.s.embed_model, self.s.embed_dim), store
             )
         return await self._r.for_alert(alert, context_text)
+
+
+def build_router(s: Settings, pipeline: AlertPipeline):  # pragma: no cover - production wiring
+    from app.ask import AskAgent, PrometheusClient
+    from app.commands import CommandRouter, ask_handler
+    from app.context import LokiClient
+
+    llm = pipeline.diagnoser.llm
+    router = CommandRouter(
+        pipeline.telegram, s.telegram_ops_chat_id, s.telegram_allowed_user_ids, pipeline.budget
+    )
+    agent = AskAgent(llm, PrometheusClient(s.prometheus_url), LokiClient(s.loki_url))
+    router.register("/ask", ask_handler(agent, pipeline.budget))
+    return router

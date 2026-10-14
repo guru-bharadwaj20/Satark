@@ -67,7 +67,11 @@ class AlertQueue:
             self._task = None
 
 
-def create_app(handler: AlertHandler | None = None, settings: Settings | None = None) -> FastAPI:
+def create_app(
+    handler: AlertHandler | None = None,
+    settings: Settings | None = None,
+    router=None,
+) -> FastAPI:
     settings = settings or get_settings()
     queue = AlertQueue(handler or _log_only, settings.queue_size)
 
@@ -80,6 +84,8 @@ def create_app(handler: AlertHandler | None = None, settings: Settings | None = 
     app = FastAPI(title="opsbot", version="0.1.0", lifespan=lifespan)
     app.state.queue = queue
     app.state.settings = settings
+    app.state.router = router
+    app.state.tasks = set()
 
     def require_token(authorization: str = Header(default="")) -> None:
         expected = settings.webhook_token.get_secret_value()
@@ -128,10 +134,30 @@ def create_app(handler: AlertHandler | None = None, settings: Settings | None = 
                 ALERTS_DROPPED.labels("queue_full").inc()
         return {"accepted": accepted, "received": len(payload.alerts)}
 
+    @app.post("/v1/telegram")
+    async def telegram_update(
+        update: dict,
+        x_telegram_bot_api_secret_token: str = Header(default=""),
+    ) -> dict:
+        expected = settings.telegram_webhook_secret.get_secret_value()
+        if not expected or not hmac.compare_digest(
+            x_telegram_bot_api_secret_token.encode(), expected.encode()
+        ):
+            raise HTTPException(status.HTTP_401_UNAUTHORIZED, "invalid secret")
+        if router is None:
+            return {"ok": True, "handled": False}
+        # Answer Telegram immediately; LLM work happens in the background.
+        task = asyncio.create_task(router.handle_update(update))
+        app.state.tasks.add(task)
+        task.add_done_callback(app.state.tasks.discard)
+        return {"ok": True, "handled": True}
+
     return app
 
 
 def build() -> FastAPI:  # pragma: no cover - wiring for uvicorn
-    from app.pipeline import build_handler
+    from app.pipeline import build_handler, build_router
 
-    return create_app(build_handler(get_settings()))
+    s = get_settings()
+    handler = build_handler(s)
+    return create_app(handler, s, build_router(s, handler))
