@@ -1,6 +1,7 @@
 package doctor
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"strings"
@@ -27,4 +28,18 @@ func RenderText(w io.Writer, results []Result, verbose bool) {
 		}
 	}
 	fmt.Fprintf(w, "\nOverall: %s\n", strings.ToUpper(string(Worst(results))))
+}
+
+// Report is the machine-readable form of a doctor run.
+type Report struct {
+	Overall   Severity `json:"overall"`
+	CheckedAt string   `json:"checkedAt"`
+	Results   []Result `json:"results"`
+}
+
+// RenderJSON writes the results as an indented JSON Report.
+func RenderJSON(w io.Writer, results []Result, checkedAt string) error {
+	enc := json.NewEncoder(w)
+	enc.SetIndent("", "  ")
+	return enc.Encode(Report{Overall: Worst(results), CheckedAt: checkedAt, Results: results})
 }

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
@@ -61,6 +62,9 @@ type doctorOpts struct {
 	restartWarn  int
 	timeout      time.Duration
 	verbose      bool
+	jsonOut      bool
+	certWarn     time.Duration
+	certFail     time.Duration
 }
 
 func parseDoctorFlags(args []string, stderr io.Writer) (*doctorOpts, error) {
@@ -74,6 +78,9 @@ func parseDoctorFlags(args []string, stderr io.Writer) (*doctorOpts, error) {
 	fs.IntVar(&o.restartWarn, "restart-warn", 5, "container restart count that triggers a warning (0 disables)")
 	fs.DurationVar(&o.timeout, "timeout", 30*time.Second, "overall timeout")
 	fs.BoolVar(&o.verbose, "v", false, "show OK findings too")
+	fs.BoolVar(&o.jsonOut, "json", false, "print results as JSON (for opsbot and CI)")
+	fs.DurationVar(&o.certWarn, "cert-warn", 21*24*time.Hour, "warn when a certificate expires within this duration")
+	fs.DurationVar(&o.certFail, "cert-fail", 7*24*time.Hour, "fail when a certificate expires within this duration")
 	if err := fs.Parse(args); err != nil {
 		return nil, err
 	}
@@ -105,8 +112,16 @@ func runDoctor(args []string, stdout, stderr io.Writer) int {
 		fmt.Fprintf(stderr, "error: %v\n", err)
 		return 3
 	}
+	dyn, err := dynamic.NewForConfig(cfg)
+	if err != nil {
+		fmt.Fprintf(stderr, "error: %v\n", err)
+		return 3
+	}
 	env := &doctor.Env{
 		Client:       client,
+		Dynamic:      dyn,
+		CertWarn:     o.certWarn,
+		CertFail:     o.certFail,
 		Namespaces:   splitList(o.namespaces),
 		PendingGrace: o.pendingGrace,
 		RestartWarn:  int32(o.restartWarn),
@@ -114,8 +129,15 @@ func runDoctor(args []string, stdout, stderr io.Writer) int {
 	ctx, cancel := context.WithTimeout(context.Background(), o.timeout)
 	defer cancel()
 
-	results := doctor.Run(ctx, env, doctor.DefaultChecks())
-	doctor.RenderText(stdout, results, o.verbose)
+	results := doctor.Run(ctx, env, doctor.AllChecks())
+	if o.jsonOut {
+		if err := doctor.RenderJSON(stdout, results, time.Now().UTC().Format(time.RFC3339)); err != nil {
+			fmt.Fprintf(stderr, "error: %v\n", err)
+			return 3
+		}
+	} else {
+		doctor.RenderText(stdout, results, o.verbose)
+	}
 	return exitCode(doctor.Worst(results))
 }
 

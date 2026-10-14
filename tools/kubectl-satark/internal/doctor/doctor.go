@@ -8,6 +8,7 @@ import (
 	"sort"
 	"time"
 
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 )
 
@@ -51,12 +52,17 @@ type Result struct {
 // Env carries the clients and options shared by all checks.
 type Env struct {
 	Client     kubernetes.Interface
-	Namespaces []string // empty means all namespaces
+	Dynamic    dynamic.Interface // for CRDs (cert-manager, Argo CD); may be nil
+	Namespaces []string          // empty means all namespaces
 	Now        func() time.Time
 	// PendingGrace is how long a pod may be Pending before it is reported.
 	PendingGrace time.Duration
 	// RestartWarn is the restart count at which a container is flagged.
 	RestartWarn int32
+	// CertWarn and CertFail are the remaining-validity thresholds for
+	// certificates (defaults 21 and 7 days).
+	CertWarn time.Duration
+	CertFail time.Duration
 }
 
 func (e *Env) now() time.Time {
