@@ -18,6 +18,8 @@ type Config struct {
 	LookupTimeout time.Duration
 
 	SafeBrowsingAPIKey string
+	ValkeyAddr         string
+	ValkeyPassword     string
 	Version            string
 }
 
@@ -33,6 +35,8 @@ func FromEnv() Config {
 
 		SafeBrowsingAPIKey: os.Getenv("URL_INTEL_SAFE_BROWSING_API_KEY"),
 		Version:            getEnv("URL_INTEL_VERSION", "dev"),
+		ValkeyAddr:         getEnv("URL_INTEL_VALKEY_ADDR", "valkey.satark-data.svc.cluster.local:6379"),
+		ValkeyPassword:     os.Getenv("URL_INTEL_VALKEY_PASSWORD"),
 	}
 }
 
