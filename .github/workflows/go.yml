@@ -2,8 +2,22 @@ name: go
 
 on:
   pull_request:
+    paths:
+      - "apps/**/*.go"
+      - "apps/**/go.mod"
+      - "apps/**/go.sum"
+      - "tools/**"
+      - "**/.golangci.yml"
+      - ".github/workflows/go.yml"
   push:
     branches: [main]
+    paths:
+      - "apps/**/*.go"
+      - "apps/**/go.mod"
+      - "apps/**/go.sum"
+      - "tools/**"
+      - "**/.golangci.yml"
+      - ".github/workflows/go.yml"
 
 permissions:
   contents: read

@@ -2,8 +2,18 @@ name: python
 
 on:
   pull_request:
+    paths:
+      - "apps/**/*.py"
+      - "apps/**/pyproject.toml"
+      - "eval/**"
+      - ".github/workflows/python.yml"
   push:
     branches: [main]
+    paths:
+      - "apps/**/*.py"
+      - "apps/**/pyproject.toml"
+      - "eval/**"
+      - ".github/workflows/python.yml"
 
 permissions:
   contents: read

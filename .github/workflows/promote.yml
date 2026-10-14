@@ -1,0 +1,94 @@
+name: promote
+
+# Opens a PR that copies image tags from gitops/envs/dev to gitops/envs/prod.
+# Nothing reaches prod until a code owner approves and merges that PR
+# (see docs/sops/SOP-04-promote-and-rollback.md).
+on:
+  workflow_dispatch:
+    inputs:
+      services:
+        description: "Comma-separated services to promote (empty = every service whose dev tag differs)"
+        required: false
+        default: ""
+      reason:
+        description: "Why this release is going out (shown in the PR)"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: promote-prod
+  cancel-in-progress: false
+
+jobs:
+  open-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: install yq
+        run: |
+          sudo curl -sSL -o /usr/local/bin/yq \
+            https://github.com/mikefarah/yq/releases/download/v4.44.6/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
+      - name: copy dev tags to prod
+        id: copy
+        env:
+          INPUT_SERVICES: ${{ inputs.services }}
+        run: |
+          set -euo pipefail
+          if [ -n "$INPUT_SERVICES" ]; then
+            svcs=$(echo "$INPUT_SERVICES" | tr ',' ' ')
+          else
+            svcs=$(ls gitops/envs/prod/apps)
+          fi
+          table="| Service | Prod (before) | Prod (after) |\n|---|---|---|\n"
+          n=0
+          for svc in $svcs; do
+            dev="gitops/envs/dev/apps/$svc/values.yaml"
+            prod="gitops/envs/prod/apps/$svc/values.yaml"
+            [ -f "$dev" ] && [ -f "$prod" ] || { echo "::warning::skip $svc (missing values)"; continue; }
+            new=$(yq '.image.tag' "$dev"); old=$(yq '.image.tag' "$prod")
+            [ "$new" = "$old" ] && continue
+            TAG="$new" yq -i '.image.tag = strenv(TAG)' "$prod"
+            table+="| \`$svc\` | \`$old\` | \`$new\` |\n"
+            n=$((n + 1))
+          done
+          echo "count=$n" >> "$GITHUB_OUTPUT"
+          printf "%b" "$table" > /tmp/table.md
+      - name: open promotion PR
+        if: steps.copy.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REASON: ${{ inputs.reason }}
+        run: |
+          branch="promote/prod-$(date -u +%Y%m%d-%H%M%S)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add gitops/envs/prod
+          git commit -m "chore(gitops): promote ${{ steps.copy.outputs.count }} service(s) to prod"
+          git push origin "$branch"
+          {
+            echo "## Prod promotion"
+            echo
+            echo "**Reason:** $REASON"
+            echo
+            cat /tmp/table.md
+            echo
+            echo "Checklist (SOP-04):"
+            echo "- [ ] These tags have run in dev without new alerts"
+            echo "- [ ] Image signatures verified with cosign"
+            echo "- [ ] Rollback plan: \`git revert\` this PR's merge commit"
+          } > /tmp/body.md
+          gh pr create --base main --head "$branch" \
+            --title "chore(gitops): promote to prod" \
+            --body-file /tmp/body.md --label promotion || \
+          gh pr create --base main --head "$branch" \
+            --title "chore(gitops): promote to prod" --body-file /tmp/body.md
+      - name: nothing to promote
+        if: steps.copy.outputs.count == '0'
+        run: echo "Prod already matches dev for the selected services." >> "$GITHUB_STEP_SUMMARY"
