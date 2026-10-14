@@ -1,0 +1,37 @@
+---
+- name: Download the local-path-provisioner manifest
+  ansible.builtin.get_url:
+    url: "{{ addons_local_path_manifest_url }}"
+    dest: "{{ addons_manifest_dir }}/local-path-storage.yaml"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Point the provisioner at the configured node path
+  ansible.builtin.replace:
+    path: "{{ addons_manifest_dir }}/local-path-storage.yaml"
+    regexp: '"/opt/local-path-provisioner"'
+    replace: '"{{ addons_local_path_node_path }}"'
+
+- name: Apply local-path-provisioner
+  ansible.builtin.command: kubectl apply -f {{ addons_manifest_dir }}/local-path-storage.yaml
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  register: addons_local_path_apply
+  changed_when: "'configured' in addons_local_path_apply.stdout or 'created' in addons_local_path_apply.stdout"
+
+- name: Mark {{ addons_local_path_storage_class }} as the default StorageClass
+  ansible.builtin.command: >-
+    kubectl annotate storageclass {{ addons_local_path_storage_class }}
+    storageclass.kubernetes.io/is-default-class=true --overwrite
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  register: addons_local_path_default
+  changed_when: "'not annotated' not in addons_local_path_default.stdout"
+
+- name: Wait for local-path-provisioner to be ready
+  ansible.builtin.command: >-
+    kubectl -n local-path-storage rollout status deployment/local-path-provisioner --timeout=3m
+  environment:
+    KUBECONFIG: "{{ addons_kubeconfig }}"
+  changed_when: false

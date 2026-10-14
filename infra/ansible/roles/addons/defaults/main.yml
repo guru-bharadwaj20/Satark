@@ -22,3 +22,11 @@ addons_metrics_server_namespace: kube-system
 # Kubelet serving certificates are signed by the cluster CA (serverTLSBootstrap),
 # so TLS verification stays on. Set true only as a temporary workaround.
 addons_metrics_server_insecure_tls: false
+
+# --- local-path-provisioner ---------------------------------------------
+addons_local_path_enabled: true
+addons_local_path_version: v0.0.32
+addons_local_path_manifest_url: "https://raw.githubusercontent.com/rancher/local-path-provisioner/{{ addons_local_path_version }}/deploy/local-path-storage.yaml"
+addons_local_path_storage_class: local-path
+# Directory on each node where volumes are created.
+addons_local_path_node_path: /opt/local-path-provisioner
