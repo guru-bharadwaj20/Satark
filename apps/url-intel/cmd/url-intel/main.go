@@ -11,8 +11,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/redis/go-redis/v9"
+
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/allowlist"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/cache"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/ctlog"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/dnscheck"
@@ -24,6 +28,7 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/safebrowsing"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/threatfeed"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/tlscheck"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/urlheur"
 )
@@ -41,6 +46,13 @@ func main() {
 		log.Warn("Safe Browsing disabled: URL_INTEL_SAFE_BROWSING_API_KEY not set")
 	}
 
+	vk := redis.NewClient(&redis.Options{
+		Addr: cfg.ValkeyAddr, Password: cfg.ValkeyPassword,
+		DialTimeout: time.Second, ReadTimeout: 500 * time.Millisecond, WriteTimeout: 500 * time.Millisecond,
+	})
+	defer vk.Close()
+	feedStore := &threatfeed.Store{C: vk, Feeds: threatfeed.DefaultFeeds}
+
 	an := analyzer.New(
 		analyzer.WithPreparers(
 			normalize.Preparer{},
@@ -56,9 +68,14 @@ func main() {
 			&homoglyph.Check{Brands: brands},
 			urlheur.Check{},
 			&safebrowsing.Check{C: sb},
+			&threatfeed.Check{S: feedStore},
 		),
 	)
-	srv := server.New(an, nil, cfg.RequestTimeout, log)
+	ready := func(ctx context.Context) error { return vk.Ping(ctx).Err() }
+	reg := prometheus.NewRegistry()
+	cached := cache.New(an, vk, cfg.CacheTTL, cfg.CacheRiskyTTL, log, reg)
+	srv := server.New(cached, ready, cfg.RequestTimeout, log)
+	srv.Registry().MustRegister(threatfeed.NewCollector(feedStore), reg)
 
 	httpSrv := &http.Server{
 		Addr:              cfg.ListenAddr,

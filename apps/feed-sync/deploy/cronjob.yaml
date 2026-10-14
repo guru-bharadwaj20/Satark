@@ -42,6 +42,19 @@ spec:
               env:
                 - name: FEED_SYNC_TIMEOUT
                   value: "10m"
+                - name: FEED_SYNC_VALKEY_ADDR
+                  value: valkey.satark-data.svc.cluster.local:6379
+                - name: FEED_SYNC_VALKEY_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: valkey-auth
+                      key: password
+                      optional: true
+                - name: FEED_SYNC_DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: feed-sync-db
+                      key: uri
               resources:
                 requests:
                   cpu: 50m
