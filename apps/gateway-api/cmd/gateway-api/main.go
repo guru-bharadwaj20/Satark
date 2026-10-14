@@ -17,6 +17,9 @@ import (
 	"github.com/guru-bharadwaj20/satark/apps/gateway-api/internal/server"
 )
 
+// version is set at build time with -ldflags "-X main.version=..."
+var version = "dev"
+
 func main() {
 	if err := run(); err != nil {
 		slog.Error("fatal", "err", err)
@@ -30,7 +33,7 @@ func run() error {
 		return err
 	}
 	log := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: cfg.LogLevel}))
-	log = log.With("service", "gateway-api")
+	log = log.With("service", "gateway-api", "version", version)
 	slog.SetDefault(log)
 
 	scanner := &scan.Service{

@@ -86,7 +86,7 @@ func run() error {
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
 	})
 	mux.Handle("GET /metrics", promhttp.Handler())
-	ops := &http.Server{Addr: getenv("ADDR", ":8082"), Handler: mux, ReadHeaderTimeout: 5 * time.Second}
+	ops := &http.Server{Addr: getenv("ADDR", ":"+getenv("PORT", "8082")), Handler: mux, ReadHeaderTimeout: 5 * time.Second}
 	go func() {
 		if err := ops.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error("ops server", "err", err)
