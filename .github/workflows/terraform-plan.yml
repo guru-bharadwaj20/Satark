@@ -1,0 +1,112 @@
+# terraform plan for dev and prod, posted as a sticky PR comment (task 5.21).
+#
+# Uses the read-only plan role (infra/terraform/modules/ci-roles) via OIDC.
+# Repository variables:
+#   AWS_PLAN_ROLE_ARN  - output ci_plan_role_arn of infra/terraform/bootstrap
+#   TF_STATE_BUCKET    - output state_bucket of infra/terraform/bootstrap
+name: terraform-plan
+
+on:
+  pull_request:
+    paths:
+      - "infra/terraform/**"
+      - ".github/workflows/terraform-plan.yml"
+
+permissions:
+  contents: read
+  id-token: write
+  pull-requests: write
+
+concurrency:
+  group: terraform-plan-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  TF_VERSION: 1.10.5
+  TF_IN_AUTOMATION: "true"
+  AWS_REGION: ap-south-1
+
+jobs:
+  plan:
+    # Fork PRs get no OIDC token and no secrets; skip rather than fail.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        env: [dev, prod]
+    defaults:
+      run:
+        working-directory: infra/terraform/envs/${{ matrix.env }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_PLAN_ROLE_ARN }}
+          role-session-name: tf-plan-${{ matrix.env }}-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: init
+        run: terraform init -input=false -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
+
+      - name: plan
+        id: plan
+        run: |
+          set +e
+          terraform plan -input=false -no-color -lock-timeout=120s -detailed-exitcode -out=tfplan > plan.txt 2>&1
+          code=$?
+          set -e
+          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+          cat plan.txt
+          # 0 = no changes, 2 = changes; anything else is an error.
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then exit "$code"; fi
+
+      - name: summarise plan
+        if: always() && steps.plan.outputs.exitcode != ''
+        id: summary
+        run: |
+          {
+            echo "body<<PLAN_EOF"
+            echo "<!-- terraform-plan:${{ matrix.env }} -->"
+            echo "### Terraform plan: \`${{ matrix.env }}\`"
+            case "${{ steps.plan.outputs.exitcode }}" in
+              0) echo "No changes." ;;
+              2) echo "**$(grep -E '^Plan:' plan.txt || echo 'Changes detected')**" ;;
+              *) echo ":x: Plan failed." ;;
+            esac
+            echo
+            echo "<details><summary>Full output</summary>"
+            echo
+            echo '```hcl'
+            # Comments are limited to 65536 characters; keep the tail if it's long.
+            tail -c 60000 plan.txt
+            echo '```'
+            echo "</details>"
+            echo
+            echo "_Commit ${{ github.event.pull_request.head.sha }}, run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})_"
+            echo "PLAN_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: post or update PR comment
+        if: always() && steps.summary.outputs.body != ''
+        uses: actions/github-script@v7
+        env:
+          BODY: ${{ steps.summary.outputs.body }}
+          MARKER: "<!-- terraform-plan:${{ matrix.env }} -->"
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const existing = comments.find(c => c.user.type === 'Bot' && c.body.includes(process.env.MARKER));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body: process.env.BODY });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body: process.env.BODY });
+            }
