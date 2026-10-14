@@ -21,6 +21,9 @@ type Scanner interface {
 // ErrUnavailable is returned by a Scanner when no analyzer answered in time.
 var ErrUnavailable = errors.New("analyzers unavailable")
 
+// ErrBadImage is returned by a Scanner when the image could not be read.
+var ErrBadImage = errors.New("image could not be read")
+
 // WithScanner sets the Scanner used by the scan endpoints.
 func (s *Server) WithScanner(sc Scanner) *Server {
 	s.scanner = sc
@@ -113,6 +116,10 @@ func (s *Server) scanQR(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) respond(w http.ResponseWriter, resp api.ScanResponse, err error) {
 	if err != nil {
+		if errors.Is(err, ErrBadImage) {
+			writeError(w, http.StatusBadRequest, "invalid_image", "the image could not be read")
+			return
+		}
 		if errors.Is(err, ErrUnavailable) || errors.Is(err, context.DeadlineExceeded) {
 			writeError(w, http.StatusServiceUnavailable, "unavailable", "analysis is temporarily unavailable, please retry")
 			return
