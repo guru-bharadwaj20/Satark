@@ -1,0 +1,36 @@
+[project]
+name = "satark-qr-decoder"
+version = "0.1.0"
+description = "Satark QR decoder: QR decoding and UPI deep-link analysis"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+dependencies = [
+  "fastapi>=0.115,<1.0",
+  "uvicorn[standard]>=0.30,<1.0",
+  "prometheus-client>=0.20,<1.0",
+  "python-multipart>=0.0.9",
+  "pillow>=10.4,<13",
+  "zxing-cpp>=2.2,<4",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27", "ruff>=0.6", "qrcode>=7.4"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM"]
+ignore = ["S101"]
