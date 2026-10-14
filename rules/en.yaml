@@ -1,0 +1,179 @@
+# English scam-detection rules for text-analyzer.
+# Schema: see apps/text-analyzer/app/rules.py. Patterns are case-insensitive
+# and run on REDACTED text, so personal data appears as [PHONE], [UPI], ...
+# Weights are contributions to a 0-100 risk score (capped by gateway-api).
+version: 1
+lang: en
+rules:
+  # --- Urgency -------------------------------------------------------------
+  - id: urgency.deadline
+    category: urgency
+    weight: 20
+    patterns:
+      - '\b(tonight|today itself|within (24|12|2|1) ?(hours?|hrs?)|immediately|urgent(ly)?|last (date|day|chance|warning))\b'
+      - '\bbefore \d{1,2}(:\d{2})? ?(am|pm)\b'
+    reason:
+      en: It gives a tight deadline to rush you
+      hi: यह आपको जल्दबाज़ी कराने के लिए बहुत कम समय देता है
+      kn: ನಿಮ್ಮನ್ನು ಅವಸರಪಡಿಸಲು ಇದು ತುಂಬಾ ಕಡಿಮೆ ಗಡುವು ನೀಡುತ್ತದೆ
+
+  - id: urgency.threat
+    category: urgency
+    weight: 20
+    patterns:
+      - '\b(will be|has been|get) (blocked|suspended|deactivated|disconnected|frozen|closed|cancell?ed)\b'
+      - '\b(legal action|arrest warrant|digital arrest|police case|fir (registered|filed))\b'
+    reason:
+      en: It threatens that something will be blocked or that legal action will follow
+      hi: यह धमकी देता है कि कुछ बंद कर दिया जाएगा या कानूनी कार्रवाई होगी
+      kn: ಏನನ್ನಾದರೂ ನಿರ್ಬಂಧಿಸಲಾಗುವುದು ಅಥವಾ ಕಾನೂನು ಕ್ರಮ ಆಗುತ್ತದೆ ಎಂದು ಇದು ಬೆದರಿಸುತ್ತದೆ
+
+  # --- Fake KYC ------------------------------------------------------------
+  - id: kyc.update
+    category: kyc
+    weight: 30
+    patterns:
+      - '\b(e-?kyc|kyc|pan card|aadhaar)\b.{0,40}\b(update|expired?|pending|verify|verification|link|incomplete)\b'
+      - '\b(update|complete|verify)\b.{0,20}\b(e-?kyc|kyc)\b'
+    reason:
+      en: Banks do not ask you to update KYC through a link or a phone call
+      hi: बैंक लिंक या फ़ोन कॉल से KYC अपडेट करने को नहीं कहते
+      kn: ಬ್ಯಾಂಕುಗಳು ಲಿಂಕ್ ಅಥವಾ ಫೋನ್ ಕರೆಯ ಮೂಲಕ KYC ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಹೇಳುವುದಿಲ್ಲ
+
+  - id: kyc.link
+    category: kyc
+    weight: 15
+    patterns:
+      - '\b(bit\.ly|tinyurl\.com|t\.co|is\.gd|cutt\.ly|rb\.gy|shorturl\.at|tiny\.cc)/\S+'
+    reason:
+      en: It contains a shortened link that hides where it really goes
+      hi: इसमें छोटा किया हुआ लिंक है जो असली पता छिपाता है
+      kn: ಇದರಲ್ಲಿ ನಿಜವಾದ ವಿಳಾಸವನ್ನು ಮರೆಮಾಡುವ ಸಂಕ್ಷಿಪ್ತ ಲಿಂಕ್ ಇದೆ
+
+  # --- Utility disconnection ----------------------------------------------
+  - id: utility.disconnection
+    category: utility
+    weight: 35
+    patterns:
+      - '\b(electricity|power|light|gas|water) (connection|supply|bill)\b'
+      - '\b(bescom|msedcl|tneb|tata power|adani electricity|torrent power)\b'
+    requires:
+      - '\b(disconnect(ed|ion)?|cut|blocked|suspend(ed)?|not (been )?updated|unpaid|pending)\b'
+    reason:
+      en: Power and utility companies do not threaten disconnection over SMS with a personal number
+      hi: बिजली या अन्य सेवा कंपनियाँ SMS पर निजी नंबर देकर कनेक्शन काटने की धमकी नहीं देतीं
+      kn: ವಿದ್ಯುತ್ ಅಥವಾ ಇತರ ಸೇವಾ ಕಂಪನಿಗಳು SMS ಮೂಲಕ ವೈಯಕ್ತಿಕ ಸಂಖ್ಯೆ ನೀಡಿ ಸಂಪರ್ಕ ಕಡಿತದ ಬೆದರಿಕೆ ಹಾಕುವುದಿಲ್ಲ
+
+  - id: utility.call_officer
+    category: utility
+    weight: 25
+    patterns:
+      - '\b(call|contact|whatsapp)\b.{0,40}\b(officer|executive|department|helpline|customer care)\b.{0,30}\[PHONE\]'
+      - '\b(call|contact|whatsapp)\b.{0,15}\[PHONE\]'
+    reason:
+      en: It asks you to call a personal mobile number instead of an official helpline
+      hi: यह आधिकारिक हेल्पलाइन के बजाय एक निजी मोबाइल नंबर पर कॉल करने को कहता है
+      kn: ಅಧಿಕೃತ ಸಹಾಯವಾಣಿಯ ಬದಲು ವೈಯಕ್ತಿಕ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಗೆ ಕರೆ ಮಾಡಲು ಇದು ಹೇಳುತ್ತದೆ
+
+  # --- Remote access --------------------------------------------------------
+  - id: remote_access.app
+    category: remote_access
+    weight: 40
+    patterns:
+      - '\b(anydesk|any desk|teamviewer|team viewer|quick ?support|rustdesk|airdroid|alpemix|ammyy)\b'
+      - '\b(screen ?shar(e|ing))\b.{0,40}\b(app|install|download|refund|verify)\b'
+    reason:
+      en: It asks you to install a screen-sharing app, which gives a stranger control of your phone
+      hi: यह स्क्रीन-शेयरिंग ऐप इंस्टॉल करने को कहता है, जिससे किसी अजनबी को आपके फ़ोन का नियंत्रण मिल जाता है
+      kn: ಇದು ಸ್ಕ್ರೀನ್-ಶೇರಿಂಗ್ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಹೇಳುತ್ತದೆ, ಇದರಿಂದ ಅಪರಿಚಿತರಿಗೆ ನಿಮ್ಮ ಫೋನ್‌ನ ನಿಯಂತ್ರಣ ಸಿಗುತ್ತದೆ
+
+  - id: remote_access.apk
+    category: remote_access
+    weight: 35
+    patterns:
+      - '\.apk\b'
+      - '\b(download|install)\b.{0,30}\b(apk|app from (this|the) link)\b'
+    reason:
+      en: It asks you to install an app from a link instead of the Play Store
+      hi: यह Play Store के बजाय किसी लिंक से ऐप इंस्टॉल करने को कहता है
+      kn: Play Store ಬದಲು ಲಿಂಕ್‌ನಿಂದ ಆಪ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ಇದು ಹೇಳುತ್ತದೆ
+
+  # --- OTP / PIN ------------------------------------------------------------
+  - id: otp.share
+    category: otp
+    weight: 45
+    patterns:
+      - '\b(share|send|tell|give|forward|provide|read out)\b.{0,30}\b(otp|one[- ]time password|verification code|upi pin|mpin|atm pin|pin|cvv|password)\b'
+      - '\b(otp|upi pin|mpin|cvv)\b.{0,30}\b(share|send|tell|give|forward|provide)\b'
+    reason:
+      en: It asks for an OTP, PIN or password. No bank or government office ever asks for these
+      hi: यह OTP, PIN या पासवर्ड माँगता है। कोई बैंक या सरकारी दफ़्तर इन्हें कभी नहीं माँगता
+      kn: ಇದು OTP, PIN ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ಕೇಳುತ್ತದೆ. ಯಾವುದೇ ಬ್ಯಾಂಕ್ ಅಥವಾ ಸರ್ಕಾರಿ ಕಚೇರಿ ಇವುಗಳನ್ನು ಎಂದಿಗೂ ಕೇಳುವುದಿಲ್ಲ
+
+  - id: otp.receive_money_pin
+    category: otp
+    weight: 40
+    patterns:
+      - '\b(enter|use)\b.{0,20}\b(upi )?pin\b.{0,40}\b(receive|get|credit(ed)?|refund|cashback)\b'
+      - '\b(receive|get|credit|refund|cashback)\b.{0,40}\b(enter|use)\b.{0,20}\b(upi )?pin\b'
+    reason:
+      en: You never need to enter your UPI PIN to receive money. Entering it always sends money
+      hi: पैसे पाने के लिए UPI PIN डालने की कभी ज़रूरत नहीं होती। PIN डालने से हमेशा पैसे जाते हैं
+      kn: ಹಣ ಪಡೆಯಲು UPI PIN ಹಾಕುವ ಅಗತ್ಯವೇ ಇಲ್ಲ. PIN ಹಾಕಿದರೆ ಯಾವಾಗಲೂ ಹಣ ಹೋಗುತ್ತದೆ
+
+  # --- Lottery / prize ------------------------------------------------------
+  - id: lottery.prize
+    category: lottery
+    weight: 35
+    patterns:
+      - '\b(you have won|you won|winner|lucky draw|lottery|jackpot|kbc|prize money|cash prize|gift voucher)\b'
+    reason:
+      en: It claims you won a prize or lottery you never entered
+      hi: यह दावा करता है कि आपने ऐसा इनाम या लॉटरी जीती है जिसमें आपने भाग ही नहीं लिया
+      kn: ನೀವು ಭಾಗವಹಿಸದ ಬಹುಮಾನ ಅಥವಾ ಲಾಟರಿ ಗೆದ್ದಿದ್ದೀರಿ ಎಂದು ಇದು ಹೇಳುತ್ತದೆ
+
+  - id: lottery.processing_fee
+    category: lottery
+    weight: 30
+    patterns:
+      - '\b(processing|registration|clearance|gst|tax|delivery|release) (fee|charges?|amount)\b'
+    requires:
+      - '\b(pay|deposit|transfer|send)\b'
+    reason:
+      en: It asks you to pay a fee before you can receive money
+      hi: यह पैसे पाने से पहले शुल्क चुकाने को कहता है
+      kn: ಹಣ ಪಡೆಯುವ ಮೊದಲು ಶುಲ್ಕ ಪಾವತಿಸಲು ಇದು ಹೇಳುತ್ತದೆ
+
+  # --- Task / part-time job -------------------------------------------------
+  - id: task_job.earn_daily
+    category: task_job
+    weight: 35
+    patterns:
+      - '\b(earn|income|salary|make)\b.{0,30}(₹|rs\.?|inr)\s?[\d,]+.{0,20}\b(per day|a day|daily|per hour|/day)\b'
+      - '\b(part[- ]time|work from home|home based)\b.{0,40}\b(job|work|earn|income)\b'
+    reason:
+      en: It promises easy daily earnings for simple online work
+      hi: यह आसान ऑनलाइन काम के लिए रोज़ की आसान कमाई का वादा करता है
+      kn: ಸುಲಭ ಆನ್‌ಲೈನ್ ಕೆಲಸಕ್ಕೆ ದಿನನಿತ್ಯದ ಸುಲಭ ಗಳಿಕೆಯ ಭರವಸೆ ನೀಡುತ್ತದೆ
+
+  - id: task_job.like_review
+    category: task_job
+    weight: 30
+    patterns:
+      - '\b(like|subscribe to|rate|review)\b.{0,30}\b(youtube|videos?|hotels?|google maps|products?|instagram)\b'
+      - '\b(prepaid|merchant|vip) tasks?\b'
+    reason:
+      en: Paid "like" or "review" tasks are a common way to pull people into paying deposits
+      hi: वीडियो लाइक या रिव्यू करने पर पैसे देने वाले काम लोगों से जमा राशि ऐंठने का आम तरीका हैं
+      kn: ಲೈಕ್ ಅಥವಾ ರಿವ್ಯೂ ಮಾಡಿದರೆ ಹಣ ಕೊಡುವ ಕೆಲಸಗಳು ಠೇವಣಿ ಕಟ್ಟಿಸುವ ಸಾಮಾನ್ಯ ತಂತ್ರ
+
+  - id: task_job.telegram_contact
+    category: task_job
+    weight: 15
+    patterns:
+      - '\b(telegram|whatsapp)\b.{0,30}\b(hr|recruiter|manager|mentor|join)\b'
+      - '\b(wa\.me|t\.me)/\S+'
+    reason:
+      en: It moves the conversation to a private Telegram or WhatsApp contact
+      hi: यह बातचीत को किसी निजी Telegram या WhatsApp संपर्क पर ले जाता है
+      kn: ಇದು ಮಾತುಕತೆಯನ್ನು ಖಾಸಗಿ Telegram ಅಥವಾ WhatsApp ಸಂಪರ್ಕಕ್ಕೆ ಕೊಂಡೊಯ್ಯುತ್ತದೆ
