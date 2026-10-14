@@ -1,0 +1,23 @@
+# gVisor RuntimeClass (task 8.18). The handler name matches the containerd
+# runtime registered by infra/ansible/roles/gvisor. Only nodes labelled
+# satark.io/gvisor=true (set by the Ansible inventory) have runsc installed.
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: gvisor
+  labels:
+    app.kubernetes.io/part-of: satark
+handler: runsc
+overhead:
+  # gVisor's Sentry and Gofer add memory and CPU per pod; counted for
+  # scheduling and quota.
+  podFixed:
+    cpu: 100m
+    memory: 64Mi
+scheduling:
+  nodeSelector:
+    satark.io/gvisor: "true"
+  tolerations:
+  - key: satark.io/sandbox
+    operator: Exists
+    effect: NoSchedule
