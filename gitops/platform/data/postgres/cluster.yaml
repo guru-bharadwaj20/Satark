@@ -1,0 +1,68 @@
+# Three-instance PostgreSQL cluster managed by CloudNativePG.
+# One primary + two streaming replicas, spread across nodes. Services created
+# by the operator:
+#   satark-pg-rw  (primary, read/write)  satark-pg-ro (replicas)  satark-pg-r (any)
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: satark-pg
+  namespace: satark-data
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  instances: 3
+  # pgvector ships in the CNPG PostgreSQL images from 16.x onwards.
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.4
+  primaryUpdateStrategy: unsupervised
+  primaryUpdateMethod: switchover
+
+  # Synchronous replication to at least one replica: a failover never loses a
+  # committed scan/report.
+  minSyncReplicas: 1
+  maxSyncReplicas: 1
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: 256MB
+      effective_cache_size: 768MB
+      work_mem: 8MB
+      log_min_duration_statement: "500"
+      log_statement: ddl
+      password_encryption: scram-sha-256
+    pg_hba:
+      - hostssl all all 0.0.0.0/0 scram-sha-256
+
+  bootstrap:
+    initdb:
+      database: satark
+      owner: satark
+      secret:
+        name: satark-pg-app
+      postInitApplicationSQL:
+        - CREATE EXTENSION IF NOT EXISTS pgcrypto;
+        - CREATE EXTENSION IF NOT EXISTS vector;
+
+  storage:
+    size: 10Gi
+    # local-path is the default StorageClass on-prem (task 1.19).
+    storageClass: local-path
+  walStorage:
+    size: 5Gi
+    storageClass: local-path
+
+  resources:
+    requests:
+      cpu: 250m
+      memory: 1Gi
+    limits:
+      memory: 1Gi
+
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: preferred
+
+  monitoring:
+    # Enable once the Prometheus Operator CRDs exist (Phase 6).
+    enablePodMonitor: false
