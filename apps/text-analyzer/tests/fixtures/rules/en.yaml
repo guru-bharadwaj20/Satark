@@ -1,0 +1,8 @@
+version: 1
+lang: en
+rules:
+  - id: test.otp
+    category: otp
+    weight: 40
+    patterns: ['\bOTP\b']
+    reason: It asks for an OTP
