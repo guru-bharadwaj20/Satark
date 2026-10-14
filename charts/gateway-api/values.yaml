@@ -59,3 +59,11 @@ networkPolicy:
             matchLabels:
               app.kubernetes.io/name: qr-decoder
       ports: [{port: 8001, protocol: TCP}]
+
+# Public API: /v1/* on the api host (task 3.16).
+route:
+  enabled: true
+  hostnames: ["api.satark.example"]
+  paths:
+    - path: /v1
+  timeout: 15s

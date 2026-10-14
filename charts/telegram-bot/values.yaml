@@ -46,3 +46,12 @@ networkPolicy:
             cidr: 0.0.0.0/0
             except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16]
       ports: [{port: 443, protocol: TCP}]
+
+# Telegram webhook endpoint, used only when TELEGRAM_MODE=webhook (task 3.16).
+route:
+  enabled: true
+  hostnames: ["bot.satark.example"]
+  paths:
+    - path: /telegram/webhook
+      type: Exact
+  timeout: 10s
