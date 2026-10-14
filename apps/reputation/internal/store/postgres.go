@@ -108,6 +108,27 @@ func (p *Postgres) Purge(ctx context.Context, pol RetentionPolicy) (PurgeResult,
 	return res, tx.Commit(ctx)
 }
 
+func (p *Postgres) Trends(ctx context.Context, from, to time.Time) ([]TrendRow, error) {
+	rows, err := p.pool.Query(ctx, `
+		SELECT kind, category, count(*), count(DISTINCT reporter_hash), count(DISTINCT subject_hash)
+		FROM reputation_reports
+		WHERE created_at >= $1 AND created_at < $2
+		GROUP BY kind, category`, from, to)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var out []TrendRow
+	for rows.Next() {
+		var r TrendRow
+		if err := rows.Scan(&r.Kind, &r.Category, &r.Reports, &r.Reporters, &r.Subjects); err != nil {
+			return nil, err
+		}
+		out = append(out, r)
+	}
+	return out, rows.Err()
+}
+
 const delistCols = `id, kind, subject_hash, subject_masked, reason, contact, status, review_note, created_at, decided_at`
 
 func scanDelisting(row pgx.Row) (Delisting, error) {
