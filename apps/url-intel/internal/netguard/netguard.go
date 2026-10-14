@@ -6,8 +6,10 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"net/http"
 	"net/netip"
 	"syscall"
+	"time"
 )
 
 var blockedPrefixes = mustPrefixes(
@@ -61,6 +63,23 @@ func Control(_, address string, _ syscall.RawConn) error {
 		return ErrBlocked{Addr: host}
 	}
 	return nil
+}
+
+// NewHTTPClient returns an HTTP client for outbound lookups (RDAP, CT,
+// Safe Browsing) that only connects to public addresses.
+func NewHTTPClient(timeout time.Duration) *http.Client {
+	return &http.Client{
+		Timeout: timeout,
+		Transport: &http.Transport{
+			Proxy:                 nil, // a proxy would bypass the address guard
+			DialContext:           DialContext(&net.Dialer{Timeout: 3 * time.Second}),
+			TLSHandshakeTimeout:   3 * time.Second,
+			ResponseHeaderTimeout: timeout,
+			MaxIdleConns:          100,
+			MaxIdleConnsPerHost:   10,
+			IdleConnTimeout:       60 * time.Second,
+		},
+	}
 }
 
 // DialContext returns a dial function that only connects to public addresses.
