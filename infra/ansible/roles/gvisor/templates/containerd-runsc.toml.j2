@@ -1,0 +1,5 @@
+[plugins."{{ gvisor_containerd_cri_plugin }}".containerd.runtimes.{{ gvisor_runtime_handler }}]
+  runtime_type = "io.containerd.runsc.v1"
+  [plugins."{{ gvisor_containerd_cri_plugin }}".containerd.runtimes.{{ gvisor_runtime_handler }}.options]
+    TypeUrl = "io.containerd.runsc.v1.options"
+    ConfigPath = "/etc/containerd/runsc.toml"
