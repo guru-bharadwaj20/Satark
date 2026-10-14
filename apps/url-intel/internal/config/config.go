@@ -20,6 +20,8 @@ type Config struct {
 	SafeBrowsingAPIKey string
 	ValkeyAddr         string
 	ValkeyPassword     string
+	CacheTTL           time.Duration
+	CacheRiskyTTL      time.Duration
 	Version            string
 }
 
@@ -37,6 +39,8 @@ func FromEnv() Config {
 		Version:            getEnv("URL_INTEL_VERSION", "dev"),
 		ValkeyAddr:         getEnv("URL_INTEL_VALKEY_ADDR", "valkey.satark-data.svc.cluster.local:6379"),
 		ValkeyPassword:     os.Getenv("URL_INTEL_VALKEY_PASSWORD"),
+		CacheTTL:           getDuration("URL_INTEL_CACHE_TTL", 30*time.Minute),
+		CacheRiskyTTL:      getDuration("URL_INTEL_CACHE_RISKY_TTL", 6*time.Hour),
 	}
 }
 

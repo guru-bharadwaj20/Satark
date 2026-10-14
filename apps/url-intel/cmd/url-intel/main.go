@@ -11,10 +11,12 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"github.com/redis/go-redis/v9"
 
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/allowlist"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/cache"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/ctlog"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/dnscheck"
@@ -70,8 +72,10 @@ func main() {
 		),
 	)
 	ready := func(ctx context.Context) error { return vk.Ping(ctx).Err() }
-	srv := server.New(an, ready, cfg.RequestTimeout, log)
-	srv.Registry().MustRegister(threatfeed.NewCollector(feedStore))
+	reg := prometheus.NewRegistry()
+	cached := cache.New(an, vk, cfg.CacheTTL, cfg.CacheRiskyTTL, log, reg)
+	srv := server.New(cached, ready, cfg.RequestTimeout, log)
+	srv.Registry().MustRegister(threatfeed.NewCollector(feedStore), reg)
 
 	httpSrv := &http.Server{
 		Addr:              cfg.ListenAddr,
