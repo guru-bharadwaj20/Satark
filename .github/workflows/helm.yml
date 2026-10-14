@@ -1,0 +1,72 @@
+name: helm
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: helm-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  KUBERNETES_VERSION: "1.31.0"
+  KUBECONFORM_VERSION: "v0.6.7"
+
+jobs:
+  lint-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+        with:
+          version: v3.16.3
+      - name: install kubeconform
+        run: |
+          curl -sSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | tar -xz -C /usr/local/bin kubeconform
+          kubeconform -v
+      - name: helm lint
+        run: |
+          shopt -s nullglob
+          charts=(charts/*/Chart.yaml)
+          [ ${#charts[@]} -eq 0 ] && { echo "no charts yet"; exit 0; }
+          for c in "${charts[@]}"; do
+            dir=$(dirname "$c")
+            helm dependency build "$dir" >/dev/null 2>&1 || true
+            helm lint --strict "$dir"
+          done
+      - name: render and validate with kubeconform
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          kc=(kubeconform -strict -summary -ignore-missing-schemas
+              -kubernetes-version "$KUBERNETES_VERSION"
+              -schema-location default
+              -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json')
+          for c in charts/*/Chart.yaml; do
+            dir=$(dirname "$c"); svc=$(basename "$dir")
+            # library charts cannot be rendered
+            grep -q '^type: library' "$c" && continue
+            echo "::group::$svc (chart defaults)"
+            helm template "$svc" "$dir" | "${kc[@]}"
+            echo "::endgroup::"
+            for env in gitops/envs/*/; do
+              vf="${env}apps/$svc/values.yaml"
+              [ -f "$vf" ] || continue
+              echo "::group::$svc ($(basename "$env"))"
+              helm template "$svc" "$dir" -f "$vf" | "${kc[@]}"
+              echo "::endgroup::"
+            done
+          done
+      - name: validate raw GitOps manifests
+        run: |
+          find gitops policies -name '*.yaml' -not -name 'values.yaml' \
+            -not -name 'kustomization.yaml' 2>/dev/null \
+            | xargs -r kubeconform -strict -summary -ignore-missing-schemas \
+                -kubernetes-version "$KUBERNETES_VERSION" \
+                -schema-location default \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'
