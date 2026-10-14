@@ -1,0 +1,72 @@
+---
+- name: Ensure kubernetes python client is present
+  ansible.builtin.package:
+    name: python3-kubernetes
+    state: present
+
+- name: Create Argo CD namespace
+  kubernetes.core.k8s:
+    kubeconfig: "{{ argocd_bootstrap_kubeconfig }}"
+    api_version: v1
+    kind: Namespace
+    name: "{{ argocd_bootstrap_namespace }}"
+    state: present
+
+- name: Download Argo CD install manifest
+  ansible.builtin.get_url:
+    url: "{{ argocd_bootstrap_manifest_url }}"
+    dest: "/tmp/argocd-install-{{ argocd_bootstrap_version }}.yaml"
+    mode: "0644"
+
+- name: Apply Argo CD install manifest (server-side, CRDs are large)
+  ansible.builtin.command:
+    cmd: >-
+      kubectl --kubeconfig {{ argocd_bootstrap_kubeconfig }}
+      apply --server-side --force-conflicts
+      -n {{ argocd_bootstrap_namespace }}
+      -f /tmp/argocd-install-{{ argocd_bootstrap_version }}.yaml
+  register: argocd_bootstrap_apply
+  changed_when: "'serverside-applied' in argocd_bootstrap_apply.stdout"
+
+- name: Wait for Argo CD deployments to become available
+  ansible.builtin.command:
+    cmd: >-
+      kubectl --kubeconfig {{ argocd_bootstrap_kubeconfig }}
+      -n {{ argocd_bootstrap_namespace }} rollout status
+      deployment/{{ item }} --timeout={{ argocd_bootstrap_wait_timeout }}s
+  loop:
+    - argocd-server
+    - argocd-repo-server
+    - argocd-applicationset-controller
+    - argocd-redis
+  changed_when: false
+
+- name: Wait for the application controller statefulset
+  ansible.builtin.command:
+    cmd: >-
+      kubectl --kubeconfig {{ argocd_bootstrap_kubeconfig }}
+      -n {{ argocd_bootstrap_namespace }} rollout status
+      statefulset/argocd-application-controller --timeout={{ argocd_bootstrap_wait_timeout }}s
+  changed_when: false
+
+- name: Render app-of-apps root Application
+  ansible.builtin.template:
+    src: root-app.yaml.j2
+    dest: /tmp/argocd-root-app.yaml
+    mode: "0644"
+  when: argocd_bootstrap_apply_root
+
+- name: Apply app-of-apps root Application
+  kubernetes.core.k8s:
+    kubeconfig: "{{ argocd_bootstrap_kubeconfig }}"
+    src: /tmp/argocd-root-app.yaml
+    state: present
+  when: argocd_bootstrap_apply_root
+
+- name: Show how to log in
+  ansible.builtin.debug:
+    msg: >-
+      Argo CD is up. Port-forward with
+      'kubectl -n {{ argocd_bootstrap_namespace }} port-forward svc/argocd-server 8443:443'
+      and read the admin password from secret argocd-initial-admin-secret
+      (rotate it and delete the secret after first login).
