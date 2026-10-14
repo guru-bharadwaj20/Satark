@@ -1,0 +1,56 @@
+{
+  "agent": {
+    "metrics_collection_interval": {{ cloudwatch_agent_metrics_interval }},
+    "run_as_user": "cwagent"
+  },
+  "metrics": {
+    "namespace": "{{ cloudwatch_agent_namespace }}",
+    "append_dimensions": {
+      "InstanceId": "${aws:InstanceId}"
+    },
+    "metrics_collected": {
+      "cpu": {
+        "measurement": ["cpu_usage_idle", "cpu_usage_iowait"],
+        "totalcpu": true
+      },
+      "mem": {
+        "measurement": ["mem_used_percent"]
+      },
+      "disk": {
+        "measurement": ["used_percent"],
+        "resources": ["/"],
+        "ignore_file_system_types": ["sysfs", "devtmpfs", "tmpfs", "overlay", "squashfs"]
+      },
+      "net": {
+        "measurement": ["bytes_sent", "bytes_recv"],
+        "resources": ["{{ wireguard_metric_interface }}"]
+      },
+      "procstat": [
+        { "exe": "haproxy", "measurement": ["pid_count"] }
+      ],
+      "statsd": {
+        "service_address": "127.0.0.1:{{ cloudwatch_agent_statsd_port }}",
+        "metrics_collection_interval": {{ cloudwatch_agent_metrics_interval }},
+        "metrics_aggregation_interval": {{ cloudwatch_agent_metrics_interval }}
+      }
+    }
+  },
+  "logs": {
+    "logs_collected": {
+      "files": {
+        "collect_list": [
+          {
+            "file_path": "/var/log/haproxy.log",
+            "log_group_name": "{{ cloudwatch_agent_log_group_prefix }}/haproxy",
+            "log_stream_name": "{instance_id}"
+          },
+          {
+            "file_path": "/var/log/syslog",
+            "log_group_name": "{{ cloudwatch_agent_log_group_prefix }}/syslog",
+            "log_stream_name": "{instance_id}"
+          }
+        ]
+      }
+    }
+  }
+}

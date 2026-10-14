@@ -18,6 +18,11 @@ output "ssm_session_document" {
   value       = aws_ssm_document.session_prefs.name
 }
 
+output "metric_namespace" {
+  description = "CloudWatch namespace the edge agent publishes to."
+  value       = local.metric_namespace
+}
+
 output "public_ip" {
   description = "Elastic IP of the edge node."
   value       = aws_eip.edge.public_ip

@@ -1,0 +1,7 @@
+[Unit]
+Description=Publish WireGuard handshake age to CloudWatch
+After=amazon-cloudwatch-agent.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/wg-handshake-metric
