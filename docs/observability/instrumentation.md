@@ -102,3 +102,47 @@ with biz.time_llm("anthropic", "claude-haiku") as call:
     call["in_tokens"], call["out_tokens"] = resp.usage.input_tokens, resp.usage.output_tokens
 biz.cache_lookup("verdict", "miss")
 ```
+
+## Structured JSON logging (task 6.7)
+
+Services log one JSON object per line to stdout. Alloy parses these lines and
+promotes `level` and `service` to Loki labels; `trace_id` is kept as
+structured metadata.
+
+| Field | Meaning |
+|-------|---------|
+| `time` | RFC 3339 timestamp |
+| `level` | `DEBUG`, `INFO`, `WARN`, `ERROR` |
+| `msg` | Short, constant message (`"request"`, `"lookup done"`) |
+| `service`, `version`, `env` | From the service name, `$SATARK_VERSION`, `$SATARK_ENV` |
+| `trace_id` | `X-Request-ID` of the current request (generated if absent, echoed back) |
+
+Level comes from `$LOG_LEVEL` (default `info`).
+
+Privacy: values under the keys `text`, `message_text`, `body`, `phone`,
+`phone_number`, `upi`, `upi_id`, `email`, `token`, `password`,
+`authorization`, `api_key`, `secret` and `chat_id` are replaced by
+`[REDACTED]`, and Indian mobile numbers and UPI handles are masked in every
+string value. The access log records the path only, never the query string.
+Still, never log message content on purpose.
+
+```go
+logger := observability.NewLogger(observability.LogOptions{Service: "gateway-api"})
+slog.SetDefault(logger)
+handler := observability.AccessLog(logger, mux)
+// inside handlers, always pass the request context:
+slog.InfoContext(r.Context(), "scan complete", "verdict", v)
+```
+
+```python
+from satark_obs import AccessLogMiddleware, configure_logging
+
+log = configure_logging("text-analyzer")
+app.add_middleware(AccessLogMiddleware)
+log.info("scored", extra={"verdict": verdict, "category": category})
+```
+
+Run uvicorn with `--no-access-log`; `AccessLogMiddleware` replaces it.
+
+Add `AccessLogMiddleware` after `PrometheusMiddleware` so it is the outermost
+layer and the trace id covers every log line of the request.
