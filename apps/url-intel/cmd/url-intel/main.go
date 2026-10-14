@@ -1,0 +1,53 @@
+// Command url-intel serves link-intelligence analysis for Satark.
+package main
+
+import (
+	"context"
+	"errors"
+	"log/slog"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
+
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
+)
+
+func main() {
+	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	cfg := config.FromEnv()
+
+	an := analyzer.New()
+	srv := server.New(an, nil, cfg.RequestTimeout, log)
+
+	httpSrv := &http.Server{
+		Addr:              cfg.ListenAddr,
+		Handler:           srv.Handler(),
+		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       10 * time.Second,
+		WriteTimeout:      cfg.RequestTimeout + 5*time.Second,
+		IdleTimeout:       60 * time.Second,
+	}
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	go func() {
+		log.Info("url-intel listening", "addr", cfg.ListenAddr)
+		if err := httpSrv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Error("server failed", "err", err)
+			os.Exit(1)
+		}
+	}()
+
+	<-ctx.Done()
+	srv.SetDraining()
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), cfg.ShutdownTimeout)
+	defer cancel()
+	if err := httpSrv.Shutdown(shutdownCtx); err != nil {
+		log.Error("shutdown failed", "err", err)
+	}
+}
