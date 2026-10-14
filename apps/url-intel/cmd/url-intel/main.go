@@ -13,6 +13,7 @@ import (
 
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
 )
 
@@ -20,7 +21,9 @@ func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 	cfg := config.FromEnv()
 
-	an := analyzer.New()
+	an := analyzer.New(
+		analyzer.WithPreparers(normalize.Preparer{}),
+	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
 
 	httpSrv := &http.Server{
