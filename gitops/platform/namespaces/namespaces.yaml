@@ -1,0 +1,41 @@
+# Application namespaces with Pod Security Admission enforced at the
+# `restricted` level (task 9.1). `warn` and `audit` are pinned to the same
+# level so violations are surfaced to kubectl users and to the audit log.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: satark
+  labels:
+    app.kubernetes.io/part-of: satark
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: satark-data
+  labels:
+    app.kubernetes.io/part-of: satark
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: satark-sandbox
+  labels:
+    app.kubernetes.io/part-of: satark
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: latest
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: latest
