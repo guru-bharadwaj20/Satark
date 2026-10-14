@@ -1,3 +1,7 @@
 ---
 - name: Harden SSH and install fail2ban
   ansible.builtin.import_tasks: ssh.yml
+
+- name: Configure nftables default-deny firewall
+  ansible.builtin.import_tasks: nftables.yml
+  when: hardening_nftables_enabled | bool

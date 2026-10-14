@@ -1,0 +1,54 @@
+#!/usr/sbin/nft -f
+# {{ ansible_managed }}
+# Host firewall for {{ inventory_hostname }}.
+#
+# Only the satark_host table is managed here: it is flushed and recreated on
+# reload, so tables owned by Cilium, kube-proxy or fail2ban are left untouched.
+# Forwarded (pod) traffic is not filtered here: Cilium enforces NetworkPolicy.
+
+table inet satark_host
+delete table inet satark_host
+
+table inet satark_host {
+  set cluster_v4 {
+    type ipv4_addr
+    flags interval
+    elements = { {{ hardening_nft_cluster_sources | join(', ') }} }
+  }
+
+  chain input {
+    type filter hook input priority filter; policy drop;
+
+    ct state established,related accept
+    ct state invalid drop
+    iif "lo" accept
+
+    # Cilium and VXLAN interfaces carry pod traffic to the host.
+    iifname { "cilium_host", "cilium_net", "cilium_vxlan", "lxc*" } accept
+
+    # ICMP for path MTU discovery and diagnostics.
+    meta l4proto icmp icmp type { echo-request, destination-unreachable, time-exceeded, parameter-problem } limit rate 20/second accept
+    meta l4proto ipv6-icmp accept
+
+    # Public ports (any source).
+    tcp dport { {{ (hardening_nft_public_tcp_ports + hardening_nft_role_public_tcp_ports) | unique | join(', ') }} } accept
+
+    # Cluster-internal ports on every node.
+    ip saddr @cluster_v4 tcp dport { {{ hardening_nft_common_tcp_ports | join(', ') }} } accept
+    ip saddr @cluster_v4 udp dport { {{ hardening_nft_common_udp_ports | join(', ') }} } accept
+{% if hardening_nft_role_tcp_ports | length > 0 %}
+
+    # Ports for this node type.
+    ip saddr @cluster_v4 tcp dport { {{ hardening_nft_role_tcp_ports | join(', ') }} } accept
+{% endif %}
+
+    # DHCP on the Vagrant NAT interface.
+    udp sport 67 udp dport 68 accept
+
+    limit rate 5/minute log prefix "nft-drop-in: " level info
+  }
+
+  chain output {
+    type filter hook output priority filter; policy accept;
+  }
+}

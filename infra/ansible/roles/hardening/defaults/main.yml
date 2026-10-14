@@ -18,3 +18,37 @@ hardening_fail2ban_maxretry: 5
 hardening_fail2ban_ignoreip:
   - 127.0.0.1/8
   - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+
+# --- nftables ----------------------------------------------------------
+hardening_nftables_enabled: true
+# Sources trusted for intra-cluster traffic (node network + pod CIDR).
+hardening_nft_cluster_sources:
+  - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+  - "{{ pod_network_cidr | default('10.244.0.0/16') }}"
+# Ports open to everyone on every node.
+hardening_nft_public_tcp_ports:
+  - "{{ hardening_ssh_port }}"
+# Ports open to cluster sources on every node.
+hardening_nft_common_tcp_ports:
+  - 10250        # kubelet API
+  - 4240         # cilium-health
+  - 4244         # Hubble server
+  - 7946         # MetalLB memberlist
+  - 9100         # node-exporter
+  - 9962-9965    # Cilium / Hubble / operator metrics
+hardening_nft_common_udp_ports:
+  - 8472         # Cilium VXLAN
+  - 7946         # MetalLB memberlist
+# Extra ports per node type (inventory group).
+hardening_nft_control_plane_tcp_ports:
+  - 6443         # kube-apiserver
+  - 2379-2380    # etcd client and peer
+  - 10257        # kube-controller-manager
+  - 10259        # kube-scheduler
+hardening_nft_worker_tcp_ports:
+  - 30000-32767  # NodePort services
+  - 80
+  - 443
+# The API server must be reachable from the control node / host as well.
+hardening_nft_control_plane_public_tcp_ports:
+  - 6443
