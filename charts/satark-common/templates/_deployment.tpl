@@ -39,10 +39,8 @@ spec:
       serviceAccountName: {{ include "satark-common.serviceAccountName" . }}
       automountServiceAccountToken: {{ .Values.serviceAccount.automountToken | default false }}
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
-      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "satark-common.podSecurityContext" . | nindent 8 }}
       containers:
         - name: {{ include "satark-common.name" . }}
           image: {{ include "satark-common.image" . | quote }}
@@ -80,17 +78,29 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.volumeMounts }}
+            {{- include "satark-common.containerSecurityContext" . | nindent 12 }}
+          {{- $tmp := include "satark-common.tmpVolumeEnabled" . }}
+          {{- if or $tmp .Values.volumeMounts }}
           volumeMounts:
+            {{- if $tmp }}
+            - name: tmp
+              mountPath: /tmp
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
-      {{- with .Values.volumes }}
+      {{- if or $tmp .Values.volumes }}
       volumes:
+        {{- if $tmp }}
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
