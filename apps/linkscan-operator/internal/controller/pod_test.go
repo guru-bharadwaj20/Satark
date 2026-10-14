@@ -9,6 +9,7 @@ package controller
 import (
 	"strings"
 	"testing"
+	"time"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -78,5 +79,20 @@ func TestActiveDeadlineFollowsTimeout(t *testing.T) {
 	scan.Spec.TimeoutSeconds = 0
 	if d := *buildSandboxPod(scan, SandboxConfig{}).Spec.ActiveDeadlineSeconds; d != defaultTimeoutSeconds {
 		t.Fatalf("default activeDeadlineSeconds=%d", d)
+	}
+}
+
+func TestTTLExpiry(t *testing.T) {
+	scan := testScan()
+	if _, ok := ttlExpiry(scan); ok {
+		t.Fatal("unfinished scan without TTL must not expire")
+	}
+	ttl := int64(30)
+	done := metav1.NewTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+	scan.Spec.TTLSecondsAfterFinished = &ttl
+	scan.Status.CompletionTime = &done
+	exp, ok := ttlExpiry(scan)
+	if !ok || !exp.Equal(done.Add(30*time.Second)) {
+		t.Fatalf("expiry=%v ok=%v", exp, ok)
 	}
 }

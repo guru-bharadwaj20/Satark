@@ -56,7 +56,7 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 		return ctrl.Result{}, nil
 	}
 	if scan.Status.Phase.IsFinished() {
-		return ctrl.Result{}, nil
+		return r.handleFinished(ctx, scan)
 	}
 
 	pod := &corev1.Pod{}
@@ -102,6 +102,32 @@ func (r *LinkScanReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	}
 	return ctrl.Result{}, r.finish(ctx, scan, scanv1alpha1.PhaseTimedOut, "DeadlineExceeded",
 		fmt.Sprintf("sandbox did not finish within %ds", timeoutSeconds(scan)), nil)
+}
+
+// handleFinished garbage-collects a finished LinkScan once its TTL expires.
+// Deleting the LinkScan also removes its sandbox pod via the owner reference.
+func (r *LinkScanReconciler) handleFinished(ctx context.Context, scan *scanv1alpha1.LinkScan) (ctrl.Result, error) {
+	expiry, ok := ttlExpiry(scan)
+	if !ok {
+		return ctrl.Result{}, nil
+	}
+	if remaining := time.Until(expiry); remaining > 0 {
+		return ctrl.Result{RequeueAfter: remaining}, nil
+	}
+	logf.FromContext(ctx).Info("deleting expired LinkScan", "completed", scan.Status.CompletionTime)
+	if err := r.Delete(ctx, scan, client.PropagationPolicy(metav1.DeletePropagationBackground)); client.IgnoreNotFound(err) != nil {
+		return ctrl.Result{}, err
+	}
+	return ctrl.Result{}, nil
+}
+
+// ttlExpiry returns when a finished scan should be deleted. It returns false
+// when the scan has no TTL or has not finished.
+func ttlExpiry(scan *scanv1alpha1.LinkScan) (time.Time, bool) {
+	if scan.Spec.TTLSecondsAfterFinished == nil || scan.Status.CompletionTime == nil {
+		return time.Time{}, false
+	}
+	return scan.Status.CompletionTime.Add(time.Duration(*scan.Spec.TTLSecondsAfterFinished) * time.Second), true
 }
 
 // syncFromPod maps the sandbox pod state onto the LinkScan status.
