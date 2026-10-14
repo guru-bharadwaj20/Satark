@@ -13,6 +13,7 @@ import (
 
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/analyzer"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/config"
+	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/dnscheck"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/expand"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/normalize"
 	"github.com/guru-bharadwaj20/satark/apps/url-intel/internal/server"
@@ -26,6 +27,9 @@ func main() {
 		analyzer.WithPreparers(
 			normalize.Preparer{},
 			expand.Preparer{E: expand.New(cfg.ExpandTimeout, cfg.MaxRedirects)},
+		),
+		analyzer.WithChecks(
+			dnscheck.New(),
 		),
 	)
 	srv := server.New(an, nil, cfg.RequestTimeout, log)
