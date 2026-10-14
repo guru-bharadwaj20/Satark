@@ -9,6 +9,7 @@ from playwright.async_api import Frame, Page, Response, async_playwright
 
 from . import forms
 from .config import Settings
+from .downloads import DownloadWatcher
 from .redirects import RedirectTracker
 from .report import ScanReport
 
@@ -46,9 +47,21 @@ def _attach_redirect_tracking(page: Page, tracker: RedirectTracker) -> None:
     page.on("framenavigated", on_navigated)
 
 
+def _attach_download_tracking(page: Page, watcher: DownloadWatcher) -> None:
+    def on_download(download) -> None:
+        watcher.on_download(download.suggested_filename, download.url)
+
+    def on_response(resp: Response) -> None:
+        watcher.on_response(resp.url, resp.headers)
+
+    page.on("download", on_download)
+    page.on("response", on_response)
+
+
 async def scan(settings: Settings) -> ScanReport:
     report = ScanReport()
     tracker = RedirectTracker(settings.target_url)
+    watcher = DownloadWatcher()
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True, args=CHROMIUM_ARGS)
         try:
@@ -63,6 +76,7 @@ async def scan(settings: Settings) -> ScanReport:
             )
             page = await context.new_page()
             _attach_redirect_tracking(page, tracker)
+            _attach_download_tracking(page, watcher)
             try:
                 await page.goto(
                     settings.target_url,
@@ -76,7 +90,9 @@ async def scan(settings: Settings) -> ScanReport:
                     pass
                 await page.wait_for_timeout(500)
             except PlaywrightError as exc:
-                report.error = str(exc).splitlines()[0]
+                # Navigating straight to a file aborts with "Download is starting".
+                if "Download is starting" not in str(exc):
+                    report.error = str(exc).splitlines()[0]
             report.final_url = page.url if page.url != "about:blank" else tracker.final_url
             report.redirect_chain = tracker.chain()
             if report.redirect_chain[-1] != report.final_url:
@@ -86,6 +102,7 @@ async def scan(settings: Settings) -> ScanReport:
             except PlaywrightError:
                 pass
             report.forms = await forms.detect(page)
+            report.downloads = list(watcher.files)
             await context.close()
         finally:
             await browser.close()
