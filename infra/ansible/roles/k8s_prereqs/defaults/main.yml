@@ -1,0 +1,26 @@
+---
+# Kernel modules required by containerd and Kubernetes networking.
+k8s_prereqs_kernel_modules:
+  - overlay
+  - br_netfilter
+
+# sysctls required by Kubernetes.
+k8s_prereqs_sysctl:
+  net.ipv4.ip_forward: 1
+  net.bridge.bridge-nf-call-iptables: 1
+  net.bridge.bridge-nf-call-ip6tables: 1
+  # Plenty of inotify watches for kubelet and log shippers.
+  fs.inotify.max_user_watches: 524288
+  fs.inotify.max_user_instances: 8192
+
+# pkgs.k8s.io repository. kubernetes_minor normally comes from group_vars;
+# the default here is the N-1 minor at the time of writing.
+k8s_prereqs_kubernetes_minor: "{{ kubernetes_minor | default('1.35') }}"
+k8s_prereqs_kubernetes_patch: "{{ kubernetes_patch | default('*') }}"
+k8s_prereqs_repo_url: "https://pkgs.k8s.io/core:/stable:/v{{ k8s_prereqs_kubernetes_minor }}/deb/"
+k8s_prereqs_keyring: /etc/apt/keyrings/kubernetes-apt-keyring.asc
+# Packages installed from the repo and held at the pinned version.
+k8s_prereqs_packages:
+  - kubelet
+  - kubeadm
+  - kubectl

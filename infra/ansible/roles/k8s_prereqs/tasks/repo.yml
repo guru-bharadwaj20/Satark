@@ -1,0 +1,59 @@
+---
+- name: Create the apt keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Download the pkgs.k8s.io signing key for v{{ k8s_prereqs_kubernetes_minor }}
+  ansible.builtin.get_url:
+    url: "{{ k8s_prereqs_repo_url }}Release.key"
+    dest: "{{ k8s_prereqs_keyring }}"
+    owner: root
+    group: root
+    mode: "0644"
+    force: true
+
+- name: Add the pkgs.k8s.io repository for v{{ k8s_prereqs_kubernetes_minor }}
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/kubernetes.list
+    content: "deb [signed-by={{ k8s_prereqs_keyring }}] {{ k8s_prereqs_repo_url }} /\n"
+    owner: root
+    group: root
+    mode: "0644"
+  register: k8s_prereqs_repo
+
+- name: Pin Kubernetes packages to the selected minor version
+  ansible.builtin.copy:
+    dest: /etc/apt/preferences.d/kubernetes
+    content: |
+      Package: {{ k8s_prereqs_packages | join(' ') }}
+      Pin: version {{ k8s_prereqs_kubernetes_minor }}.*
+      Pin-Priority: 1001
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Refresh apt cache after repository change
+  ansible.builtin.apt:
+    update_cache: true
+  when: k8s_prereqs_repo.changed  # noqa: no-handler
+
+- name: Install kubelet, kubeadm and kubectl
+  ansible.builtin.apt:
+    name: "{{ k8s_prereqs_packages | map('regex_replace', '$', '=' ~ k8s_prereqs_kubernetes_minor ~ '.' ~ k8s_prereqs_kubernetes_patch) | list }}"
+    state: present
+    allow_change_held_packages: true
+
+- name: Hold Kubernetes packages so apt upgrade cannot move them
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop: "{{ k8s_prereqs_packages }}"
+
+- name: Enable kubelet
+  ansible.builtin.systemd_service:
+    name: kubelet
+    enabled: true

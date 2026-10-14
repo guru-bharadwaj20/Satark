@@ -1,0 +1,63 @@
+---
+- name: Install containerd and runc
+  ansible.builtin.apt:
+    name:
+      - "{{ containerd_package }}"
+      - runc
+    state: present
+
+- name: Hold containerd so unattended upgrades cannot restart it
+  ansible.builtin.dpkg_selections:
+    name: "{{ containerd_package }}"
+    selection: hold
+
+- name: Create the containerd config directory
+  ansible.builtin.file:
+    path: "{{ containerd_config_path | dirname }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Check whether containerd already has a full config
+  ansible.builtin.command: grep -q SystemdCgroup {{ containerd_config_path }}
+  register: containerd_has_config
+  changed_when: false
+  failed_when: false
+
+- name: Generate the default containerd config
+  ansible.builtin.shell: |
+    set -o pipefail
+    containerd config default > {{ containerd_config_path }}
+  args:
+    executable: /bin/bash
+  when: containerd_has_config.rc != 0
+  changed_when: true
+  notify: Restart containerd
+
+- name: Set SystemdCgroup = {{ containerd_systemd_cgroup | bool | lower }}
+  ansible.builtin.replace:
+    path: "{{ containerd_config_path }}"
+    regexp: '^(\s*)SystemdCgroup\s*=\s*\w+'
+    replace: '\1SystemdCgroup = {{ containerd_systemd_cgroup | bool | lower }}'
+  notify: Restart containerd
+
+- name: Configure crictl
+  ansible.builtin.copy:
+    dest: /etc/crictl.yaml
+    content: |
+      runtime-endpoint: {{ containerd_crictl_endpoint }}
+      image-endpoint: {{ containerd_crictl_endpoint }}
+      timeout: 10
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Enable containerd
+  ansible.builtin.systemd_service:
+    name: containerd
+    state: started
+    enabled: true
+
+- name: Apply containerd config before kubeadm runs
+  ansible.builtin.meta: flush_handlers
