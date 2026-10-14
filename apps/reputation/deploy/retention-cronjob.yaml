@@ -1,0 +1,53 @@
+# Daily data-retention pass for the reputation service.
+# See docs/compliance/data-retention.md for the policy.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reputation-retention
+  namespace: satark
+  labels:
+    app.kubernetes.io/name: reputation
+    app.kubernetes.io/component: retention
+    app.kubernetes.io/part-of: satark
+spec:
+  schedule: "17 2 * * *" # 02:17 UTC daily (07:47 IST), off-peak
+  timeZone: Etc/UTC
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 3600
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 900
+      ttlSecondsAfterFinished: 86400
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: reputation
+            app.kubernetes.io/component: retention
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            seccompProfile: { type: RuntimeDefault }
+          containers:
+            - name: retention
+              image: ghcr.io/guru-bharadwaj20/satark/reputation:latest # pinned by CI/Argo CD image updater
+              args: ["retention"]
+              env:
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef: { name: satark-pg-app, key: uri }
+                - { name: REPUTATION_RETENTION_DAYS, value: "365" }
+                - { name: REPUTATION_CONTACT_RETENTION_DAYS, value: "30" }
+                - { name: REPUTATION_DELISTING_RETENTION_DAYS, value: "365" }
+              resources:
+                requests: { cpu: 10m, memory: 32Mi }
+                limits: { memory: 64Mi }
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities: { drop: ["ALL"] }

@@ -50,6 +50,20 @@ type Delisting struct {
 	DecidedAt     *time.Time `json:"decided_at,omitempty"`
 }
 
+// RetentionPolicy holds absolute cut-off times; anything older is purged.
+type RetentionPolicy struct {
+	ReportsBefore        time.Time // delete reports created before this
+	ContactsBefore       time.Time // blank requester contacts on requests decided before this
+	DecidedDelistsBefore time.Time // delete decided delisting requests decided before this
+}
+
+// PurgeResult counts what a purge removed.
+type PurgeResult struct {
+	Reports         int `json:"reports_deleted"`
+	ContactsCleared int `json:"contacts_cleared"`
+	Delistings      int `json:"delistings_deleted"`
+}
+
 // Store is the persistence interface used by the API.
 type Store interface {
 	// AddReport records r. It returns false when the same reporter has
@@ -63,6 +77,9 @@ type Store interface {
 
 	// DeleteReporter removes every report filed by a reporter (/forget).
 	DeleteReporter(ctx context.Context, reporterHash string) (int, error)
+
+	// Purge applies the retention policy and reports what it removed.
+	Purge(ctx context.Context, p RetentionPolicy) (PurgeResult, error)
 
 	CreateDelisting(ctx context.Context, d Delisting) (Delisting, error)
 	ListDelistings(ctx context.Context, status string) ([]Delisting, error)

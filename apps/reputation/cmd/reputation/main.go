@@ -21,7 +21,11 @@ import (
 
 func main() {
 	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	if err := run(log); err != nil {
+	cmd := run
+	if len(os.Args) > 1 && os.Args[1] == "retention" {
+		cmd = retention
+	}
+	if err := cmd(log); err != nil {
 		log.Error("fatal", "err", err)
 		os.Exit(1)
 	}
