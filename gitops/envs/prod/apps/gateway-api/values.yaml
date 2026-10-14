@@ -1,0 +1,17 @@
+# gateway-api values for prod. Overrides charts/gateway-api/values.yaml.
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/gateway-api
+  # Updated automatically by CI (dev) or by a promotion PR (prod).
+  tag: "0.1.0"
+replicaCount: 2
+service:
+  port: 8080
+resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+env:
+  SATARK_ENV: prod
+  LOG_LEVEL: info

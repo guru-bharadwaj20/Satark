@@ -1,0 +1,17 @@
+# url-intel values for prod. Overrides charts/url-intel/values.yaml.
+image:
+  repository: ghcr.io/guru-bharadwaj20/satark/url-intel
+  # Updated automatically by CI (dev) or by a promotion PR (prod).
+  tag: "0.1.0"
+replicaCount: 2
+service:
+  port: 8081
+resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+env:
+  SATARK_ENV: prod
+  LOG_LEVEL: info
