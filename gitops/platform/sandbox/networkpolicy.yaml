@@ -1,0 +1,86 @@
+# Sandbox network isolation (task 8.19).
+#
+# Sandbox pods open attacker-controlled URLs, so they must not be able to
+# reach anything internal (SSRF): no ingress at all, and egress only to the
+# public internet on web ports plus public DNS resolvers.
+#
+# Blocked egress: RFC 1918 (10/8, 172.16/12, 192.168/16), carrier-grade NAT
+# (100.64/10), loopback, link-local including the cloud metadata endpoint
+# 169.254.169.254, and the cluster pod/service CIDRs (listed explicitly in
+# case they are moved out of RFC 1918 space).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: sandbox-isolation
+  namespace: satark-sandbox
+spec:
+  podSelector:
+    matchLabels:
+      satark.io/role: sandbox
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress: []
+  egress:
+  # Public DNS only (pods use dnsPolicy: None with these resolvers).
+  - to:
+    - ipBlock: {cidr: 1.1.1.1/32}
+    - ipBlock: {cidr: 9.9.9.9/32}
+    ports:
+    - {protocol: UDP, port: 53}
+    - {protocol: TCP, port: 53}
+  # Web traffic to the public internet only.
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 10.0.0.0/8
+        - 172.16.0.0/12
+        - 192.168.0.0/16
+        - 100.64.0.0/10
+        - 127.0.0.0/8
+        - 169.254.0.0/16
+        - 0.0.0.0/8
+        - 192.0.0.0/24
+        - 198.18.0.0/15
+        - 224.0.0.0/4
+        - 240.0.0.0/4
+        # Cluster pod and service CIDRs (kubeadm defaults used by Satark).
+        - 10.244.0.0/16
+        - 10.96.0.0/12
+    ports:
+    - {protocol: TCP, port: 80}
+    - {protocol: TCP, port: 443}
+    - {protocol: TCP, port: 8080}
+    - {protocol: TCP, port: 8443}
+    - {protocol: UDP, port: 443}
+---
+# Defence in depth with Cilium: explicit deny rules win over any allow, so a
+# later, broader allow policy cannot re-open internal ranges or the metadata
+# endpoint. Denied flows show up in Hubble with verdict DROPPED.
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: sandbox-deny-internal
+  namespace: satark-sandbox
+spec:
+  endpointSelector:
+    matchLabels:
+      satark.io/role: sandbox
+  ingressDeny:
+  - fromEntities:
+    - all
+  egressDeny:
+  - toEntities:
+    - cluster
+    - host
+    - remote-node
+    - kube-apiserver
+  - toCIDR:
+    - 169.254.169.254/32
+    - 169.254.0.0/16
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 100.64.0.0/10
+    - 127.0.0.0/8
