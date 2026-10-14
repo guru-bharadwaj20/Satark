@@ -14,3 +14,7 @@
 - name: Install metrics-server
   ansible.builtin.import_tasks: metrics-server.yml
   when: addons_metrics_server_enabled | bool
+
+- name: Install local-path-provisioner as the default StorageClass
+  ansible.builtin.import_tasks: local-path.yml
+  when: addons_local_path_enabled | bool

@@ -1,0 +1,63 @@
+---
+# Build the Satark on-prem kubeadm cluster from bare Ubuntu VMs.
+#
+#   cd infra/ansible
+#   ansible-playbook playbooks/site.yml
+#
+# Every play is idempotent and can be re-run safely. Use --tags to run one
+# stage, e.g. --tags addons.
+
+- name: Base OS configuration and hardening
+  hosts: k8s_cluster
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+      tags: [common]
+    - role: hardening
+      tags: [hardening]
+
+- name: Kubernetes node prerequisites
+  hosts: k8s_cluster
+  become: true
+  roles:
+    - role: k8s_prereqs
+      tags: [k8s_prereqs]
+    - role: containerd
+      tags: [containerd]
+
+- name: Control plane
+  hosts: control_plane
+  become: true
+  roles:
+    - role: kubeadm_cp
+      tags: [kubeadm_cp]
+
+- name: Worker nodes
+  hosts: workers
+  become: true
+  serial: 1
+  roles:
+    - role: kubeadm_worker
+      tags: [kubeadm_worker]
+
+- name: Cluster networking and add-ons
+  hosts: control_plane
+  become: true
+  roles:
+    - role: cilium
+      tags: [cilium]
+    - role: addons
+      tags: [addons]
+
+- name: Wait for every node to be Ready
+  hosts: control_plane
+  become: true
+  gather_facts: false
+  tags: [verify]
+  tasks:
+    - name: Wait for all nodes to report Ready
+      ansible.builtin.command: kubectl wait --for=condition=Ready nodes --all --timeout=5m
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      changed_when: false
