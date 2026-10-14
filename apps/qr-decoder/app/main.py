@@ -6,13 +6,16 @@ import logging
 import os
 import time
 from collections.abc import Awaitable, Callable
+from dataclasses import asdict
 
-from fastapi import FastAPI, File, HTTPException, Request, Response, UploadFile
+from fastapi import FastAPI, File, Form, HTTPException, Request, Response, UploadFile
 from prometheus_client import CONTENT_TYPE_LATEST, Counter, Histogram, generate_latest
 from pydantic import BaseModel
 
 from app import __version__
 from app.decode import DecodeError, decode_image
+from app.patterns import detect_flags
+from app.upi import UPIParseError, parse_upi
 
 MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(5 * 1024 * 1024)))
 
@@ -26,6 +29,7 @@ REQUESTS = Counter(
     "satark_qr_decoder_requests_total", "HTTP requests handled by qr-decoder.", ["path", "status"]
 )
 LATENCY = Histogram("satark_qr_decoder_request_duration_seconds", "HTTP request latency.", ["path"])
+FLAGS = Counter("satark_qr_decoder_flags_total", "UPI risk flags raised, by code.", ["code"])
 CODES = Counter("satark_qr_decoder_codes_total", "Decoded QR codes, by kind.", ["kind"])
 
 app = FastAPI(title="satark-qr-decoder", version=__version__)
@@ -42,10 +46,30 @@ async def observe(request: Request, call_next: Callable[[Request], Awaitable[Res
     return response
 
 
+class UPIOut(BaseModel):
+    payee_address: str | None = None
+    payee_name: str | None = None
+    amount: str | None = None
+    currency: str | None = None
+    note: str | None = None
+    action: str
+    direction: str
+    issues: list[str]
+    summary: str
+
+
+class FlagOut(BaseModel):
+    code: str
+    weight: int
+    message: str
+
+
 class DecodedCode(BaseModel):
     format: str
-    text: str
     kind: str
+    text: str | None = None
+    upi: UPIOut | None = None
+    flags: list[FlagOut] = []
 
 
 class DecodeResponse(BaseModel):
@@ -77,7 +101,10 @@ def metrics() -> Response:
 
 
 @app.post("/v1/decode", response_model=DecodeResponse)
-async def decode(image: UploadFile = File(...)) -> DecodeResponse:  # noqa: B008
+async def decode(
+    image: UploadFile = File(...),  # noqa: B008
+    context: str | None = Form(None, max_length=2000),  # noqa: B008
+) -> DecodeResponse:
     data = await image.read(MAX_UPLOAD_BYTES + 1)
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=413, detail="image too large")
@@ -90,6 +117,23 @@ async def decode(image: UploadFile = File(...)) -> DecodeResponse:  # noqa: B008
     out: list[DecodedCode] = []
     for c in codes:
         kind = classify(c.text)
-        CODES.labels(kind).inc()
-        out.append(DecodedCode(format=c.format, text=c.text, kind=kind))
+        if kind == "upi":
+            try:
+                intent = parse_upi(c.text)
+            except UPIParseError:
+                kind = "text"
+            else:
+                # The raw link contains an unmasked UPI ID, so it is not echoed.
+                flags = [FlagOut(**asdict(f)) for f in detect_flags(intent, context)]
+                for f in flags:
+                    FLAGS.labels(f.code).inc()
+                out.append(
+                    DecodedCode(
+                        format=c.format, kind=kind, upi=UPIOut(**intent.as_dict()), flags=flags
+                    )
+                )
+                continue
+        out.append(DecodedCode(format=c.format, kind=kind, text=c.text))
+    for code in out:
+        CODES.labels(code.kind).inc()
     return DecodeResponse(codes=out)
