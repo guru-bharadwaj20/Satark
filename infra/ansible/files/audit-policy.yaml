@@ -1,0 +1,63 @@
+# Kubernetes API server audit policy (task 9.14, CIS 1.2.16-1.2.19, 3.2.1).
+# First matching rule wins. Secret payloads are never logged.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - RequestReceived
+rules:
+  # High-volume, low-value traffic.
+  - level: None
+    users: ["system:kube-proxy"]
+    verbs: ["watch"]
+    resources:
+      - group: ""
+        resources: ["endpoints", "services", "services/status"]
+  - level: None
+    userGroups: ["system:nodes"]
+    verbs: ["get"]
+    resources:
+      - group: ""
+        resources: ["nodes", "nodes/status"]
+  - level: None
+    nonResourceURLs: ["/healthz*", "/livez*", "/readyz*", "/version", "/metrics"]
+  - level: None
+    resources:
+      - group: "coordination.k8s.io"
+        resources: ["leases"]
+  - level: None
+    resources:
+      - group: ""
+        resources: ["events"]
+
+  # Secrets, ConfigMaps, tokens and SealedSecrets: who touched them, never the content.
+  - level: Metadata
+    resources:
+      - group: ""
+        resources: ["secrets", "configmaps", "serviceaccounts/token"]
+      - group: "authentication.k8s.io"
+        resources: ["tokenreviews"]
+      - group: "bitnami.com"
+        resources: ["sealedsecrets"]
+
+  # Interactive access to workloads.
+  - level: Metadata
+    resources:
+      - group: ""
+        resources: ["pods/exec", "pods/attach", "pods/portforward", "pods/proxy", "services/proxy"]
+
+  # RBAC, admission and policy changes: full request and response.
+  - level: RequestResponse
+    verbs: ["create", "update", "patch", "delete", "deletecollection"]
+    resources:
+      - group: "rbac.authorization.k8s.io"
+      - group: "admissionregistration.k8s.io"
+      - group: "kyverno.io"
+      - group: "networking.k8s.io"
+        resources: ["networkpolicies"]
+
+  # All other writes: request body.
+  - level: Request
+    verbs: ["create", "update", "patch", "delete", "deletecollection"]
+
+  # Reads: metadata only.
+  - level: Metadata

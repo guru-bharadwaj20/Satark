@@ -1,0 +1,100 @@
+# Ship Kubernetes API audit logs to Loki (task 9.14). A dedicated Grafana
+# Alloy DaemonSet runs only on control-plane nodes, tails the JSON audit log
+# written by kube-apiserver and pushes it to Loki with the label
+# {job="kubernetes-audit"}. It is separate from the main Alloy log pipeline
+# so audit retention and access can be managed independently.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: alloy-audit
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  source:
+    repoURL: https://grafana.github.io/helm-charts
+    chart: alloy
+    targetRevision: 0.10.1
+    helm:
+      valuesObject:
+        fullnameOverride: alloy-audit
+        controller:
+          type: daemonset
+          nodeSelector:
+            node-role.kubernetes.io/control-plane: ""
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+          volumes:
+            extra:
+              - name: audit-log
+                hostPath:
+                  path: /var/log/kubernetes/audit
+                  type: DirectoryOrCreate
+        alloy:
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 256Mi}
+          # Root is needed to read the 0600 root-owned audit log; the
+          # monitoring namespace is not under PSA `restricted`.
+          securityContext:
+            runAsUser: 0
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL], add: [DAC_READ_SEARCH]}
+          mounts:
+            extra:
+              - name: audit-log
+                mountPath: /var/log/kubernetes/audit
+                readOnly: true
+          configMap:
+            create: true
+            content: |
+              local.file_match "audit" {
+                path_targets = [{
+                  __path__ = "/var/log/kubernetes/audit/audit.log",
+                  job      = "kubernetes-audit",
+                  node     = sys.env("HOSTNAME"),
+                }]
+              }
+
+              loki.source.file "audit" {
+                targets    = local.file_match.audit.targets
+                forward_to = [loki.process.audit.receiver]
+              }
+
+              loki.process "audit" {
+                stage.json {
+                  expressions = {
+                    verb      = "verb",
+                    user      = "user.username",
+                    namespace = "objectRef.namespace",
+                    resource  = "objectRef.resource",
+                    code      = "responseStatus.code",
+                    ts        = "requestReceivedTimestamp",
+                  }
+                }
+                stage.timestamp {
+                  source = "ts"
+                  format = "RFC3339Nano"
+                }
+                // Low-cardinality labels only; the rest stays in the line.
+                stage.labels {
+                  values = { verb = "", resource = "" }
+                }
+                forward_to = [loki.write.default.receiver]
+              }
+
+              loki.write "default" {
+                endpoint {
+                  url = "http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push"
+                }
+                external_labels = { cluster = "satark" }
+              }
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
