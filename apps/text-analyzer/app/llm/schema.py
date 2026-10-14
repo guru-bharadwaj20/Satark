@@ -27,7 +27,12 @@ class Category(StrEnum):
 
 
 # Phrases user-facing text must never contain (CONTRIBUTING.md privacy and safety rules).
-_FORBIDDEN = re.compile(r"100\s*%\s*safe|completely safe|\bscammers?\b|\bfraudsters?\b", re.I)
+# Also rejects output that echoes the system prompt (a sign the model was hijacked).
+_FORBIDDEN = re.compile(
+    r"100\s*%\s*safe|completely safe|\bscammers?\b|\bfraudsters?\b"
+    r"|message classifier|untrusted data|</?message>",
+    re.I,
+)
 
 
 class SchemaError(ValueError):

@@ -5,8 +5,8 @@ replace it:
 
 * at most +MAX_UP points towards "scam" and -MAX_DOWN points towards "safe";
 * the nudge scales with the LLM's confidence and is zero below MIN_CONFIDENCE;
-* a strong rule hit (OTP/PIN request, remote-access app, ...) can never be
-  argued down by the LLM;
+* a strong rule hit (OTP/PIN request, remote-access app, ...) or a suspected
+  prompt-injection attempt means the LLM can never argue the score down;
 * the result is clamped to 0..100.
 """
 
@@ -42,6 +42,7 @@ def bounded_adjustment(
     llm: ClassificationResult | None,
     *,
     strong_rule_hit: bool = False,
+    injection_suspected: bool = False,
 ) -> ScoreAdjustment:
     base = _clamp(rule_score)
     if llm is None:
@@ -57,6 +58,8 @@ def bounded_adjustment(
     else:
         if strong_rule_hit:
             return ScoreAdjustment(base, 0, base, "strong_rule_overrides_llm")
+        if injection_suspected:
+            return ScoreAdjustment(base, 0, base, "injection_suspected")
         delta = -round(MAX_DOWN * weight)
         reason = "llm_suggests_legitimate"
 
