@@ -124,6 +124,24 @@ grafana:
   persistence:
     enabled: true
     size: 2Gi
+  # Dashboards and datasources come only from Git (task 6.16): the sidecars
+  # load ConfigMaps labelled grafana_dashboard / grafana_datasource, and UI
+  # edits are not persisted back.
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      folderAnnotation: grafana_folder
+      provider:
+        foldersFromFilesStructure: true
+        allowUiUpdates: false
+        disableDelete: true
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      labelValue: "1"
   resources:
     requests: {cpu: 50m, memory: 128Mi}
     limits: {memory: 256Mi}
