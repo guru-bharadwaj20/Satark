@@ -18,3 +18,77 @@ hardening_fail2ban_maxretry: 5
 hardening_fail2ban_ignoreip:
   - 127.0.0.1/8
   - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+
+# --- nftables ----------------------------------------------------------
+hardening_nftables_enabled: true
+# Sources trusted for intra-cluster traffic (node network + pod CIDR).
+hardening_nft_cluster_sources:
+  - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+  - "{{ pod_network_cidr | default('10.244.0.0/16') }}"
+# Ports open to everyone on every node.
+hardening_nft_public_tcp_ports:
+  - "{{ hardening_ssh_port }}"
+# Ports open to cluster sources on every node.
+hardening_nft_common_tcp_ports:
+  - 10250        # kubelet API
+  - 4240         # cilium-health
+  - 4244         # Hubble server
+  - 7946         # MetalLB memberlist
+  - 9100         # node-exporter
+  - 9962-9965    # Cilium / Hubble / operator metrics
+hardening_nft_common_udp_ports:
+  - 8472         # Cilium VXLAN
+  - 7946         # MetalLB memberlist
+# Extra ports per node type (inventory group).
+hardening_nft_control_plane_tcp_ports:
+  - 6443         # kube-apiserver
+  - 2379-2380    # etcd client and peer
+  - 10257        # kube-controller-manager
+  - 10259        # kube-scheduler
+hardening_nft_worker_tcp_ports:
+  - 30000-32767  # NodePort services
+  - 80
+  - 443
+# The API server must be reachable from the control node / host as well.
+hardening_nft_control_plane_public_tcp_ports:
+  - 6443
+
+# --- kernel sysctl -----------------------------------------------------
+# Kernel hardening settings. Values that would break Kubernetes networking
+# (ip_forward, bridge-nf-call-*) are owned by the k8s_prereqs role instead.
+hardening_sysctl_file: /etc/sysctl.d/90-satark-hardening.conf
+hardening_sysctl:
+  # Kernel information leaks and attack surface
+  kernel.kptr_restrict: 2
+  kernel.dmesg_restrict: 1
+  kernel.unprivileged_bpf_disabled: 1
+  net.core.bpf_jit_harden: 2
+  kernel.yama.ptrace_scope: 1
+  kernel.kexec_load_disabled: 1
+  kernel.sysrq: 0
+  kernel.randomize_va_space: 2
+  fs.protected_hardlinks: 1
+  fs.protected_symlinks: 1
+  fs.protected_fifos: 2
+  fs.protected_regular: 2
+  fs.suid_dumpable: 0
+  # Network: reject spoofing, redirects and source routing
+  net.ipv4.conf.all.accept_redirects: 0
+  net.ipv4.conf.default.accept_redirects: 0
+  net.ipv4.conf.all.secure_redirects: 0
+  net.ipv4.conf.default.secure_redirects: 0
+  net.ipv4.conf.all.send_redirects: 0
+  net.ipv4.conf.default.send_redirects: 0
+  net.ipv4.conf.all.accept_source_route: 0
+  net.ipv4.conf.default.accept_source_route: 0
+  net.ipv6.conf.all.accept_redirects: 0
+  net.ipv6.conf.default.accept_redirects: 0
+  net.ipv6.conf.all.accept_source_route: 0
+  net.ipv4.conf.all.log_martians: 1
+  # Loose reverse-path filtering: strict mode breaks Cilium's routing.
+  net.ipv4.conf.all.rp_filter: 2
+  net.ipv4.conf.default.rp_filter: 2
+  net.ipv4.icmp_echo_ignore_broadcasts: 1
+  net.ipv4.icmp_ignore_bogus_error_responses: 1
+  net.ipv4.tcp_syncookies: 1
+  net.ipv4.tcp_rfc1337: 1

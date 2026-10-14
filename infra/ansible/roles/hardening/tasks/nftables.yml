@@ -1,0 +1,34 @@
+---
+- name: Install nftables
+  ansible.builtin.apt:
+    name: nftables
+    state: present
+
+- name: Remove ufw so it does not fight with nftables
+  ansible.builtin.apt:
+    name: ufw
+    state: absent
+
+- name: Work out the per-node-type port allowlist
+  ansible.builtin.set_fact:
+    hardening_nft_role_tcp_ports: >-
+      {{ (hardening_nft_control_plane_tcp_ports if inventory_hostname in groups.get('control_plane', []) else [])
+         + (hardening_nft_worker_tcp_ports if inventory_hostname in groups.get('workers', []) else []) }}
+    hardening_nft_role_public_tcp_ports: >-
+      {{ hardening_nft_control_plane_public_tcp_ports if inventory_hostname in groups.get('control_plane', []) else [] }}
+
+- name: Write the nftables ruleset
+  ansible.builtin.template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: "0644"
+    validate: /usr/sbin/nft -c -f %s
+  notify: Reload nftables
+
+- name: Enable nftables
+  ansible.builtin.systemd_service:
+    name: nftables
+    state: started
+    enabled: true
