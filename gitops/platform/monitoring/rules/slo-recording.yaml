@@ -1,0 +1,198 @@
+# Generated SLO recording rules (task 6.12). See docs/observability/slos.md.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: satark-slo-recording
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: satark
+spec:
+  groups:
+    - name: satark-slo-availability
+      interval: 1m
+      rules:
+        - record: slo:objective:ratio
+          expr: |
+            vector(0.995)
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate5m
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[5m])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[5m]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate30m
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[30m])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[30m]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate1h
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[1h])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[1h]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate2h
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[2h])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[2h]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate6h
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[6h])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[6h]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate1d
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[1d])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[1d]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate3d
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[3d])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[3d]))
+          labels:
+            slo: availability
+            service: gateway-api
+    - name: satark-slo-availability-30d
+      interval: 5m
+      rules:
+        - record: slo:sli_error:ratio_rate30d
+          expr: |
+            (sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",code=~"5.."}[30d])) or vector(0))
+            /
+            sum(rate(satark_http_requests_total{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[30d]))
+          labels:
+            slo: availability
+            service: gateway-api
+        - record: slo:error_budget_remaining:ratio
+          expr: |
+            1 - (
+              slo:sli_error:ratio_rate30d{slo="availability",service="gateway-api"}
+              /
+              (1 - slo:objective:ratio{slo="availability",service="gateway-api"})
+            )
+          labels:
+            slo: availability
+            service: gateway-api
+    - name: satark-slo-latency
+      interval: 1m
+      rules:
+        - record: slo:objective:ratio
+          expr: |
+            vector(0.95)
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate5m
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[5m]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[5m]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate30m
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[30m]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[30m]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate1h
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[1h]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[1h]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate2h
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[2h]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[2h]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate6h
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[6h]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[6h]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate1d
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[1d]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[1d]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:sli_error:ratio_rate3d
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[3d]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[3d]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+    - name: satark-slo-latency-30d
+      interval: 5m
+      rules:
+        - record: slo:sli_error:ratio_rate30d
+          expr: |
+            1 - (
+              sum(rate(satark_http_request_duration_seconds_bucket{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched",le="0.8"}[30d]))
+              /
+              sum(rate(satark_http_request_duration_seconds_count{service="gateway-api",route!~"/healthz|/readyz|/metrics|unmatched"}[30d]))
+            )
+          labels:
+            slo: latency
+            service: gateway-api
+        - record: slo:error_budget_remaining:ratio
+          expr: |
+            1 - (
+              slo:sli_error:ratio_rate30d{slo="latency",service="gateway-api"}
+              /
+              (1 - slo:objective:ratio{slo="latency",service="gateway-api"})
+            )
+          labels:
+            slo: latency
+            service: gateway-api
