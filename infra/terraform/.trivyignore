@@ -1,0 +1,9 @@
+# The edge node is a public ingress point: 80/443 (and WireGuard on
+# 51820/udp) are open to the internet by design. There is no SSH.
+AVD-AWS-0107
+# Egress to anywhere is needed for SSM, apt, ACME and the tunnel.
+AVD-AWS-0104
+# VPC flow logs are skipped on the single-instance edge VPC to keep costs down.
+AVD-AWS-0178
+# Bucket access logging is not enabled (it would need another bucket); CloudTrail covers management events.
+AVD-AWS-0089

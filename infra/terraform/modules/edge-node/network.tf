@@ -3,6 +3,7 @@
 # NAT gateway, so nothing here bills by the hour.
 
 data "aws_availability_zones" "available" {
+  #checkov:skip=CKV_AWS_394:Only the first AZ is used and can be pinned with availability_zone
   state = "available"
 }
 

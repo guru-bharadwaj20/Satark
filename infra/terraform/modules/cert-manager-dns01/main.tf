@@ -74,6 +74,7 @@ resource "aws_iam_policy" "dns01" {
 }
 
 resource "aws_iam_user" "cert_manager" {
+  #checkov:skip=CKV_AWS_273:On-prem cluster has no SSO or IRSA; a scoped machine user is required
   count = var.create_user ? 1 : 0
 
   name = "${var.name}-cert-manager"
@@ -82,6 +83,7 @@ resource "aws_iam_user" "cert_manager" {
 }
 
 resource "aws_iam_user_policy_attachment" "cert_manager" {
+  #checkov:skip=CKV_AWS_40:Single-purpose machine user; a group adds nothing
   count = var.create_user ? 1 : 0
 
   user       = aws_iam_user.cert_manager[0].name

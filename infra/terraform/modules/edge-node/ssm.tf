@@ -37,6 +37,7 @@ resource "aws_iam_instance_profile" "edge" {
 }
 
 resource "aws_cloudwatch_log_group" "ssm_sessions" {
+  #checkov:skip=CKV_AWS_338:Retention is configurable; 30 days keeps cost low for a hobby-scale edge
   name              = "/satark/${var.name}/ssm-sessions"
   retention_in_days = var.log_retention_days
   tags              = var.tags

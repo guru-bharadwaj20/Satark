@@ -19,6 +19,8 @@ locals {
 }
 
 resource "aws_route53_zone" "this" {
+  #checkov:skip=CKV2_AWS_39:Query logging requires a us-east-1 log group; out of scope
+  #checkov:skip=CKV2_AWS_38:DNSSEC needs a KMS key in us-east-1 and registrar DS setup; tracked separately
   count = var.create_zone ? 1 : 0
 
   name          = var.domain
@@ -36,6 +38,7 @@ data "aws_route53_zone" "existing" {
 }
 
 resource "aws_route53_record" "edge_a" {
+  #checkov:skip=CKV2_AWS_23:Records point at the edge Elastic IP passed in from edge-node
   for_each = local.edge_names
 
   zone_id = local.zone_id
