@@ -1,0 +1,82 @@
+# {{ ansible_managed }}
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: {{ kubeadm_cp_advertise_address }}
+  bindPort: 6443
+nodeRegistration:
+  name: {{ inventory_hostname }}
+  criSocket: unix:///run/containerd/containerd.sock
+  kubeletExtraArgs:
+    - name: node-ip
+      value: "{{ kubeadm_cp_advertise_address }}"
+{% if kubeadm_cp_skip_kube_proxy %}
+skipPhases:
+  - addon/kube-proxy
+{% endif %}
+---
+apiVersion: kubeadm.k8s.io/v1beta4
+kind: ClusterConfiguration
+clusterName: {{ kubeadm_cp_cluster_name }}
+kubernetesVersion: {{ kubeadm_cp_effective_version }}
+controlPlaneEndpoint: "{{ kubeadm_cp_control_plane_endpoint }}"
+networking:
+  podSubnet: {{ kubeadm_cp_pod_subnet }}
+  serviceSubnet: {{ kubeadm_cp_service_subnet }}
+  dnsDomain: {{ kubeadm_cp_dns_domain }}
+apiServer:
+  certSANs:
+{% for san in kubeadm_cp_cert_sans %}
+    - "{{ san }}"
+{% endfor %}
+  extraArgs:
+    - name: audit-policy-file
+      value: {{ kubeadm_cp_audit_policy_dir }}/audit-policy.yaml
+    - name: audit-log-path
+      value: {{ kubeadm_cp_audit_log_dir }}/audit.log
+    - name: audit-log-format
+      value: json
+    - name: audit-log-maxage
+      value: "{{ kubeadm_cp_audit_log_maxage }}"
+    - name: audit-log-maxbackup
+      value: "{{ kubeadm_cp_audit_log_maxbackup }}"
+    - name: audit-log-maxsize
+      value: "{{ kubeadm_cp_audit_log_maxsize }}"
+    - name: profiling
+      value: "false"
+  extraVolumes:
+    - name: audit-policy
+      hostPath: {{ kubeadm_cp_audit_policy_dir }}
+      mountPath: {{ kubeadm_cp_audit_policy_dir }}
+      readOnly: true
+      pathType: DirectoryOrCreate
+    - name: audit-logs
+      hostPath: {{ kubeadm_cp_audit_log_dir }}
+      mountPath: {{ kubeadm_cp_audit_log_dir }}
+      readOnly: false
+      pathType: DirectoryOrCreate
+controllerManager:
+  extraArgs:
+    - name: bind-address
+      value: 0.0.0.0
+    - name: profiling
+      value: "false"
+scheduler:
+  extraArgs:
+    - name: bind-address
+      value: 0.0.0.0
+    - name: profiling
+      value: "false"
+etcd:
+  local:
+    extraArgs:
+      - name: listen-metrics-urls
+        value: http://0.0.0.0:2381
+---
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+cgroupDriver: systemd
+serverTLSBootstrap: true
+rotateCertificates: true
+protectKernelDefaults: true
+readOnlyPort: 0

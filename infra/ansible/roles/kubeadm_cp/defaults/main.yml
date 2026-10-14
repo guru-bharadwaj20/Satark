@@ -1,0 +1,27 @@
+---
+# Rendered kubeadm configuration.
+kubeadm_cp_config_path: /etc/kubernetes/kubeadm-config.yaml
+# Empty means "the version of the installed kubeadm binary", which is kept in
+# step with the packages pinned by k8s_prereqs.
+kubeadm_cp_kubernetes_version: ""
+kubeadm_cp_cluster_name: "{{ cluster_name | default('satark-onprem') }}"
+kubeadm_cp_advertise_address: "{{ node_ip | default(ansible_host) }}"
+kubeadm_cp_control_plane_endpoint: "{{ control_plane_endpoint | default(kubeadm_cp_advertise_address ~ ':6443') }}"
+kubeadm_cp_pod_subnet: "{{ pod_network_cidr | default('10.244.0.0/16') }}"
+kubeadm_cp_service_subnet: "{{ service_cidr | default('10.96.0.0/12') }}"
+kubeadm_cp_dns_domain: "{{ cluster_dns_domain | default('cluster.local') }}"
+# Extra SANs on the API server certificate.
+kubeadm_cp_cert_sans:
+  - "{{ kubeadm_cp_advertise_address }}"
+  - "{{ inventory_hostname }}"
+  - 127.0.0.1
+  - localhost
+# Skip kube-proxy: Cilium runs with kube-proxy replacement.
+kubeadm_cp_skip_kube_proxy: true
+
+# --- API server audit logging -----------------------------------------
+kubeadm_cp_audit_policy_dir: /etc/kubernetes/audit
+kubeadm_cp_audit_log_dir: /var/log/kubernetes/audit
+kubeadm_cp_audit_log_maxage: 30
+kubeadm_cp_audit_log_maxbackup: 10
+kubeadm_cp_audit_log_maxsize: 100

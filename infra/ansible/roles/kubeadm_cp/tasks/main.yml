@@ -1,0 +1,3 @@
+---
+- name: Render kubeadm configuration and audit policy
+  ansible.builtin.import_tasks: config.yml
