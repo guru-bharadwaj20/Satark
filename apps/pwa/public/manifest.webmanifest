@@ -1,0 +1,13 @@
+{
+  "name": "Satark: check before you click",
+  "short_name": "Satark",
+  "description": "Check a suspicious message, link or QR code before you act on it.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f5132",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
