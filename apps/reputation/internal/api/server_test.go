@@ -7,8 +7,10 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -49,8 +51,44 @@ func TestReportAndLookup(t *testing.T) {
 	}
 	report(t, s, "tg:2", "9000000001")
 	rec, out := do(t, s, "GET", lookupPath("phone", "9000000001"), "")
-	if rec.Code != 200 || out["distinct_reporters"].(float64) != 2 {
-		t.Fatalf("lookup: %d %v", rec.Code, out)
+	if rec.Code != 200 || out["status"] != "insufficient_reports" || out["reporters"] != nil {
+		t.Fatalf("below threshold must reveal nothing: %d %v", rec.Code, out)
+	}
+	report(t, s, "tg:3", "9000000001")
+	_, out = do(t, s, "GET", lookupPath("phone", "9000000001"), "")
+	if out["status"] != "reported" || out["reporters"] != "fewer than 10" || out["subject"] != "90XXXXXX01" {
+		t.Fatalf("lookup: %v", out)
+	}
+	if cats := out["categories"].([]any); len(cats) != 1 || cats[0] != "kyc_fraud" {
+		t.Fatalf("categories: %v", out["categories"])
+	}
+	if strings.Contains(strings.ToLower(out["message"].(string)), "scammer") {
+		t.Fatal("message must not label anyone")
+	}
+}
+
+func TestRateLimit(t *testing.T) {
+	s := New(Config{
+		Store:   store.NewMemory(),
+		Hasher:  identifier.NewHasher("test"),
+		Limiter: ratelimit.New(nil, ratelimit.Window{Max: 2, Period: time.Hour}),
+	})
+	report(t, s, "tg:9", "9000000001")
+	report(t, s, "tg:9", "9000000002")
+	rec := report(t, s, "tg:9", "9000000003")
+	if rec.Code != http.StatusTooManyRequests || rec.Header().Get("Retry-After") == "" {
+		t.Fatalf("want 429 with Retry-After, got %d", rec.Code)
+	}
+	if rec := report(t, s, "tg:10", "9000000003"); rec.Code != http.StatusAccepted {
+		t.Fatalf("other reporter limited: %d", rec.Code)
+	}
+}
+
+func TestBucket(t *testing.T) {
+	for n, want := range map[int]string{3: "fewer than 10", 10: "10-49", 75: "50-99", 500: "100+"} {
+		if got := Bucket(n); got != want {
+			t.Errorf("Bucket(%d)=%q want %q", n, got, want)
+		}
 	}
 }
 

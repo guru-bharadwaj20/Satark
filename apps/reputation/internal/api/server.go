@@ -10,10 +10,13 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"sort"
+	"strconv"
 	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/metrics"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -30,6 +33,11 @@ type Config struct {
 	Metrics *metrics.Registry
 	Logger  *slog.Logger
 	Now     func() time.Time
+	// MinReporters is the distinct-reporter threshold below which a
+	// lookup reveals nothing (default 3).
+	MinReporters int
+	// Limiter caps reports per reporter; nil disables limiting.
+	Limiter *ratelimit.Limiter
 }
 
 // Server implements http.Handler.
@@ -45,6 +53,9 @@ func New(cfg Config) *Server {
 	}
 	if cfg.Logger == nil {
 		cfg.Logger = slog.Default()
+	}
+	if cfg.MinReporters < 2 {
+		cfg.MinReporters = 3
 	}
 	if cfg.Metrics == nil {
 		cfg.Metrics = metrics.New()
@@ -92,10 +103,19 @@ func (s *Server) report(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, "reporter_id is required")
 		return
 	}
+	reporter := s.cfg.Hasher.Reporter(req.ReporterID)
+	if s.cfg.Limiter != nil {
+		if ok, wait := s.cfg.Limiter.Allow(reporter); !ok {
+			s.cfg.Metrics.Inc("satark_reputation_reports_total", "kind", string(kind), "result", "rate_limited")
+			w.Header().Set("Retry-After", strconv.Itoa(int(wait.Seconds())+1))
+			writeErr(w, http.StatusTooManyRequests, "too many reports from this reporter; try again later")
+			return
+		}
+	}
 	added, err := s.cfg.Store.AddReport(r.Context(), store.Report{
 		Kind:         string(kind),
 		SubjectHash:  s.cfg.Hasher.Subject(kind, norm),
-		ReporterHash: s.cfg.Hasher.Reporter(req.ReporterID),
+		ReporterHash: reporter,
 		Category:     req.Category,
 		CreatedAt:    s.cfg.Now().UTC(),
 	})
@@ -123,11 +143,59 @@ func (s *Server) lookup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	s.cfg.Metrics.Inc("satark_reputation_lookups_total", "kind", string(kind))
-	writeJSON(w, http.StatusOK, map[string]any{
-		"kind":               kind,
-		"distinct_reporters": sum.DistinctReporters,
-		"categories":         sum.Categories,
-	})
+	writeJSON(w, http.StatusOK, s.present(kind, norm, sum))
+}
+
+// LookupResponse is what callers see. Counts below the threshold are
+// never revealed, counts above it are bucketed, and the subject is masked.
+// The wording is deliberately factual: it reports how many independent
+// people flagged the subject and never labels anyone a scammer.
+type LookupResponse struct {
+	Kind       identifier.Kind `json:"kind"`
+	Subject    string          `json:"subject"`
+	Status     string          `json:"status"` // "insufficient_reports" | "reported"
+	Reporters  string          `json:"reporters,omitempty"`
+	Categories []string        `json:"categories,omitempty"`
+	FirstSeen  string          `json:"first_seen,omitempty"`
+	LastSeen   string          `json:"last_seen,omitempty"`
+	Message    string          `json:"message"`
+}
+
+func (s *Server) present(kind identifier.Kind, norm string, sum store.Summary) LookupResponse {
+	resp := LookupResponse{Kind: kind, Subject: identifier.Mask(kind, norm)}
+	if sum.DistinctReporters < s.cfg.MinReporters {
+		resp.Status = "insufficient_reports"
+		resp.Message = "Not enough independent reports to show anything. This does not mean it is safe; stay careful."
+		return resp
+	}
+	resp.Status = "reported"
+	resp.Reporters = Bucket(sum.DistinctReporters)
+	for c, n := range sum.Categories {
+		// Only show categories that themselves meet the threshold so a
+		// single reporter cannot attach an arbitrary label.
+		if n >= s.cfg.MinReporters {
+			resp.Categories = append(resp.Categories, c)
+		}
+	}
+	sort.Strings(resp.Categories)
+	resp.FirstSeen = sum.FirstSeen.Format("2006-01")
+	resp.LastSeen = sum.LastSeen.Format("2006-01")
+	resp.Message = "Reported by " + resp.Reporters + " independent people. Be cautious and verify through an official channel."
+	return resp
+}
+
+// Bucket coarsens a reporter count so exact numbers are not exposed.
+func Bucket(n int) string {
+	switch {
+	case n >= 100:
+		return "100+"
+	case n >= 50:
+		return "50-99"
+	case n >= 10:
+		return "10-49"
+	default:
+		return "fewer than 10"
+	}
 }
 
 func (s *Server) parse(w http.ResponseWriter, k, v string) (identifier.Kind, string, bool) {

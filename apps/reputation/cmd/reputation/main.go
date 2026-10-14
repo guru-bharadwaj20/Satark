@@ -9,11 +9,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/api"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/identifier"
+	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/ratelimit"
 	"github.com/guru-bharadwaj20/satark/apps/reputation/internal/store"
 )
 
@@ -28,6 +30,13 @@ func main() {
 func env(k, def string) string {
 	if v := os.Getenv(k); v != "" {
 		return v
+	}
+	return def
+}
+
+func envInt(k string, def int) int {
+	if n, err := strconv.Atoi(os.Getenv(k)); err == nil {
+		return n
 	}
 	return def
 }
@@ -55,8 +64,17 @@ func run(log *slog.Logger) error {
 	defer st.Close()
 
 	srv := &http.Server{
-		Addr:              ":" + env("PORT", "8083"),
-		Handler:           api.New(api.Config{Store: st, Hasher: identifier.NewHasher(pepper), Logger: log}),
+		Addr: ":" + env("PORT", "8083"),
+		Handler: api.New(api.Config{
+			Store:        st,
+			Hasher:       identifier.NewHasher(pepper),
+			Logger:       log,
+			MinReporters: envInt("REPUTATION_MIN_REPORTERS", 3),
+			Limiter: ratelimit.New(nil,
+				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_HOUR", 5), Period: time.Hour},
+				ratelimit.Window{Max: envInt("REPUTATION_REPORTS_PER_DAY", 20), Period: 24 * time.Hour},
+			),
+		}),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	go func() {

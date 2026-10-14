@@ -27,6 +27,18 @@ func TestNormalize(t *testing.T) {
 	}
 }
 
+func TestMask(t *testing.T) {
+	if got := Mask(Phone, "9800000021"); got != "98XXXXXX21" {
+		t.Errorf("phone mask %q", got)
+	}
+	if got := Mask(UPI, "xyzabc@examplebank"); got != "xy***@examplebank" {
+		t.Errorf("upi mask %q", got)
+	}
+	if got := Mask(Domain, "example.in"); got != "example.in" {
+		t.Errorf("domain mask %q", got)
+	}
+}
+
 func TestHasherStable(t *testing.T) {
 	h := NewHasher("pepper")
 	if h.Subject(Phone, "9000000001") != h.Subject(Phone, "9000000001") {
