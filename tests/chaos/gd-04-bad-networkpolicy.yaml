@@ -1,0 +1,29 @@
+# A plausible-looking but wrong policy: meant to lock url-intel down to
+# traffic from gateway-api, but the selector label is misspelt
+# (app.kubernetes.io/name: gateway instead of gateway-api) and it forgets
+# egress to kube-dns. Result: url-intel accepts nothing and resolves nothing.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: gd04-url-intel-lockdown
+  namespace: satark
+  labels:
+    satark.dev/game-day: gd-04
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: url-intel
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: gateway
+      ports:
+        - port: 8081
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+      ports:
+        - port: 443
