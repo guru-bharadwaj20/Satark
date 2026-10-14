@@ -1,0 +1,13 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: satark-pg-daily
+spec:
+  # six-field cron (seconds first): 01:30 UTC every day
+  schedule: "0 30 1 * * *"
+  backupOwnerReference: self
+  immediate: true
+  method: barmanObjectStore
+  target: prefer-standby
+  cluster:
+    name: satark-pg
