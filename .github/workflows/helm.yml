@@ -2,8 +2,18 @@ name: helm
 
 on:
   pull_request:
+    paths:
+      - "charts/**"
+      - "gitops/**"
+      - "policies/**"
+      - ".github/workflows/helm.yml"
   push:
     branches: [main]
+    paths:
+      - "charts/**"
+      - "gitops/**"
+      - "policies/**"
+      - ".github/workflows/helm.yml"
 
 permissions:
   contents: read
