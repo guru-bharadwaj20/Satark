@@ -1,0 +1,42 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+- apiGroups:
+  - scan.satark.io
+  resources:
+  - linkscans
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - scan.satark.io
+  resources:
+  - linkscans/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - scan.satark.io
+  resources:
+  - linkscans/status
+  verbs:
+  - get
+  - patch
+  - update

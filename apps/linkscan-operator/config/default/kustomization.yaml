@@ -1,0 +1,6 @@
+namespace: satark
+namePrefix: linkscan-operator-
+resources:
+- ../crd
+- ../rbac
+- ../manager
