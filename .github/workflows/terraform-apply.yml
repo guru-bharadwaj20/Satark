@@ -1,0 +1,112 @@
+# terraform apply from protected GitHub environments (task 5.22).
+#
+# The apply role trusts only `repo:<repo>:environment:<env>` subjects, so
+# only jobs running in the `dev` or `prod` environment can assume it. Set up
+# both environments in the repository settings:
+#   - dev:  deployment branch main
+#   - prod: deployment branch main, required reviewers, and optionally a wait timer
+# Environment variables (per environment):
+#   AWS_APPLY_ROLE_ARN - output ci_apply_role_arn of infra/terraform/bootstrap
+# Repository variable:
+#   TF_STATE_BUCKET
+#
+# The job applies the saved plan file it just produced, so what runs is
+# exactly the plan shown in the job summary. dev runs before prod (max-parallel 1).
+name: terraform-apply
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "infra/terraform/envs/**"
+      - "infra/terraform/modules/**"
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Environment to apply
+        type: choice
+        options: [dev, prod]
+        required: true
+
+permissions:
+  contents: read
+  id-token: write
+
+# Never run two applies against the same state at once, and never cancel one.
+concurrency:
+  group: terraform-apply
+  cancel-in-progress: false
+
+env:
+  TF_VERSION: 1.10.5
+  TF_IN_AUTOMATION: "true"
+  AWS_REGION: ap-south-1
+
+jobs:
+  targets:
+    runs-on: ubuntu-24.04
+    outputs:
+      envs: ${{ steps.pick.outputs.envs }}
+    steps:
+      - id: pick
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo 'envs=["${{ inputs.env }}"]' >> "$GITHUB_OUTPUT"
+          else
+            echo 'envs=["dev","prod"]' >> "$GITHUB_OUTPUT"
+          fi
+
+  apply:
+    needs: targets
+    runs-on: ubuntu-24.04
+    strategy:
+      max-parallel: 1
+      matrix:
+        env: ${{ fromJSON(needs.targets.outputs.envs) }}
+    # The plan also runs in the environment, because only the apply role can
+    # see state through the environment-scoped subject. Its approval gate
+    # covers plan and apply together.
+    environment: ${{ matrix.env }}
+    defaults:
+      run:
+        working-directory: infra/terraform/envs/${{ matrix.env }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_APPLY_ROLE_ARN }}
+          role-session-name: tf-apply-${{ matrix.env }}-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+          terraform_wrapper: false
+
+      - name: init
+        run: terraform init -input=false -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}"
+
+      - name: plan
+        id: plan
+        run: |
+          set +e
+          terraform plan -input=false -no-color -lock-timeout=300s -detailed-exitcode -out=tfplan | tee plan.txt
+          code=${PIPESTATUS[0]}
+          set -e
+          echo "exitcode=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" -ne 0 ] && [ "$code" -ne 2 ]; then exit "$code"; fi
+          {
+            echo "### ${{ matrix.env }} plan"
+            echo '```'
+            tail -c 60000 plan.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: apply
+        if: steps.plan.outputs.exitcode == '2'
+        run: terraform apply -input=false -no-color -lock-timeout=300s tfplan
+
+      - name: no changes
+        if: steps.plan.outputs.exitcode == '0'
+        run: echo "No changes for ${{ matrix.env }}."
