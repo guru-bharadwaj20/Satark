@@ -9,6 +9,16 @@ REQUESTS = Counter(
     "HTTP requests handled by text-analyzer.",
     ["path", "status"],
 )
+REDACTIONS = Counter(
+    "satark_text_analyzer_redactions_total",
+    "PII items redacted, by type.",
+    ["kind"],
+)
+RULE_HITS = Counter(
+    "satark_text_analyzer_rule_hits_total",
+    "Rule matches, by category.",
+    ["category"],
+)
 LATENCY = Histogram(
     "satark_text_analyzer_request_duration_seconds",
     "HTTP request latency.",
