@@ -1,0 +1,70 @@
+name: build
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository }}
+  PLATFORMS: linux/amd64,linux/arm64
+
+jobs:
+  services:
+    name: discover services
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.find.outputs.services }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: find
+        run: |
+          svcs=$(find apps -mindepth 2 -maxdepth 2 -name Dockerfile 2>/dev/null \
+            | xargs -r -n1 dirname | xargs -r -n1 basename | sort | jq -R . | jq -cs .)
+          echo "services=${svcs:-[]}" >> "$GITHUB_OUTPUT"
+          echo "Services: ${svcs:-[]}"
+
+  image:
+    name: ${{ matrix.service }}
+    needs: services
+    if: needs.services.outputs.services != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJSON(needs.services.outputs.services) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_PREFIX }}/${{ matrix.service }}
+          tags: |
+            type=sha,format=short,prefix=
+            type=ref,event=pr
+            type=raw,value=latest,enable={{is_default_branch}}
+          labels: |
+            org.opencontainers.image.title=${{ matrix.service }}
+            org.opencontainers.image.licenses=MIT
+      - name: build multi-arch image
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/${{ matrix.service }}
+          platforms: ${{ env.PLATFORMS }}
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: mode=max
