@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limits-latest
+policies:
+  - ../../require-resource-limits.yaml
+  - ../../disallow-latest-tag.yaml
+resources:
+  - resources.yaml
+results:
+  - {policy: require-resource-limits, rule: requests-and-memory-limit, resources: [good-pod, digest-pod, latest-pod, untagged-pod], kind: Pod, result: pass}
+  - {policy: require-resource-limits, rule: requests-and-memory-limit, resources: [no-limits-pod], kind: Pod, result: fail}
+  - {policy: disallow-latest-tag, rule: require-image-tag, resources: [good-pod, digest-pod, no-limits-pod, latest-pod], kind: Pod, result: pass}
+  - {policy: disallow-latest-tag, rule: require-image-tag, resources: [untagged-pod], kind: Pod, result: fail}
+  - {policy: disallow-latest-tag, rule: disallow-latest, resources: [good-pod, digest-pod, no-limits-pod, untagged-pod], kind: Pod, result: pass}
+  - {policy: disallow-latest-tag, rule: disallow-latest, resources: [latest-pod], kind: Pod, result: fail}

@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: good-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/url-intel:v0.1.0
+      resources:
+        requests: {cpu: 50m, memory: 64Mi}
+        limits: {memory: 128Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: digest-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/url-intel@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      resources:
+        requests: {cpu: 50m, memory: 64Mi}
+        limits: {memory: 128Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: no-limits-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/url-intel:v0.1.0
+      resources:
+        requests: {cpu: 50m, memory: 64Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: latest-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/guru-bharadwaj20/satark/url-intel:latest
+      resources:
+        requests: {cpu: 50m, memory: 64Mi}
+        limits: {memory: 128Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: untagged-pod, namespace: satark}
+spec:
+  containers:
+    - name: app
+      image: localhost:5000/url-intel
+      resources:
+        requests: {cpu: 50m, memory: 64Mi}
+        limits: {memory: 128Mi}

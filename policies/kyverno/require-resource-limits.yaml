@@ -1,0 +1,42 @@
+# Task 9.4: every container must declare CPU/memory requests and a memory limit.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-resource-limits
+  annotations:
+    policies.kyverno.io/title: Require Requests and Limits
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Containers without requests cannot be scheduled fairly and containers
+      without a memory limit can starve a node. CPU limits are deliberately
+      not required (they cause throttling); memory limits are.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: requests-and-memory-limit
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaces: [satark, satark-data, satark-sandbox]
+      validate:
+        message: "resources.requests.cpu, resources.requests.memory and resources.limits.memory are required."
+        pattern:
+          spec:
+            =(initContainers):
+              - resources:
+                  requests:
+                    cpu: "?*"
+                    memory: "?*"
+                  limits:
+                    memory: "?*"
+            containers:
+              - resources:
+                  requests:
+                    cpu: "?*"
+                    memory: "?*"
+                  limits:
+                    memory: "?*"
