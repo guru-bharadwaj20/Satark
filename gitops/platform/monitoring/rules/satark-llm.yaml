@@ -1,0 +1,62 @@
+# LLM usage and budget alerts for text-analyzer and opsbot.
+# Thresholds: daily budget USD 2 (warning at 80%), tokens and fallback ratio.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: satark-llm
+  namespace: monitoring
+  labels:
+    release: kube-prometheus-stack
+    app.kubernetes.io/part-of: satark
+spec:
+  groups:
+    - name: satark-llm.recording
+      interval: 1m
+      rules:
+        - record: satark:llm_cost_usd:increase24h
+          expr: sum(increase(satark_llm_estimated_cost_usd_total[24h]))
+        - record: satark:llm_tokens:rate5m
+          expr: sum by (provider, model, direction) (rate(satark_llm_tokens_total[5m]))
+        - record: satark:llm_fallback_ratio:rate10m
+          expr: |
+            sum(rate(satark_llm_requests_total{outcome!~"ok|cached|disabled"}[10m]))
+            /
+            clamp_min(sum(rate(satark_llm_requests_total{outcome!="disabled"}[10m])), 1e-9)
+    - name: satark-llm.alerts
+      rules:
+        - alert: SatarkLLMBudgetWarning
+          expr: satark:llm_cost_usd:increase24h > 1.6
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "LLM spend is above 80% of the daily budget"
+            description: "Estimated spend in the last 24h is ${{ $value | printf \"%.2f\" }} (budget $2)."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-012-llm-provider-outage-cost-spike.md
+        - alert: SatarkLLMBudgetExceeded
+          expr: satark:llm_cost_usd:increase24h > 2
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "LLM daily budget exceeded"
+            description: "Estimated spend in the last 24h is ${{ $value | printf \"%.2f\" }}. Switch to the local provider or disable the LLM (RB-012)."
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-012-llm-provider-outage-cost-spike.md
+        - alert: SatarkLLMTokenSpike
+          expr: |
+            sum(rate(satark_llm_tokens_total[15m]))
+            > 3 * sum(rate(satark_llm_tokens_total[1d] offset 1d)) and sum(rate(satark_llm_tokens_total[15m])) > 50
+          for: 15m
+          labels:
+            severity: warning
+          annotations:
+            summary: "LLM token usage is more than 3x yesterday's average"
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-012-llm-provider-outage-cost-spike.md
+        - alert: SatarkLLMFallbackHigh
+          expr: satark:llm_fallback_ratio:rate10m > 0.25
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "More than 25% of scans are falling back to rules-only answers"
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-012-llm-provider-outage-cost-spike.md

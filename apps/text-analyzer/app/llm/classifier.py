@@ -14,7 +14,12 @@ import time
 from dataclasses import dataclass, replace
 from enum import StrEnum
 
-from app.llm.prompts import PROMPT_VERSION, build_classification_messages, injection_suspected
+from app.llm.metrics import record_outcome
+from app.llm.prompts import (
+    PROMPT_VERSION,
+    build_classification_messages,
+    injection_suspected,
+)
 from app.llm.provider import (
     CompletionRequest,
     CompletionResponse,
@@ -115,6 +120,7 @@ class LLMClassifier:
         outcome = await self._classify(redacted_text, rule_hits, language)
         if injection_suspected(redacted_text):
             outcome = replace(outcome, injection_suspected=True)
+        record_outcome(outcome)
         return outcome
 
     async def _classify(

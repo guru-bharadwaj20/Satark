@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import asyncio
 
-from app.llm.provider import CompletionRequest, CompletionResponse, LLMError, LLMProvider
+from app.llm.provider import (
+    CompletionRequest,
+    CompletionResponse,
+    LLMError,
+    LLMProvider,
+)
 
 
 class FakeProvider(LLMProvider):
