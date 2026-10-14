@@ -17,7 +17,7 @@ kubeProxy:
 
 prometheus:
   prometheusSpec:
-    retention: 15d
+    retention: 35d   # covers the 30d SLO window (task 6.12)
     retentionSize: 18GB
     scrapeInterval: 30s
     evaluationInterval: 30s
