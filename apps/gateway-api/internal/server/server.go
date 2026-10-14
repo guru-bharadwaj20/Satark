@@ -15,9 +15,10 @@ import (
 
 // Server holds dependencies shared by handlers.
 type Server struct {
-	cfg   config.Config
-	log   *slog.Logger
-	ready atomic.Bool
+	cfg     config.Config
+	log     *slog.Logger
+	ready   atomic.Bool
+	scanner Scanner
 }
 
 // New builds a Server.
@@ -41,8 +42,21 @@ func (s *Server) Handler() http.Handler {
 	return instrument(s.log, mux)
 }
 
-// routes registers the versioned API. Kept separate so tests can reuse it.
-func (s *Server) routes(_ *http.ServeMux) {}
+// routes registers the versioned API.
+func (s *Server) routes(mux *http.ServeMux) {
+	mux.HandleFunc("POST /v1/scan/text", s.requireScanner(s.scanText))
+	mux.HandleFunc("POST /v1/scan/qr", s.requireScanner(s.scanQR))
+}
+
+func (s *Server) requireScanner(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if s.scanner == nil {
+			writeError(w, http.StatusServiceUnavailable, "unavailable", "scanner not configured")
+			return
+		}
+		next(w, r)
+	}
+}
 
 func (s *Server) healthz(w http.ResponseWriter, _ *http.Request) {
 	writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
