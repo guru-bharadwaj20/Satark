@@ -30,4 +30,18 @@ real messages without masking them to this standard first (see CONTRIBUTING.md).
 
 ## Running the evaluation
 
-See `run_eval.py --help`.
+```bash
+python eval/run_eval.py --provider baseline            # offline keyword baseline
+python eval/run_eval.py --provider ollama --lang hi    # production LLM classifier
+python eval/run_eval.py --predictions preds.jsonl      # score external predictions
+```
+
+The report gives precision, recall and F1 per category, macro averages, binary
+scam recall/precision and the legitimate false-positive rate. `--out` writes JSON,
+`--markdown` writes a table for PR comments, and the `--min-*`/`--max-*` flags turn it
+into a gate (exit code 2 on failure). LLM fallbacks are scored with the keyword
+baseline, mirroring the production rules-only path.
+
+The baseline exists so the gate can run without an LLM. Its patterns were written
+against this synthetic set, so treat its scores as a regression signal, not a
+measure of real-world accuracy.
