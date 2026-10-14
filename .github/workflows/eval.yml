@@ -1,0 +1,103 @@
+name: eval
+
+# Runs the detection evaluation whenever prompts, rules, LLM code or the
+# dataset change, and blocks the PR if quality drops below the gates.
+on:
+  pull_request:
+    paths:
+      - "apps/text-analyzer/app/llm/**"
+      - "apps/text-analyzer/app/rules/**"
+      - "rules/**"
+      - "eval/**"
+      - ".github/workflows/eval.yml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/text-analyzer/app/llm/**"
+      - "rules/**"
+      - "eval/**"
+  workflow_dispatch:
+    inputs:
+      provider:
+        description: "LLM provider to evaluate (anthropic, bedrock, openai-compatible)"
+        default: anthropic
+
+permissions:
+  contents: read
+
+concurrency:
+  group: eval-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+
+jobs:
+  gate:
+    name: baseline gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install
+        run: pip install "pydantic>=2.7" "httpx>=0.27" pytest
+      - name: Unit tests (LLM package and harness)
+        run: |
+          python -m pytest -q apps/text-analyzer/tests/llm
+          python -m pytest -q eval
+      - name: Run evaluation gate
+        run: |
+          python eval/run_eval.py --provider baseline \
+            --out eval-baseline.json --markdown eval-baseline.md \
+            --min-scam-recall 0.90 --min-scam-precision 0.90 \
+            --min-macro-f1 0.85 --max-legit-fpr 0.05
+      - name: Summary
+        if: always()
+        run: cat eval-baseline.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-baseline
+          path: eval-baseline.*
+
+  llm:
+    name: LLM evaluation
+    runs-on: ubuntu-latest
+    needs: gate
+    timeout-minutes: 30
+    # Needs repository secrets, so never runs for forks.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    environment: llm-eval
+    env:
+      PROVIDER: ${{ inputs.provider || 'anthropic' }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install "pydantic>=2.7" "httpx>=0.27" boto3
+      - name: Skip when no credentials are configured
+        id: creds
+        run: |
+          if [ "$PROVIDER" = "anthropic" ] && [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            echo "No ANTHROPIC_API_KEY secret; LLM evaluation skipped." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Run LLM evaluation
+        if: steps.creds.outputs.skip != 'true'
+        run: |
+          python eval/run_eval.py --provider "$PROVIDER" --concurrency 4 \
+            --out eval-llm.json --markdown eval-llm.md \
+            --min-scam-recall 0.90 --max-legit-fpr 0.08
+      - name: Summary
+        if: always() && steps.creds.outputs.skip != 'true'
+        run: cat eval-llm.md >> "$GITHUB_STEP_SUMMARY" || true
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.creds.outputs.skip != 'true'
+        with:
+          name: eval-llm
+          path: eval-llm.*
