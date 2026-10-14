@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+[Journal]
+Storage=persistent
+Compress=yes
+SystemMaxUse={{ common_journald_system_max_use }}
+SystemMaxFileSize={{ common_journald_system_max_file_size }}
+MaxRetentionSec={{ common_journald_max_retention }}
+RateLimitIntervalSec=30s
+RateLimitBurst=10000

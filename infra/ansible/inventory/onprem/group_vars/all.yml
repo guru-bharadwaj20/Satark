@@ -1,0 +1,17 @@
+---
+# Connection settings for every on-prem node.
+ansible_user: vagrant
+ansible_become: true
+ansible_ssh_private_key_file: ~/.ssh/satark_ed25519
+
+# Address each node advertises to the cluster (host-only NIC, not the NAT one).
+node_ip: "{{ ansible_host }}"
+
+# Lab network.
+lab_network_cidr: 192.168.56.0/24
+
+# Users with SSH access (role common). Public keys are read on the control node.
+admin_users:
+  - name: satark
+    groups: [sudo]
+    ssh_public_key_file: ~/.ssh/satark_ed25519.pub

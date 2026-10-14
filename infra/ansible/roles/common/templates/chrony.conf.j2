@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+{% for server in common_ntp_servers %}
+pool {{ server }} iburst maxsources 2
+{% endfor %}
+
+driftfile /var/lib/chrony/chrony.drift
+ntsdumpdir /var/lib/chrony
+logdir /var/log/chrony
+maxupdateskew 100.0
+rtcsync
+# Step the clock on the first updates after boot (VMs resume with large skew).
+makestep 1 -1
+leapsectz right/UTC
