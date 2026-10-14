@@ -36,7 +36,7 @@ func run() error {
 	scanner := &scan.Service{
 		Text:    analyzers.TextAnalyzer{Client: analyzers.NewClient("text-analyzer", cfg.TextAnalyzerURL, cfg.AnalyzerTimeout, nil)},
 		QR:      analyzers.QRDecoder{Client: analyzers.NewClient("qr-decoder", cfg.QRDecoderURL, cfg.AnalyzerTimeout, nil)},
-		Scorer:  scan.SumScorer{},
+		Scorer:  scan.EngineScorer{},
 		Timeout: cfg.ScanTimeout,
 		Log:     log,
 	}

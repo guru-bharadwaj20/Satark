@@ -52,7 +52,7 @@ func (f fakeQR) Decode(ctx context.Context, _ []byte, _ string) (analyzers.QRRes
 
 func svc(text TextAnalyzer, qr QRDecoder) *Service {
 	return &Service{
-		Text: text, QR: qr, Scorer: SumScorer{}, Timeout: 100 * time.Millisecond,
+		Text: text, QR: qr, Scorer: EngineScorer{}, Timeout: 100 * time.Millisecond,
 		Log: slog.New(slog.NewTextHandler(io.Discard, nil)),
 	}
 }
@@ -62,7 +62,7 @@ func TestScanText(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if resp.RedactedText != "call [PHONE]" || resp.RiskScore != 45 || resp.Partial || resp.ScanID == "" {
+	if resp.RedactedText != "call [PHONE]" || resp.RiskScore != 70 || resp.Verdict != api.VerdictLikelyScam || resp.Partial || resp.ScanID == "" {
 		t.Fatalf("unexpected %+v", resp)
 	}
 }
@@ -88,7 +88,7 @@ func TestScanQRWithCaptionRunsInParallel(t *testing.T) {
 	if el := time.Since(start); el > 100*time.Millisecond {
 		t.Fatalf("analyzers did not run concurrently (%v)", el)
 	}
-	if resp.RiskScore != 100 || len(resp.QR) != 1 || resp.QR[0].UPI == nil || resp.RedactedText != "" {
+	if resp.RiskScore != 78 || len(resp.QR) != 1 || resp.QR[0].UPI == nil || resp.RedactedText != "" {
 		t.Fatalf("unexpected %+v", resp)
 	}
 }
@@ -99,7 +99,7 @@ func TestScanQRPartialWhenCaptionAnalyzerSlow(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !resp.Partial || resp.RiskScore != 60 {
+	if !resp.Partial || resp.RiskScore != 70 {
 		t.Fatalf("unexpected %+v", resp)
 	}
 }
