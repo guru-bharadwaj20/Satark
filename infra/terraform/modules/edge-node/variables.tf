@@ -38,6 +38,42 @@ variable "wireguard_peer_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "instance_type" {
+  description = "Graviton instance type."
+  type        = string
+  default     = "t4g.micro"
+}
+
+variable "ami_id" {
+  description = "AMI override. Defaults to the latest Ubuntu 24.04 arm64 image."
+  type        = string
+  default     = null
+}
+
+variable "root_volume_gb" {
+  description = "Root EBS volume size in GiB."
+  type        = number
+  default     = 10
+}
+
+variable "ebs_kms_key_arn" {
+  description = "KMS key for EBS encryption. Null uses the AWS-managed key."
+  type        = string
+  default     = null
+}
+
+variable "detailed_monitoring" {
+  description = "Enable 1-minute EC2 detailed monitoring (billed)."
+  type        = bool
+  default     = false
+}
+
+variable "user_data" {
+  description = "Optional cloud-init user data."
+  type        = string
+  default     = null
+}
+
 variable "tags" {
   description = "Tags applied to every resource. Must include Project, Environment, Owner and ManagedBy."
   type        = map(string)
