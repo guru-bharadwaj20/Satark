@@ -46,6 +46,7 @@ data "aws_iam_policy_document" "plan_state" {
 }
 
 data "aws_iam_policy_document" "apply" {
+  #checkov:skip=CKV_AWS_109:IAM writes are constrained to satark-* resource ARNs and CI roles are denied
   statement {
     sid       = "State"
     actions   = ["s3:ListBucket", "s3:GetBucketVersioning"]

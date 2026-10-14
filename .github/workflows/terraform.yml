@@ -1,0 +1,115 @@
+# Static checks for Terraform (task 5.19). This workflow needs no AWS
+# credentials: validate runs with -backend=false.
+name: terraform
+
+on:
+  pull_request:
+    paths:
+      - "infra/terraform/**"
+      - "policies/checkov/**"
+      - ".github/workflows/terraform.yml"
+  push:
+    branches: [main]
+    paths:
+      - "infra/terraform/**"
+      - "policies/checkov/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: terraform-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_VERSION: 1.10.5
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  fmt:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: terraform fmt
+        run: terraform fmt -check -recursive -diff infra/terraform
+
+  validate:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - bootstrap
+          - envs/dev
+          - envs/prod
+          - modules/budget-alarm
+          - modules/secure-bucket
+          - modules/storage
+          - modules/github-oidc-role
+          - modules/ci-roles
+          - modules/edge-node
+          - modules/dns
+          - modules/cert-manager-dns01
+    defaults:
+      run:
+        working-directory: infra/terraform/${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - run: terraform init -backend=false -input=false
+      - run: terraform validate -no-color
+
+  tflint:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.tflint.d/plugins
+          key: tflint-${{ hashFiles('infra/terraform/.tflint.hcl') }}
+      - uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.53.0
+      - name: tflint init
+        run: tflint --init --config "$GITHUB_WORKSPACE/infra/terraform/.tflint.hcl"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: tflint
+        run: tflint --recursive --config "$GITHUB_WORKSPACE/infra/terraform/.tflint.hcl" --format compact
+        working-directory: infra/terraform
+
+  trivy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: trivy config
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          scan-ref: infra/terraform
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          # The edge must accept 80/443/51820 from the internet; that is the point.
+          trivyignores: infra/terraform/.trivyignore
+
+  checkov:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install checkov==3.2.334
+      - name: test custom policies against fixtures
+        run: policies/checkov/test-custom-policies.sh
+      - name: checkov
+        run: >-
+          checkov --directory infra/terraform
+          --framework terraform
+          --config-file policies/checkov/config.yaml
+          --compact --quiet

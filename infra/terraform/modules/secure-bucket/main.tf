@@ -17,6 +17,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "this" {
+  #checkov:skip=CKV_AWS_21:Versioning is a module input; short-lived screenshot buckets turn it off on purpose
   bucket        = var.name
   force_destroy = var.force_destroy
 
