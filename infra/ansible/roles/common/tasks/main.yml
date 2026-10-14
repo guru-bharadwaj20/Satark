@@ -92,3 +92,7 @@
     group: root
     mode: "0644"
   notify: Restart journald
+
+- name: Configure unattended security upgrades
+  ansible.builtin.import_tasks: unattended-upgrades.yml
+  when: common_unattended_upgrades_enabled | bool
