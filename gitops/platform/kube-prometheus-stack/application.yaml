@@ -1,0 +1,32 @@
+# Argo CD Application: kube-prometheus-stack (Prometheus Operator, Prometheus,
+# Alertmanager, Grafana, node-exporter, kube-state-metrics). Task 6.1.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-prometheus-stack
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  sources:
+    - repoURL: https://prometheus-community.github.io/helm-charts
+      chart: kube-prometheus-stack
+      targetRevision: 65.1.1
+      helm:
+        releaseName: kube-prometheus-stack
+        valueFiles:
+          - $values/gitops/platform/kube-prometheus-stack/values.yaml
+    - repoURL: https://github.com/guru-bharadwaj20/satark.git
+      targetRevision: main
+      ref: values
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true   # CRDs exceed the client-side annotation size limit
