@@ -12,6 +12,7 @@ from .config import Settings
 from .downloads import DownloadWatcher
 from .redirects import RedirectTracker
 from .report import ScanReport
+from .storage import upload_screenshot
 
 log = logging.getLogger(__name__)
 
@@ -56,6 +57,16 @@ def _attach_download_tracking(page: Page, watcher: DownloadWatcher) -> None:
 
     page.on("download", on_download)
     page.on("response", on_response)
+
+
+async def _screenshot(page: Page, scan_id: str) -> str:
+    """Capture the viewport and upload it; failures never fail the scan."""
+    try:
+        png = await page.screenshot(type="png", full_page=False, timeout=5000)
+        return upload_screenshot(png, scan_id)
+    except Exception as exc:  # screenshots are best effort
+        log.warning("screenshot failed: %s", exc)
+        return ""
 
 
 async def scan(settings: Settings) -> ScanReport:
@@ -103,6 +114,7 @@ async def scan(settings: Settings) -> ScanReport:
                 pass
             report.forms = await forms.detect(page)
             report.downloads = list(watcher.files)
+            report.screenshot_key = await _screenshot(page, settings.scan_id)
             await context.close()
         finally:
             await browser.close()

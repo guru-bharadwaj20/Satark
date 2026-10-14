@@ -6,12 +6,14 @@ requires-python = ">=3.12"
 license = { text = "MIT" }
 dependencies = [
   "playwright==1.48.0",
+  "boto3>=1.35",
 ]
 
 [project.optional-dependencies]
 dev = [
   "pytest>=8.3",
   "ruff>=0.7",
+  "moto[s3]>=5.0",
 ]
 
 [project.scripts]
