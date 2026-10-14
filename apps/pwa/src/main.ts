@@ -1,5 +1,6 @@
 import { checkInput, checkQr, type CheckResult } from "./api";
 import { renderError, renderResult } from "./render";
+import { combineShared, takeShared } from "./share";
 
 const form = document.querySelector<HTMLFormElement>("#check-form")!;
 const input = document.querySelector<HTMLTextAreaElement>("#input")!;
@@ -37,4 +38,30 @@ qr.addEventListener("change", () => {
 
 if ("serviceWorker" in navigator && import.meta.env.PROD) {
   void navigator.serviceWorker.register("/sw.js");
+}
+
+// Opened from the Android share menu (see share.ts and sw.js).
+async function handleShared(): Promise<void> {
+  const params = new URLSearchParams(location.search);
+  if (!params.has("shared") || !("caches" in window)) return;
+  history.replaceState(null, "", "/");
+  const shared = await takeShared();
+  if (shared?.file) {
+    await run(() => checkQr(shared.file!));
+  } else if (shared?.text) {
+    input.value = shared.text;
+    await run(() => checkInput(shared.text!));
+  }
+}
+void handleShared();
+
+// Fallback for browsers that deliver a GET share (?text=...).
+const q = new URLSearchParams(location.search);
+if (!q.has("shared") && (q.has("text") || q.has("url"))) {
+  const value = combineShared(q.get("title"), q.get("text"), q.get("url"));
+  history.replaceState(null, "", "/");
+  if (value) {
+    input.value = value;
+    void run(() => checkInput(value));
+  }
 }
