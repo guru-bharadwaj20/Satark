@@ -142,6 +142,30 @@ paths:
                   reports_removed: { type: integer }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /v1/forget:
+    post:
+      tags: [reports]
+      operationId: forgetReporter
+      summary: Delete every report filed by a reporter (bot /forget)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [reporter_id]
+              properties:
+                reporter_id: { type: string }
+      responses:
+        "200":
+          description: Reports deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reports_deleted: { type: integer }
+        "400": { $ref: "#/components/responses/Error" }
   /healthz:
     get:
       operationId: healthz

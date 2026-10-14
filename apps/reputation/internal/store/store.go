@@ -61,6 +61,9 @@ type Store interface {
 	// delisting request is approved). It returns the number removed.
 	DeleteSubject(ctx context.Context, kind, subjectHash string) (int, error)
 
+	// DeleteReporter removes every report filed by a reporter (/forget).
+	DeleteReporter(ctx context.Context, reporterHash string) (int, error)
+
 	CreateDelisting(ctx context.Context, d Delisting) (Delisting, error)
 	ListDelistings(ctx context.Context, status string) ([]Delisting, error)
 	// DecideDelisting moves a pending request to approved/rejected.

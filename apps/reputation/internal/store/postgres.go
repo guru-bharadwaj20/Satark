@@ -77,6 +77,11 @@ func (p *Postgres) DeleteSubject(ctx context.Context, kind, subject string) (int
 	return int(tag.RowsAffected()), err
 }
 
+func (p *Postgres) DeleteReporter(ctx context.Context, reporter string) (int, error) {
+	tag, err := p.pool.Exec(ctx, `DELETE FROM reputation_reports WHERE reporter_hash = $1`, reporter)
+	return int(tag.RowsAffected()), err
+}
+
 const delistCols = `id, kind, subject_hash, subject_masked, reason, contact, status, review_note, created_at, decided_at`
 
 func scanDelisting(row pgx.Row) (Delisting, error) {
