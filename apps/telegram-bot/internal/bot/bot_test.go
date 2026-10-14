@@ -117,8 +117,12 @@ func TestForwardedTextIsScanned(t *testing.T) {
 	if gw.text != "Your electricity will be disconnected tonight" {
 		t.Fatalf("gateway got %q", gw.text)
 	}
-	if !strings.Contains(api.last().Text, "tight deadline") {
-		t.Fatalf("reply %q", api.last().Text)
+	last := api.last()
+	if !strings.Contains(last.Text, "tight deadline") || !strings.Contains(last.Text, "🔴") {
+		t.Fatalf("reply %q", last.Text)
+	}
+	if last.ReplyMarkup == nil || !strings.HasPrefix(last.ReplyMarkup.InlineKeyboard[0][0].CallbackData, "fb:s1:") {
+		t.Fatalf("missing feedback buttons: %+v", last.ReplyMarkup)
 	}
 }
 
@@ -320,5 +324,13 @@ func TestCallbackDataFitsTelegramLimit(t *testing.T) {
 		if len(row[0].CallbackData) > 64 {
 			t.Fatalf("callback data too long: %q", row[0].CallbackData)
 		}
+	}
+}
+
+func TestFeedbackCallback(t *testing.T) {
+	b, api, _ := newBot()
+	b.Handle(context.Background(), callback("fb:s1:down"))
+	if len(api.answered) != 1 || len(api.sent) != 0 {
+		t.Fatalf("answered=%v sent=%d", api.answered, len(api.sent))
 	}
 }

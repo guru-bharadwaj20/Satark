@@ -3,7 +3,6 @@ package bot
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
 	"strings"
 	"time"
@@ -14,13 +13,20 @@ import (
 
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/gateway"
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/i18n"
+	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/reply"
 	"github.com/guru-bharadwaj20/satark/apps/telegram-bot/internal/telegram"
 )
 
-var scansTotal = promauto.NewCounterVec(prometheus.CounterOpts{
-	Name: "satark_telegram_scans_total",
-	Help: "Scans requested through the bot, by kind and outcome.",
-}, []string{"kind", "outcome"})
+var (
+	scansTotal = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "satark_telegram_scans_total",
+		Help: "Scans requested through the bot, by kind and outcome.",
+	}, []string{"kind", "outcome"})
+	feedbackTotal = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "satark_telegram_feedback_total",
+		Help: "Feedback button presses, by vote.",
+	}, []string{"vote"})
+)
 
 // API is the part of the Telegram client the bot uses.
 type API interface {
@@ -158,6 +164,19 @@ func (b *Bot) handleCallback(ctx context.Context, q *telegram.CallbackQuery) {
 		}
 		b.answer(ctx, q.ID, i18n.T(l, i18n.LanguageSet))
 		b.send(ctx, chatID, i18n.T(l, i18n.LanguageSet), nil)
+	case strings.HasPrefix(q.Data, reply.FeedbackPrefix):
+		scanID, helpful, ok := reply.ParseFeedback(q.Data)
+		if !ok {
+			b.answer(ctx, q.ID, "")
+			return
+		}
+		vote := "down"
+		if helpful {
+			vote = "up"
+		}
+		feedbackTotal.WithLabelValues(vote).Inc()
+		b.Log.Info("feedback", "scan_id", scanID, "vote", vote)
+		b.answer(ctx, q.ID, reply.Label(b.langFor(chatID, &q.From), "thanks"))
 	case strings.HasPrefix(q.Data, cbWho):
 		token, sender, ok := strings.Cut(strings.TrimPrefix(q.Data, cbWho), ":")
 		lang := b.langFor(chatID, &q.From)
@@ -220,7 +239,7 @@ func (b *Bot) handlePhoto(ctx context.Context, m *telegram.Message, fileID, lang
 		b.send(ctx, m.Chat.ID, i18n.T(lang, i18n.NoQRFound), nil)
 		return
 	}
-	b.send(ctx, m.Chat.ID, plainReply(resp), nil)
+	b.send(ctx, m.Chat.ID, reply.Render(resp, lang), reply.Keyboard(resp, lang))
 }
 
 // handleText asks "Who sent this?" before scanning. The text waits in
@@ -251,7 +270,7 @@ func (b *Bot) scanText(ctx context.Context, chatID int64, text, lang, sender str
 		return
 	}
 	scansTotal.WithLabelValues("text", resp.Verdict).Inc()
-	b.send(ctx, chatID, plainReply(resp), nil)
+	b.send(ctx, chatID, reply.Render(resp, lang), reply.Keyboard(resp, lang))
 }
 
 func (b *Bot) scanFailed(ctx context.Context, chatID int64, kind, lang string, err error) {
@@ -262,21 +281,6 @@ func (b *Bot) scanFailed(ctx context.Context, chatID int64, kind, lang string, e
 	scansTotal.WithLabelValues(kind, outcome).Inc()
 	b.Log.Warn("scan failed", "kind", kind, "err", err)
 	b.send(ctx, chatID, i18n.T(lang, key), nil)
-}
-
-// plainReply is a minimal verdict rendering.
-func plainReply(r gateway.ScanResponse) string {
-	var sb strings.Builder
-	fmt.Fprintf(&sb, "%s (risk %d/100)\n", r.Verdict, r.RiskScore)
-	for _, q := range r.QR {
-		if q.UPI != nil && q.UPI.Summary != "" {
-			fmt.Fprintf(&sb, "%s\n", q.UPI.Summary)
-		}
-	}
-	for _, reason := range r.Reasons {
-		fmt.Fprintf(&sb, "- %s\n", reason.Message)
-	}
-	return sb.String()
 }
 
 // command returns the bot command (lower-cased, without @botname) and its argument.
