@@ -1,0 +1,10 @@
+---
+# Target minor version, e.g. "1.31". Must be exactly one minor above the
+# running cluster (kubeadm does not support skipping minors).
+k8s_upgrade_target_minor: "1.31"
+# Full patch version to install; "latest" picks the newest patch in the repo.
+k8s_upgrade_target_version: latest
+k8s_upgrade_repo_keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+k8s_upgrade_repo_file: /etc/apt/sources.list.d/kubernetes.list
+k8s_upgrade_drain_timeout: 300s
+k8s_upgrade_ready_timeout: 600

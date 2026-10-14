@@ -1,0 +1,11 @@
+---
+galaxy_info:
+  role_name: k8s_upgrade
+  author: guru-bharadwaj20
+  description: In-place kubeadm minor-version upgrade, one node at a time
+  license: MIT
+  min_ansible_version: "2.15"
+  platforms:
+    - name: Ubuntu
+      versions: [jammy, noble]
+dependencies: []
