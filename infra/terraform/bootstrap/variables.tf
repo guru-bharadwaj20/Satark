@@ -27,6 +27,12 @@ variable "alert_emails" {
   type        = list(string)
 }
 
+variable "github_repository" {
+  description = "GitHub repository allowed to assume the CI roles."
+  type        = string
+  default     = "guru-bharadwaj20/satark"
+}
+
 variable "noncurrent_version_days" {
   description = "Days to keep old versions of state files."
   type        = number
