@@ -5,3 +5,4 @@ resources:
   - grafana-loki-datasource.yaml
   - servicemonitors/satark-services.yaml
   - rules/slo-recording.yaml
+  - rules/slo-burn-alerts.yaml
