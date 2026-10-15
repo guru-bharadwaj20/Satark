@@ -102,13 +102,13 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 265 / 294 subtasks completed**
+**Overall progress: 266 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
 | Phase | Focus | Subtasks | Completed |
 |---|---|---|---|
-| 0 | Planning and repository setup | 21 | 20 |
+| 0 | Planning and repository setup | 21 | 21 |
 | 1 | On-prem Kubernetes foundations | 25 | 24 |
 | 2 | Product MVP (core services) | 26 | 26 |
 | 3 | Data layer and Helm packaging | 20 | 19 |
@@ -121,7 +121,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **265** |
+| | **Total** | **294** | **266** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -140,7 +140,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **0.11** Add the MIT license
 - ✅ **0.12** Break the roadmap into phases and subtasks
 - ✅ **0.13** Set up branch protection on `main`
-- ❌ **0.14** Create a GitHub Projects board (Backlog, Sprint, In Progress, Review, Done) — *pending: needs your confirmation; create it in the GitHub UI under Projects*
+- ✅ **0.14** Create a GitHub Projects board (Backlog, Sprint, In Progress, Review, Done)
 - ✅ **0.15** Add issue templates (bug, feature request, scam sample, runbook)
 - ✅ **0.16** Add a pull request template
 - ✅ **0.17** Add `.gitignore` and `.editorconfig`
