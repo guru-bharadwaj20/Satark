@@ -16,8 +16,12 @@ metadata:
   labels:
     {{- include "satark-common.labels" . | nindent 4 }}
 spec:
+  # group/kind/weight are the API defaults, spelled out so Argo CD's
+  # server-side diff (which does not apply CRD defaults) stays in sync.
   parentRefs:
-    - name: {{ $gw.name | default "satark-public" }}
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: {{ $gw.name | default "satark-public" }}
       namespace: {{ $gw.namespace | default "envoy-gateway-system" }}
       sectionName: {{ $gw.sectionName | default "https" }}
   {{- with .Values.route.hostnames }}
@@ -32,8 +36,11 @@ spec:
             value: {{ .path }}
         {{- end }}
       backendRefs:
-        - name: {{ include "satark-common.fullname" . }}
+        - group: ""
+          kind: Service
+          name: {{ include "satark-common.fullname" . }}
           port: {{ .Values.service.port }}
+          weight: 1
       timeouts:
         request: {{ .Values.route.timeout | default "15s" }}
 {{- end }}
