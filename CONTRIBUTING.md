@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 268 / 294 subtasks completed**
+**Overall progress: 269 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -112,7 +112,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 1 | On-prem Kubernetes foundations | 25 | 25 |
 | 2 | Product MVP (core services) | 26 | 26 |
 | 3 | Data layer and Helm packaging | 20 | 20 |
-| 4 | GitOps and CI/CD | 19 | 18 |
+| 4 | GitOps and CI/CD | 19 | 19 |
 | 5 | Cloud infrastructure with Terraform | 24 | 23 |
 | 6 | Observability | 20 | 20 |
 | 7 | Link intelligence | 19 | 19 |
@@ -121,7 +121,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **268** |
+| | **Total** | **294** | **269** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -247,7 +247,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **4.14** Automatic image tag bump in `gitops/envs/dev`
 - ✅ **4.15** Prod promotion through a PR with required review
 - ✅ **4.16** Path filters and layer caching so only changed services rebuild
-- ❌ **4.17** Test rollback with `git revert` and record how long it takes — *pending: needs Argo CD on the live cluster; run `scripts/rollback-drill.sh`*
+- ✅ **4.17** Test rollback with `git revert` and record how long it takes
 - ✅ **4.18** ADR-007: pull-based GitOps
 - ✅ **4.19** SOP-04: promote a release to prod and roll back
 
