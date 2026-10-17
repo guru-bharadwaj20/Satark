@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 """File kube-bench FAIL findings as GitHub issues (task 9.9).
 
-Reads a kube-bench JSON report (from scripts/kube-bench/run.sh) and creates
-one issue per failing check, labelled `security` and `kube-bench`. Checks that
+Reads kube-bench JSON reports (from scripts/kube-bench/run.sh) and creates
+one issue per failing check, labelled `security` and `kube-bench`. A check
+that fails in several reports (e.g. control-plane and worker) gets one issue.
+Missing labels are created first. Checks that
 already have an open issue (matched by the "[kube-bench <id>]" title prefix)
 are skipped, so the script is safe to re-run after every benchmark.
 
 Dry-run is the default; pass --apply to actually create issues via `gh`.
 
     scripts/kube-bench/file_issues.py report.json              # preview
-    scripts/kube-bench/file_issues.py report.json --apply      # create
+    scripts/kube-bench/file_issues.py cp.json worker.json --apply   # create
     scripts/kube-bench/file_issues.py report.json --include-warn --apply
 """
 
@@ -23,6 +25,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 LABELS = ("security", "kube-bench")
+LABEL_COLORS = {
+    "security": ("b60205", "Security finding or hardening"),
+    "kube-bench": ("0e8a16", "CIS Kubernetes Benchmark finding from kube-bench"),
+    "severity:high": ("d93f0b", "High severity"),
+    "severity:medium": ("fbca04", "Medium severity"),
+}
 # CIS "scored"/automated checks with FAIL are treated as high severity.
 HIGH_STATUSES = {"FAIL"}
 
@@ -81,12 +89,32 @@ def parse_report(data: dict, include_warn: bool = False) -> list[Finding]:
                     scored=bool(result.get("scored", False)),
                 )
                 findings.setdefault(f.check_id, f)
-    return sorted(findings.values(), key=lambda f: [int(p) if p.isdigit() else p for p in f.check_id.split(".")])
+    return sorted(findings.values(), key=check_key)
+
+
+def check_key(f: Finding) -> list:
+    return [int(p) if p.isdigit() else p for p in f.check_id.split(".")]
+
+
+def ensure_labels(repo: str | None) -> None:
+    cmd = ["gh", "label", "list", "--limit", "500", "--json", "name"]
+    if repo:
+        cmd += ["--repo", repo]
+    out = subprocess.run(cmd, check=True, capture_output=True, text=True).stdout
+    existing = {label["name"] for label in json.loads(out or "[]")}
+    for name, (color, desc) in LABEL_COLORS.items():
+        if name in existing:
+            continue
+        cmd = ["gh", "label", "create", name, "--color", color, "--description", desc]
+        if repo:
+            cmd += ["--repo", repo]
+        subprocess.run(cmd, check=True)
 
 
 def open_issue_titles(repo: str | None) -> set[str]:
-    cmd = ["gh", "issue", "list", "--state", "open", "--label", "kube-bench",
-           "--limit", "500", "--json", "title"]
+    # No --label filter: GitHub's label search can lag a few seconds behind a
+    # newly created issue, which made a quick re-run file duplicates.
+    cmd = ["gh", "issue", "list", "--state", "open", "--limit", "1000", "--json", "title"]
     if repo:
         cmd += ["--repo", repo]
     out = subprocess.run(cmd, check=True, capture_output=True, text=True).stdout
@@ -109,13 +137,19 @@ def create_issue(f: Finding, repo: str | None) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("report", type=Path, help="kube-bench JSON report")
+    ap.add_argument("reports", type=Path, nargs="+", help="kube-bench JSON reports")
     ap.add_argument("--repo", help="owner/repo (default: current gh repo)")
     ap.add_argument("--include-warn", action="store_true", help="also file WARN results")
     ap.add_argument("--apply", action="store_true", help="create issues (default is dry-run)")
     args = ap.parse_args(argv)
 
-    findings = parse_report(json.loads(args.report.read_text()), args.include_warn)
+    merged: dict[str, Finding] = {}
+    for report in args.reports:
+        for f in parse_report(json.loads(report.read_text()), args.include_warn):
+            merged.setdefault(f.check_id, f)
+    findings = sorted(merged.values(), key=check_key)
+    if args.apply:
+        ensure_labels(args.repo)
     titles = open_issue_titles(args.repo) if args.apply else set()
 
     created = skipped = 0
