@@ -7,11 +7,11 @@ containerd. Sandbox pods select it through the `gvisor` RuntimeClass.
 Run it on worker nodes that host `satark-sandbox` pods, after the containerd role:
 
 ```yaml
-- hosts: k8s_workers
+- hosts: workers
   become: true
   roles:
     - gvisor
 ```
 
 Key variables: `gvisor_release`, `gvisor_platform` (`systrap` by default; `kvm`
-needs nested virtualisation), `gvisor_containerd_major` (set to `2` on containerd 2.x).
+needs nested virtualisation), `gvisor_containerd_major` (read from `containerd --version` when empty).

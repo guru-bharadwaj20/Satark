@@ -1,4 +1,5 @@
-# kube-bench CIS Kubernetes Benchmark Job (task 9.8).
+# kube-bench CIS Kubernetes Benchmark Jobs (task 9.8): one on a control-plane
+# node (all sections) and one on a worker (section 4, worker node).
 # kube-bench must read host config files and see host processes, so it runs
 # in its own `kube-bench` namespace with PSA `privileged`; application
 # namespaces stay `restricted`. Run with scripts/kube-bench/run.sh.
@@ -44,8 +45,11 @@ spec:
           effect: NoSchedule
       containers:
         - name: kube-bench
-          image: docker.io/aquasec/kube-bench:v0.10.1
-          command: ["kube-bench", "run", "--json", "--outputfile", "/dev/stdout"]
+          image: docker.io/aquasec/kube-bench:v0.16.0@sha256:75506f222d1eb6ce2a751a5533bdc0a3b54c898e2e49e7751d0ee22cfb862679
+          # kube-bench maps Kubernetes versions only up to 1.34, and it cannot
+          # read the version itself without a service-account token, so the
+          # benchmark is pinned. cis-1.12 covers Kubernetes 1.32-1.34.
+          command: ["kube-bench", "run", "--benchmark", "cis-1.12", "--json"]
           resources:
             requests: {cpu: 50m, memory: 64Mi}
             limits: {memory: 256Mi}
@@ -53,6 +57,9 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
           volumeMounts:
+            # Host user database, so stat names the etcd owner of /var/lib/etcd (1.1.12).
+            - {name: etc-passwd, mountPath: /etc/passwd, readOnly: true}
+            - {name: etc-group, mountPath: /etc/group, readOnly: true}
             - {name: var-lib-etcd, mountPath: /var/lib/etcd, readOnly: true}
             - {name: var-lib-kubelet, mountPath: /var/lib/kubelet, readOnly: true}
             - {name: etc-systemd, mountPath: /etc/systemd, readOnly: true}
@@ -62,7 +69,64 @@ spec:
             - {name: opt-cni-bin, mountPath: /opt/cni/bin, readOnly: true}
             - {name: usr-bin, mountPath: /usr/local/mount-from-host/bin, readOnly: true}
       volumes:
+        - {name: etc-passwd, hostPath: {path: /etc/passwd, type: File}}
+        - {name: etc-group, hostPath: {path: /etc/group, type: File}}
         - {name: var-lib-etcd, hostPath: {path: /var/lib/etcd}}
+        - {name: var-lib-kubelet, hostPath: {path: /var/lib/kubelet}}
+        - {name: etc-systemd, hostPath: {path: /etc/systemd}}
+        - {name: lib-systemd, hostPath: {path: /lib/systemd}}
+        - {name: etc-kubernetes, hostPath: {path: /etc/kubernetes}}
+        - {name: etc-cni-netd, hostPath: {path: /etc/cni/net.d}}
+        - {name: opt-cni-bin, hostPath: {path: /opt/cni/bin}}
+        - {name: usr-bin, hostPath: {path: /usr/bin}}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-bench-worker
+  namespace: kube-bench
+  labels:
+    app.kubernetes.io/name: kube-bench-worker
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kube-bench-worker
+    spec:
+      serviceAccountName: kube-bench
+      hostPID: true
+      restartPolicy: Never
+      # Worker node checks (section 4) on a node without the control plane.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - {key: node-role.kubernetes.io/control-plane, operator: DoesNotExist}
+      containers:
+        - name: kube-bench
+          image: docker.io/aquasec/kube-bench:v0.16.0@sha256:75506f222d1eb6ce2a751a5533bdc0a3b54c898e2e49e7751d0ee22cfb862679
+          # kube-bench maps Kubernetes versions only up to 1.34, and it cannot
+          # read the version itself without a service-account token, so the
+          # benchmark is pinned. cis-1.12 covers Kubernetes 1.32-1.34.
+          command: ["kube-bench", "run", "--benchmark", "cis-1.12", "--targets", "node", "--json"]
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 256Mi}
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - {name: var-lib-kubelet, mountPath: /var/lib/kubelet, readOnly: true}
+            - {name: etc-systemd, mountPath: /etc/systemd, readOnly: true}
+            - {name: lib-systemd, mountPath: /lib/systemd, readOnly: true}
+            - {name: etc-kubernetes, mountPath: /etc/kubernetes, readOnly: true}
+            - {name: etc-cni-netd, mountPath: /etc/cni/net.d, readOnly: true}
+            - {name: opt-cni-bin, mountPath: /opt/cni/bin, readOnly: true}
+            - {name: usr-bin, mountPath: /usr/local/mount-from-host/bin, readOnly: true}
+      volumes:
         - {name: var-lib-kubelet, hostPath: {path: /var/lib/kubelet}}
         - {name: etc-systemd, hostPath: {path: /etc/systemd}}
         - {name: lib-systemd, hostPath: {path: /lib/systemd}}

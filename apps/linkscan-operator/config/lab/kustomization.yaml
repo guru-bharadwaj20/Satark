@@ -1,0 +1,26 @@
+# On-prem lab overlay: the operator without NATS, Prometheus or KEDA, which
+# the lab does not run. LinkScans are created with kubectl
+# (scripts/verify-sandbox-ssrf.sh). Images come from
+# `IMAGE_TAG=lab scripts/load-lab-images.sh linkscan-operator sandbox-browser`.
+#
+#   kubectl apply -k apps/linkscan-operator/config/lab
+namespace: satark
+namePrefix: linkscan-operator-
+resources:
+- ../crd
+- ../rbac
+- ../manager
+images:
+- name: ghcr.io/guru-bharadwaj20/satark/linkscan-operator
+  newTag: lab
+patches:
+- target:
+    kind: Deployment
+    name: controller-manager
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/env/0
+      value: {name: NATS_URL, value: ""}
+    - op: add
+      path: /spec/template/spec/containers/0/env/-
+      value: {name: SANDBOX_IMAGE, value: "ghcr.io/guru-bharadwaj20/satark/sandbox-browser:lab"}

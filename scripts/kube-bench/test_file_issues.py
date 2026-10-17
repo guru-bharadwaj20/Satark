@@ -52,3 +52,12 @@ def test_dedupe_by_prefix():
 
 def test_body_contains_remediation():
     assert "Set --profiling=false" in fi.parse_report(REPORT)[0].body()
+
+
+def test_main_merges_reports(tmp_path, capsys):
+    import json
+    a, b = tmp_path / "cp.json", tmp_path / "worker.json"
+    a.write_text(json.dumps(REPORT))
+    b.write_text(json.dumps(REPORT))
+    assert fi.main([str(a), str(b)]) == 0
+    assert "1 findings: 1 to create (dry-run)" in capsys.readouterr().out
