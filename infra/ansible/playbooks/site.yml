@@ -6,10 +6,16 @@
 #
 # Every play is idempotent and can be re-run safely. Use --tags to run one
 # stage, e.g. --tags addons.
+#
+# apt tasks wait up to 10 minutes for the dpkg lock: a fresh box usually
+# has apt-daily/unattended-upgrades running on first boot.
 
 - name: Base OS configuration and hardening
   hosts: k8s_cluster
   become: true
+  module_defaults:
+    ansible.builtin.apt:
+      lock_timeout: 600
   gather_facts: true
   roles:
     - role: common
@@ -20,6 +26,9 @@
 - name: Kubernetes node prerequisites
   hosts: k8s_cluster
   become: true
+  module_defaults:
+    ansible.builtin.apt:
+      lock_timeout: 600
   roles:
     - role: k8s_prereqs
       tags: [k8s_prereqs]

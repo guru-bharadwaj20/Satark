@@ -33,7 +33,9 @@ spec:
           command:
             - sh
             - -c
-            - until pg_isready -h satark-pg-rw -p 5432; do echo waiting; sleep 2; done
+            # -U is required: uid 65532 has no passwd entry, so pg_isready
+            # cannot pick a default user and reports "no attempt".
+            - until pg_isready -h satark-pg-rw -p 5432 -U satark; do echo waiting; sleep 2; done
           securityContext: &restricted
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

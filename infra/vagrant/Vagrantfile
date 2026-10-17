@@ -16,13 +16,14 @@ SUBNET     = "192.168.56"
 PUBKEY     = File.expand_path(ENV.fetch("SATARK_SSH_PUBKEY", "~/.ssh/satark_ed25519.pub"))
 
 NODES = [
-  { name: "cp-1", ip: "#{SUBNET}.10", cpus: 2, memory: 4096 },
+  { name: "cp-1", ip: "#{SUBNET}.10", ssh_port: 2222, cpus: 2, memory: 4096 },
 ] + (1..WORKERS).map do |i|
-  { name: "worker-#{i}", ip: "#{SUBNET}.#{10 + i}", cpus: 2, memory: 4096 }
+  { name: "worker-#{i}", ip: "#{SUBNET}.#{10 + i}", ssh_port: 2199 + i, cpus: 2, memory: 4096 }
 end
 
 Vagrant.configure("2") do |config|
   config.vm.box = BOX
+  config.vm.boot_timeout = 900
   config.vm.box_check_update = false
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.ssh.insert_key = true
@@ -31,6 +32,9 @@ Vagrant.configure("2") do |config|
     config.vm.define node[:name], primary: node[:name] == "cp-1" do |vm|
       vm.vm.hostname = node[:name]
       vm.vm.network "private_network", ip: node[:ip]
+      # Fixed SSH ports: Ansible under WSL connects through these
+      # (see infra/ansible/inventory/onprem/wsl-ports.yml).
+      vm.vm.network "forwarded_port", id: "ssh", guest: 22, host: node[:ssh_port], host_ip: "127.0.0.1"
 
       vm.vm.provider "virtualbox" do |vb|
         vb.name   = "satark-#{node[:name]}"
@@ -55,6 +59,18 @@ Vagrant.configure("2") do |config|
           chmod 0600 /home/vagrant/.ssh/authorized_keys
           rm -f /tmp/satark.pub
         fi
+        # Pin the host-only NIC: Vagrant's own netplan config does not
+        # always survive on bento/ubuntu-24.04 when driven from WSL.
+        cat > /etc/netplan/60-satark.yaml <<EOF
+network:
+  version: 2
+  ethernets:
+    eth1:
+      dhcp4: false
+      addresses: [#{node[:ip]}/24]
+EOF
+        chmod 0600 /etc/netplan/60-satark.yaml
+        netplan apply
         # Make the kubelet advertise the host-only IP, not the NAT one.
         sed -i '/#{node[:name]}/d' /etc/hosts
         echo "#{node[:ip]} #{node[:name]}" >> /etc/hosts

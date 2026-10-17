@@ -10,7 +10,7 @@ cilium_namespace: kube-system
 cilium_kubeconfig: /etc/kubernetes/admin.conf
 
 # API server reachable without kube-proxy (required for kube-proxy replacement).
-cilium_k8s_service_host: "{{ hostvars[groups['control_plane'][0]].ansible_host }}"
+cilium_k8s_service_host: "{{ hostvars[groups['control_plane'][0]].node_ip }}"
 cilium_k8s_service_port: 6443
 cilium_kube_proxy_replacement: true
 
@@ -19,7 +19,7 @@ cilium_cluster_pool_cidr: "{{ pod_network_cidr | default('10.244.0.0/16') }}"
 cilium_cluster_pool_mask_size: 24
 
 # Host-only NIC that carries node-to-node traffic (Vagrant: second adapter).
-cilium_devices: enp0s8
+cilium_devices: "{{ lab_interface | default('eth1') }}"
 
 # Hubble observability.
 cilium_hubble_relay: true

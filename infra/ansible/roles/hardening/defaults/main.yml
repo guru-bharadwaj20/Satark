@@ -18,12 +18,14 @@ hardening_fail2ban_maxretry: 5
 hardening_fail2ban_ignoreip:
   - 127.0.0.1/8
   - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+  - "{{ lab_nat_gateway | default('10.0.2.2') }}"
 
 # --- nftables ----------------------------------------------------------
 hardening_nftables_enabled: true
 # Sources trusted for intra-cluster traffic (node network + pod CIDR).
 hardening_nft_cluster_sources:
   - "{{ lab_network_cidr | default('192.168.56.0/24') }}"
+  - "{{ lab_nat_gateway | default('10.0.2.2') }}"
   - "{{ pod_network_cidr | default('10.244.0.0/16') }}"
 # Ports open to everyone on every node.
 hardening_nft_public_tcp_ports:

@@ -19,6 +19,14 @@ type Server struct {
 	log     *slog.Logger
 	ready   atomic.Bool
 	scanner Scanner
+	limit   func(http.Handler) http.Handler
+}
+
+// WithRateLimit wraps every /v1 endpoint in mw (e.g. a ratelimit.Limiter
+// middleware). Health and metrics endpoints are never limited.
+func (s *Server) WithRateLimit(mw func(http.Handler) http.Handler) *Server {
+	s.limit = mw
+	return s
 }
 
 // New builds a Server.
@@ -44,8 +52,15 @@ func (s *Server) Handler() http.Handler {
 
 // routes registers the versioned API.
 func (s *Server) routes(mux *http.ServeMux) {
-	mux.HandleFunc("POST /v1/scan/text", s.requireScanner(s.scanText))
-	mux.HandleFunc("POST /v1/scan/qr", s.requireScanner(s.scanQR))
+	mux.Handle("POST /v1/scan/text", s.limited(s.requireScanner(s.scanText)))
+	mux.Handle("POST /v1/scan/qr", s.limited(s.requireScanner(s.scanQR)))
+}
+
+func (s *Server) limited(h http.HandlerFunc) http.Handler {
+	if s.limit == nil {
+		return h
+	}
+	return s.limit(h)
 }
 
 func (s *Server) requireScanner(next http.HandlerFunc) http.HandlerFunc {

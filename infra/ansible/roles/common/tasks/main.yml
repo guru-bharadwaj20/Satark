@@ -18,7 +18,7 @@
   ansible.builtin.lineinfile:
     path: /etc/hosts
     regexp: '\s{{ item }}$'
-    line: "{{ hostvars[item].ansible_host }} {{ item }}"
+    line: "{{ hostvars[item].node_ip | default(hostvars[item].ansible_host) }} {{ item }}"
   loop: "{{ groups['all'] }}"
 
 - name: Create admin users

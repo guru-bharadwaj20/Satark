@@ -5,10 +5,14 @@ ansible_become: true
 ansible_ssh_private_key_file: ~/.ssh/satark_ed25519
 
 # Address each node advertises to the cluster (host-only NIC, not the NAT one).
-node_ip: "{{ ansible_host }}"
+# Set per host in hosts.yml so SSH can go via a different address (WSL).
 
 # Lab network.
 lab_network_cidr: 192.168.56.0/24
+# Host-only NIC carrying node traffic (eth1 on bento/ubuntu-24.04).
+lab_interface: eth1
+# VirtualBox NAT gateway: Vagrant and WSL SSH arrive from here.
+lab_nat_gateway: 10.0.2.2
 
 # Users with SSH access (role common). Public keys are read on the control node.
 admin_users:

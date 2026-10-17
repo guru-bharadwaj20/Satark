@@ -1,7 +1,7 @@
 ---
 # Cluster-wide settings shared by the Kubernetes roles.
 cluster_name: satark-onprem
-control_plane_endpoint: "{{ hostvars[groups['control_plane'][0]].ansible_host }}:6443"
+control_plane_endpoint: "{{ hostvars[groups['control_plane'][0]].node_ip }}:6443"
 pod_network_cidr: 10.244.0.0/16
 service_cidr: 10.96.0.0/12
 cluster_dns_domain: cluster.local
