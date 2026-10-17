@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 269 / 294 subtasks completed**
+**Overall progress: 270 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -116,12 +116,12 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 5 | Cloud infrastructure with Terraform | 24 | 23 |
 | 6 | Observability | 20 | 20 |
 | 7 | Link intelligence | 19 | 19 |
-| 8 | Sandbox operator | 25 | 24 |
+| 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 17 |
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **269** |
+| | **Total** | **294** | **270** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -344,7 +344,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **8.17** Role `gvisor`: install `runsc` and the containerd runtime handler
 - ✅ **8.18** `gvisor` RuntimeClass
 - ✅ **8.19** Sandbox NetworkPolicy: deny all ingress; block RFC 1918, cluster CIDRs and `169.254.169.254` egress
-- ❌ **8.20** Verify the SSRF block with Hubble — *pending: needs Cilium/Hubble on a live cluster*
+- ✅ **8.20** Verify the SSRF block with Hubble
 - ✅ **8.21** KEDA NATS JetStream scaler for sandbox capacity
 - ✅ **8.22** `telegram-bot` edits its reply when the sandbox result arrives
 - ✅ **8.23** ADR-006: sandbox isolation model

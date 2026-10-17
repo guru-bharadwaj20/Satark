@@ -1,0 +1,19 @@
+---
+# Install gVisor on the workers and label them for the gvisor RuntimeClass
+# (gitops/platform/sandbox/runtimeclass.yaml), which schedules sandbox pods
+# only onto nodes with satark.io/gvisor=true. Run after site.yml.
+#
+#   ansible-playbook playbooks/gvisor.yml
+- name: Install gVisor
+  hosts: workers
+  become: true
+  roles:
+    - gvisor
+  post_tasks:
+    - name: Label the node for the gvisor RuntimeClass
+      ansible.builtin.command: >-
+        kubectl --kubeconfig /etc/kubernetes/admin.conf
+        label node {{ inventory_hostname }} satark.io/gvisor=true --overwrite
+      delegate_to: "{{ groups['control_plane'][0] }}"
+      register: gvisor_label
+      changed_when: "'not labeled' not in gvisor_label.stdout"

@@ -4,15 +4,47 @@
     that: ansible_architecture in gvisor_arch_map
     fail_msg: "gVisor has no release for {{ ansible_architecture }}"
 
-- name: Download gVisor binaries with checksum verification
-  ansible.builtin.get_url:
-    url: "{{ gvisor_base_url }}/{{ item }}"
-    checksum: "sha512:{{ gvisor_base_url }}/{{ item }}.sha512"
-    dest: "{{ gvisor_bin_dir }}/{{ item }}"
+- name: Read the containerd version
+  ansible.builtin.command: containerd --version
+  register: gvisor_containerd_version
+  changed_when: false
+  when: gvisor_containerd_major | string | length == 0
+
+- name: Set the containerd major version
+  ansible.builtin.set_fact:
+    gvisor_containerd_major_detected: >-
+      {{ gvisor_containerd_major if gvisor_containerd_major | string | length > 0
+         else gvisor_containerd_version.stdout.split()[2] | regex_replace('^v', '') | split('.') | first }}
+
+- name: Create the gVisor download cache
+  ansible.builtin.file:
+    path: "{{ gvisor_cache_dir }}/{{ gvisor_release }}"
+    state: directory
     mode: "0755"
+
+- name: Download the gVisor release with checksum verification
+  ansible.builtin.get_url:
+    url: "{{ gvisor_base_url }}/{{ gvisor_archive }}"
+    checksum: "sha512:{{ gvisor_base_url }}/{{ gvisor_archive }}.sha512"
+    dest: "{{ gvisor_cache_dir }}/{{ gvisor_release }}/{{ gvisor_archive }}"
+    mode: "0644"
+  register: gvisor_download
+
+- name: Check whether the gVisor sidecars are installed
+  ansible.builtin.stat:
+    path: "{{ gvisor_bin_dir }}/gvisor-bin/gvisor_sentry"
+  register: gvisor_sentry
+
+# runsc refuses to start without the sidecars in gvisor-bin/ next to it, so
+# the whole archive is extracted, not just runsc and the shim.
+- name: Install runsc, the containerd shim and the gvisor-bin sidecars
+  ansible.builtin.unarchive:
+    src: "{{ gvisor_cache_dir }}/{{ gvisor_release }}/{{ gvisor_archive }}"
+    dest: "{{ gvisor_bin_dir }}"
+    remote_src: true
     owner: root
     group: root
-  loop: "{{ gvisor_binaries }}"
+  when: gvisor_download is changed or not gvisor_sentry.stat.exists
   notify: Restart containerd
 
 - name: Check runsc runs
@@ -42,15 +74,17 @@
 - name: Restart containerd now so the handler is available
   ansible.builtin.meta: flush_handlers
 
+# The container passes only if it sees gVisor's emulated kernel version
+# instead of the host's. The exit code is checked, not the output: `ctr run`
+# does not forward stdout from the runsc shim.
 - name: Smoke test runsc through containerd
   ansible.builtin.shell: |
-    set -o pipefail
+    set -e
     ctr --namespace gvisor-smoke images pull docker.io/library/busybox:1.36 >/dev/null
     ctr --namespace gvisor-smoke run --rm --runtime io.containerd.runsc.v1 \
-      docker.io/library/busybox:1.36 gvisor-smoke-{{ 1000 | random }} dmesg | head -n 3
+      docker.io/library/busybox:1.36 gvisor-smoke-{{ 1000 | random }} \
+      sh -c 'test "$(uname -r)" != "{{ ansible_kernel }}"'
   args:
     executable: /bin/bash
-  register: gvisor_smoke
   changed_when: false
-  failed_when: "'gVisor' not in gvisor_smoke.stdout and 'Starting gVisor' not in gvisor_smoke.stdout"
   when: gvisor_smoke_test | default(true) | bool

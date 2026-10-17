@@ -1,24 +1,26 @@
 ---
 # gVisor release to install. Releases are dated: https://gvisor.dev/docs/user_guide/install/
-gvisor_release: "20241014"
+# Since 2025 a release ships one gvisor.tar.bz2 per architecture instead of
+# separate binaries.
+gvisor_release: "20260928"
 gvisor_arch_map:
   x86_64: x86_64
   aarch64: aarch64
 gvisor_arch: "{{ gvisor_arch_map[ansible_architecture] }}"
 gvisor_base_url: "https://storage.googleapis.com/gvisor/releases/release/{{ gvisor_release }}/{{ gvisor_arch }}"
+gvisor_archive: gvisor.tar.bz2
+gvisor_cache_dir: /var/cache/gvisor
 gvisor_bin_dir: /usr/local/bin
-gvisor_binaries:
-  - runsc
-  - containerd-shim-runsc-v1
 
 # containerd runtime handler name; the RuntimeClass "gvisor" points at it.
 gvisor_runtime_handler: runsc
 containerd_config_path: /etc/containerd/config.toml
 # containerd 1.7 uses the v1 CRI plugin path; containerd 2.x uses
-# io.containerd.cri.v1.runtime.
+# io.containerd.cri.v1.runtime. The major version is read from
+# `containerd --version` unless set here.
+gvisor_containerd_major: ""
 gvisor_containerd_cri_plugin: >-
-  {{ 'io.containerd.cri.v1.runtime' if (gvisor_containerd_major | int) >= 2 else 'io.containerd.grpc.v1.cri' }}
-gvisor_containerd_major: 1
+  {{ 'io.containerd.cri.v1.runtime' if (gvisor_containerd_major_detected | int) >= 2 else 'io.containerd.grpc.v1.cri' }}
 
 # runsc flags (written to /etc/containerd/runsc.toml).
 gvisor_platform: systrap
