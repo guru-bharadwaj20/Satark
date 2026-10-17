@@ -43,12 +43,16 @@
         path: "{{ kubeadm_worker_config_path }}"
         state: absent
 
+# The kubelet files its serving CSR a few seconds after joining, so keep
+# retrying until one is approved rather than succeeding on an empty list.
 - name: Approve the kubelet serving certificate for this node
   ansible.builtin.shell: |
     set -o pipefail
     kubectl get csr --no-headers \
       | awk '$NF == "Pending" && $0 ~ /system:node:{{ inventory_hostname }}/ {print $1}' \
       | xargs -r kubectl certificate approve
+    kubectl get csr --no-headers \
+      | grep 'kubelet-serving' | grep 'system:node:{{ inventory_hostname }} ' | grep -q 'Approved'
   args:
     executable: /bin/bash
   environment:
@@ -56,7 +60,7 @@
   delegate_to: "{{ kubeadm_worker_control_plane_host }}"
   register: kubeadm_worker_csr
   changed_when: "'approved' in kubeadm_worker_csr.stdout"
-  retries: 6
+  retries: 12
   delay: 10
   until: kubeadm_worker_csr.rc == 0
 

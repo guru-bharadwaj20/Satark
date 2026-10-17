@@ -102,14 +102,14 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 266 / 294 subtasks completed**
+**Overall progress: 267 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
 | Phase | Focus | Subtasks | Completed |
 |---|---|---|---|
 | 0 | Planning and repository setup | 21 | 21 |
-| 1 | On-prem Kubernetes foundations | 25 | 24 |
+| 1 | On-prem Kubernetes foundations | 25 | 25 |
 | 2 | Product MVP (core services) | 26 | 26 |
 | 3 | Data layer and Helm packaging | 20 | 19 |
 | 4 | GitOps and CI/CD | 19 | 18 |
@@ -121,7 +121,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **266** |
+| | **Total** | **294** | **267** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -172,7 +172,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **1.19** Install local-path-provisioner as the default StorageClass
 - ✅ **1.20** Write `playbooks/site.yml` to run all roles in order
 - ✅ **1.21** Write `scripts/bootstrap.sh` (`vagrant up` followed by `site.yml`)
-- ❌ **1.22** Verify the cluster: all nodes Ready, in-cluster DNS works, a test LoadBalancer gets an IP — *pending: needs the running Vagrant/kubeadm cluster; run `scripts/verify-cluster.sh`*
+- ✅ **1.22** Verify the cluster: all nodes Ready, in-cluster DNS works, a test LoadBalancer gets an IP
 - ✅ **1.23** ADR-001: kubeadm instead of k3s
 - ✅ **1.24** ADR-003: Cilium as the CNI
 - ✅ **1.25** SOP-06: onboarding, from zero to a running cluster

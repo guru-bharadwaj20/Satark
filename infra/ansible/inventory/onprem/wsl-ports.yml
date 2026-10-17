@@ -1,0 +1,15 @@
+---
+# Overlay used by scripts/bootstrap.sh under WSL2: the VirtualBox host-only
+# network is not reachable from WSL, so SSH goes through the Vagrant
+# forwarded ports on localhost. node_ip (hosts.yml) is unchanged.
+all:
+  children:
+    k8s_cluster:
+      children:
+        control_plane:
+          hosts:
+            cp-1: {ansible_host: 127.0.0.1, ansible_port: 2222}
+        workers:
+          hosts:
+            worker-1: {ansible_host: 127.0.0.1, ansible_port: 2200}
+            worker-2: {ansible_host: 127.0.0.1, ansible_port: 2201}

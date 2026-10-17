@@ -37,7 +37,11 @@ done
 
 export SATARK_SSH_PUBKEY="${SSH_KEY}.pub"
 # Under WSL, Vagrant must store VM state on the Windows filesystem.
+# The host-only network is not reachable from WSL2, so Ansible connects
+# through the forwarded SSH ports instead.
+ON_WSL=0
 if grep -qi microsoft /proc/version 2>/dev/null; then
+  ON_WSL=1
   export VAGRANT_WSL_ENABLE_WINDOWS_ACCESS=1
 fi
 
@@ -51,6 +55,9 @@ ansible-galaxy collection install -r "$ANSIBLE_DIR/requirements.yml" >/dev/null
 
 cd "$ANSIBLE_DIR"
 export ANSIBLE_CONFIG="$ANSIBLE_DIR/ansible.cfg"
+if [[ "$ON_WSL" -eq 1 ]]; then
+  export ANSIBLE_INVENTORY="inventory/onprem/hosts.yml,inventory/onprem/wsl-ports.yml"
+fi
 
 log "Waiting for SSH on all nodes"
 for attempt in $(seq 1 30); do

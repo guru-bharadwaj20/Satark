@@ -63,6 +63,17 @@ if ! command -v helm >/dev/null; then
   curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 fi
 
+log "Installing Linux Vagrant (must match the Windows version)"
+VAGRANT_VERSION="${VAGRANT_VERSION:-2.4.9}"
+if ! command -v vagrant >/dev/null; then
+  curl -fsSL https://apt.releases.hashicorp.com/gpg \
+    | sudo gpg --dearmor --yes -o /etc/apt/keyrings/hashicorp.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/hashicorp.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+    | sudo tee /etc/apt/sources.list.d/hashicorp.list >/dev/null
+  sudo apt-get update -qq
+  sudo apt-get install -y -qq "vagrant=${VAGRANT_VERSION}-*"
+fi
+
 log "Making the Windows Vagrant binary usable from WSL"
 if ! grep -q VAGRANT_WSL_ENABLE_WINDOWS_ACCESS "$HOME/.bashrc"; then
   cat >>"$HOME/.bashrc" <<'EOF'

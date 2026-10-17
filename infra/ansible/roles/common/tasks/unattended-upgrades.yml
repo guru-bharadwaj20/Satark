@@ -26,6 +26,14 @@
     group: root
     mode: "0644"
 
+# Some base boxes (bento) mask the apt services with /dev/null symlinks,
+# and a timer will not start while the unit it triggers is masked.
+# systemd_service's masked=false does not detect this, so call systemctl.
+- name: Unmask the apt services
+  ansible.builtin.command: systemctl unmask apt-daily.service apt-daily-upgrade.service
+  register: common_apt_unmask
+  changed_when: "'Removed' in common_apt_unmask.stderr"
+
 - name: Enable the apt timers
   ansible.builtin.systemd_service:
     name: "{{ item }}"
