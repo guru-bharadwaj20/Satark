@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 271 / 294 subtasks completed**
+**Overall progress: 272 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -117,11 +117,11 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 6 | Observability | 20 | 20 |
 | 7 | Link intelligence | 19 | 19 |
 | 8 | Sandbox operator | 25 | 25 |
-| 9 | Security and compliance | 20 | 18 |
+| 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **271** |
+| | **Total** | **294** | **272** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -362,7 +362,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **9.7** Install Trivy Operator
 - ✅ **9.8** kube-bench CIS benchmark Job
 - ✅ **9.9** Track kube-bench findings as GitHub issues
-- ❌ **9.10** Remediate high-severity findings — *pending: depends on 9.9 findings*
+- ✅ **9.10** Remediate high-severity findings
 - ✅ **9.11** Install Sealed Secrets (or SOPS with age)
 - ✅ **9.12** Move all secrets to sealed form
 - ✅ **9.13** gitleaks in CI and as a pre-commit hook

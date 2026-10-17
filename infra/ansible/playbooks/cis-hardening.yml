@@ -1,31 +1,60 @@
 ---
 # Remediate high-severity kube-bench (CIS Kubernetes Benchmark) findings on a
 # kubeadm cluster (task 9.10). Every change here maps to a CIS check ID so the
-# result can be confirmed with scripts/kube-bench/run.sh.
+# result can be confirmed with scripts/kube-bench/run.sh. Checks left as
+# accepted exceptions are listed in docs/compliance/kube-bench-remediation.md.
 #
-#   ansible-playbook -i infra/ansible/inventory/hosts.yml \
-#     infra/ansible/playbooks/cis-hardening.yml --check --diff   # preview
-#   ansible-playbook -i infra/ansible/inventory/hosts.yml \
-#     infra/ansible/playbooks/cis-hardening.yml                  # apply
+#   ansible-playbook playbooks/cis-hardening.yml --check --diff   # preview
+#   ansible-playbook playbooks/cis-hardening.yml                  # apply
+#
+# upgrade.yml re-runs this playbook: `kubeadm upgrade` rewrites the static pod
+# manifests and kubelet config, and package upgrades reset file modes.
 #
 # Control-plane static pod manifests are edited one node at a time (serial: 1)
 # so the API server stays available while kubelet restarts each component.
 
-- name: CIS hardening - file permissions (all nodes)
+- name: CIS hardening - kubelet (all nodes)
   hosts: k8s_cluster
   become: true
+  vars:
+    kubelet_config: /var/lib/kubelet/config.yaml
+    # Settings merged into the kubelet config. kubeadm-config.yaml.j2 sets the
+    # same values for new clusters.
+    kubelet_cis_settings:
+      readOnlyPort: 0                 # 4.2.4
+      protectKernelDefaults: true     # 4.2.6
+      rotateCertificates: true        # 4.2.11
+      serverTLSBootstrap: true        # 4.2.12, and lets 1.2.5 verify kubelets
+      tlsCipherSuites:                # 4.2.13
+        - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
+        - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
   tasks:
-    - name: "CIS 4.1.1/4.1.5/4.1.9: kubelet config and kubeconfig files are 0600 root:root"
-      ansible.builtin.file:
+    - name: Find the kubelet files CIS 4.1.x checks
+      ansible.builtin.stat:
         path: "{{ item }}"
+      loop:
+        # The Debian package ships the unit and drop-in under /usr/lib (/lib is a
+        # symlink to it); a drop-in under /etc overrides it.
+        - /usr/lib/systemd/system/kubelet.service
+        - /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf
+        - /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+        - /etc/kubernetes/kubelet.conf
+        - "{{ kubelet_config }}"
+      register: kubelet_files
+
+    - name: "CIS 4.1.1/4.1.5/4.1.9: kubelet service file, kubeconfig and config are 0600 root:root"
+      ansible.builtin.file:
+        path: "{{ item.item }}"
         mode: "0600"
         owner: root
         group: root
-      loop:
-        - /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-        - /etc/kubernetes/kubelet.conf
-        - /var/lib/kubelet/config.yaml
-      failed_when: false
+      loop: "{{ kubelet_files.results | selectattr('stat.exists') | list }}"
+      loop_control:
+        label: "{{ item.item }}"
 
     - name: "CIS 4.1.7/4.1.8: client CA file is 0600 root:root"
       ansible.builtin.file:
@@ -33,25 +62,6 @@
         mode: "0600"
         owner: root
         group: root
-
-    - name: "CIS 4.2.1/4.2.2/4.2.6: kubelet auth, authz and kernel defaults"
-      ansible.builtin.blockinfile:
-        path: /var/lib/kubelet/config.yaml
-        marker: "# {mark} satark cis-hardening"
-        block: |
-          readOnlyPort: 0
-          protectKernelDefaults: true
-          eventRecordQPS: 5
-          rotateCertificates: true
-          serverTLSBootstrap: true
-          tlsCipherSuites:
-            - TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
-            - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-            - TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-            - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-            - TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305
-            - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
-      notify: Restart kubelet
 
     - name: "CIS 4.2.6 prerequisite: kernel parameters kubelet expects"
       ansible.posix.sysctl:
@@ -69,6 +79,26 @@
           kernel.keys.root_maxkeys: 1000000
           kernel.keys.root_maxbytes: 25000000
 
+    - name: Read the kubelet config
+      ansible.builtin.slurp:
+        src: "{{ kubelet_config }}"
+      register: kubelet_config_raw
+
+    # Merged as YAML, not appended as text: appending duplicates keys that
+    # kubeadm already writes (rotateCertificates, serverTLSBootstrap).
+    - name: "CIS 4.2.x: kubelet read-only port, kernel defaults, cert rotation, ciphers"
+      vars:
+        current: "{{ kubelet_config_raw.content | b64decode | from_yaml }}"
+      ansible.builtin.copy:
+        dest: "{{ kubelet_config }}"
+        content: "{{ current | combine(kubelet_cis_settings) | to_nice_yaml(indent=2) }}"
+        mode: "0600"
+        owner: root
+        group: root
+        backup: true
+      when: current | combine(kubelet_cis_settings) != current
+      notify: Restart kubelet
+
   handlers:
     - name: Restart kubelet
       ansible.builtin.systemd:
@@ -81,30 +111,54 @@
   serial: 1
   vars:
     manifests: /etc/kubernetes/manifests
+    # CIS 1.3.7/1.4.2 want the controller-manager and scheduler bound to
+    # 127.0.0.1. kube-prometheus-stack scrapes both from the node IP, so they
+    # stay on 0.0.0.0 (accepted exception). Set true where nothing scrapes them.
+    cis_bind_localhost: false
+    apiserver_flags:
+      - {flag: profiling, value: "false"}                                         # 1.2.15
+      - {flag: kubelet-certificate-authority, value: /etc/kubernetes/pki/ca.crt}  # 1.2.5
+      - {flag: enable-admission-plugins, value: "NodeRestriction"}                # 1.2.14
+      - {flag: request-timeout, value: "60s"}                                     # 1.2.21
+      - {flag: service-account-lookup, value: "true"}                             # 1.2.22
+      - {flag: tls-min-version, value: "VersionTLS12"}                            # 1.2.29
+      - {flag: service-account-extend-token-expiration, value: "false"}           # 1.2.30
+    bind_flags: "{{ [{'flag': 'bind-address', 'value': '127.0.0.1'}] if cis_bind_localhost | bool else [] }}"
   tasks:
-    - name: "CIS 1.1.1-1.1.8, 1.1.13-1.1.18: control-plane manifests and kubeconfigs are 0600"
-      ansible.builtin.file:
+    - name: Find the control-plane files CIS 1.1.x checks
+      ansible.builtin.stat:
         path: "{{ item }}"
-        mode: "0600"
-        owner: root
-        group: root
       loop:
         - "{{ manifests }}/kube-apiserver.yaml"
         - "{{ manifests }}/kube-controller-manager.yaml"
         - "{{ manifests }}/kube-scheduler.yaml"
         - "{{ manifests }}/etcd.yaml"
         - /etc/kubernetes/admin.conf
+        - /etc/kubernetes/super-admin.conf   # only on the first control-plane node
         - /etc/kubernetes/scheduler.conf
         - /etc/kubernetes/controller-manager.conf
+      register: cp_files
 
-    - name: "CIS 1.1.19-1.1.21: PKI directory owned by root, keys 0600"
+    - name: "CIS 1.1.1-1.1.8, 1.1.13-1.1.18: control-plane manifests and kubeconfigs are 0600"
+      ansible.builtin.file:
+        path: "{{ item.item }}"
+        mode: "0600"
+        owner: root
+        group: root
+      loop: "{{ cp_files.results | selectattr('stat.exists') | list }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: "CIS 1.1.19-1.1.21: PKI directory owned by root, keys and certs 0600"
       ansible.builtin.shell: |
         set -e
         chown -R root:root /etc/kubernetes/pki
-        find /etc/kubernetes/pki -name '*.key' -exec chmod 0600 {} +
-        find /etc/kubernetes/pki -name '*.crt' -exec chmod 0600 {} +
-      changed_when: false
+        find /etc/kubernetes/pki \( -name '*.key' -o -name '*.crt' \) ! -perm 0600 -print -exec chmod 0600 {} +
+      register: pki_perms
+      changed_when: pki_perms.stdout | length > 0
 
+    # kubeadm's etcd runs as root, so it keeps access; the owner is for the
+    # check and for anything that reads the directory as the etcd user.
     - name: "CIS 1.1.11/1.1.12: etcd data directory 0700 owned by etcd"
       block:
         - name: Ensure etcd system user exists
@@ -120,49 +174,77 @@
             mode: "0700"
             owner: etcd
             group: etcd
+          # --check does not create the user, so chown cannot resolve it.
+          ignore_errors: "{{ ansible_check_mode }}"
 
+    # anonymous-auth (1.2.1) stays on: kubeadm's liveness and readiness probes
+    # call /livez and /readyz without credentials. RBAC limits anonymous
+    # requests to the health and version endpoints.
     - name: "CIS 1.2.x: kube-apiserver flags"
       ansible.builtin.lineinfile:
         path: "{{ manifests }}/kube-apiserver.yaml"
         regexp: '^(\s*)- --{{ item.flag }}=.*$'
         line: "    - --{{ item.flag }}={{ item.value }}"
         insertafter: '^\s*- kube-apiserver$'
-      loop:
-        - {flag: profiling, value: "false"}                                  # 1.2.15
-        - {flag: anonymous-auth, value: "false"}                             # 1.2.1
-        - {flag: kubelet-certificate-authority, value: /etc/kubernetes/pki/ca.crt}  # 1.2.5
-        - {flag: enable-admission-plugins, value: "NodeRestriction"}         # 1.2.13
-        - {flag: request-timeout, value: "60s"}                              # 1.2.21
-        - {flag: service-account-lookup, value: "true"}                      # 1.2.22
-        - {flag: tls-min-version, value: "VersionTLS12"}                     # 1.2.29
+      loop: "{{ apiserver_flags }}"
+      register: apiserver_manifest
 
-    - name: "CIS 1.3.2 / 1.3.7: kube-controller-manager profiling off, bound to localhost"
+    - name: "CIS 1.3.2 / 1.3.7: kube-controller-manager profiling off"
       ansible.builtin.lineinfile:
         path: "{{ manifests }}/kube-controller-manager.yaml"
         regexp: '^(\s*)- --{{ item.flag }}=.*$'
         line: "    - --{{ item.flag }}={{ item.value }}"
         insertafter: '^\s*- kube-controller-manager$'
-      loop:
-        - {flag: profiling, value: "false"}
-        - {flag: bind-address, value: "127.0.0.1"}
-        - {flag: terminated-pod-gc-threshold, value: "1000"}
+      loop: "{{ [{'flag': 'profiling', 'value': 'false'}, {'flag': 'terminated-pod-gc-threshold', 'value': '1000'}] + bind_flags }}"
 
-    - name: "CIS 1.4.1 / 1.4.2: kube-scheduler profiling off, bound to localhost"
+    - name: "CIS 1.4.1 / 1.4.2: kube-scheduler profiling off"
       ansible.builtin.lineinfile:
         path: "{{ manifests }}/kube-scheduler.yaml"
         regexp: '^(\s*)- --{{ item.flag }}=.*$'
         line: "    - --{{ item.flag }}={{ item.value }}"
         insertafter: '^\s*- kube-scheduler$'
-      loop:
-        - {flag: profiling, value: "false"}
-        - {flag: bind-address, value: "127.0.0.1"}
+      loop: "{{ [{'flag': 'profiling', 'value': 'false'}] + bind_flags }}"
+
+    # kubelet restarts the static pod a few seconds after the manifest
+    # changes, so readyz alone could still answer from the old process.
+    - name: Wait for kube-apiserver to restart with the new flags
+      ansible.builtin.shell: |
+        set -e
+        cmdline="$(pgrep -a kube-apiserver)"
+        {% for f in apiserver_flags %}
+        grep -q -- '--{{ f.flag }}={{ f.value }}' <<<"$cmdline"
+        {% endfor %}
+      args:
+        executable: /bin/bash
+      register: apiserver_proc
+      changed_when: false
+      retries: 30
+      delay: 5
+      until: apiserver_proc.rc == 0
+      when: apiserver_manifest is changed
 
     - name: Wait for the API server to come back on this node
       ansible.builtin.uri:
         url: "https://127.0.0.1:6443/readyz"
         validate_certs: false
-        status_code: [200, 401, 403]
+        status_code: [200]
       register: readyz
       retries: 30
       delay: 10
-      until: readyz.status in [200, 401, 403]
+      until: readyz.status == 200
+
+    # With --kubelet-certificate-authority the API server rejects a kubelet
+    # whose serving cert is not CA-signed, so logs/exec break if a renewal CSR
+    # sits unapproved. kubelets renew at ~70-90% of the one-year lifetime.
+    - name: Approve pending kubelet serving certificate requests from cluster nodes
+      ansible.builtin.shell: |
+        set -o pipefail
+        kubectl get csr -o jsonpath='{range .items[?(@.spec.signerName=="kubernetes.io/kubelet-serving")]}{.metadata.name} {.spec.username} {.status.conditions[0].type}{"\n"}{end}' \
+          | awk '$3 == "" && $2 ~ /^system:node:/ {print $1}' \
+          | xargs -r kubectl certificate approve
+      args:
+        executable: /bin/bash
+      environment:
+        KUBECONFIG: /etc/kubernetes/admin.conf
+      register: kubelet_csr
+      changed_when: "'approved' in kubelet_csr.stdout"

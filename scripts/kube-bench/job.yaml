@@ -57,6 +57,9 @@ spec:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
           volumeMounts:
+            # Host user database, so stat names the etcd owner of /var/lib/etcd (1.1.12).
+            - {name: etc-passwd, mountPath: /etc/passwd, readOnly: true}
+            - {name: etc-group, mountPath: /etc/group, readOnly: true}
             - {name: var-lib-etcd, mountPath: /var/lib/etcd, readOnly: true}
             - {name: var-lib-kubelet, mountPath: /var/lib/kubelet, readOnly: true}
             - {name: etc-systemd, mountPath: /etc/systemd, readOnly: true}
@@ -66,6 +69,8 @@ spec:
             - {name: opt-cni-bin, mountPath: /opt/cni/bin, readOnly: true}
             - {name: usr-bin, mountPath: /usr/local/mount-from-host/bin, readOnly: true}
       volumes:
+        - {name: etc-passwd, hostPath: {path: /etc/passwd, type: File}}
+        - {name: etc-group, hostPath: {path: /etc/group, type: File}}
         - {name: var-lib-etcd, hostPath: {path: /var/lib/etcd}}
         - {name: var-lib-kubelet, hostPath: {path: /var/lib/kubelet}}
         - {name: etc-systemd, hostPath: {path: /etc/systemd}}
