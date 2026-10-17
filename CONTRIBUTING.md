@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 267 / 294 subtasks completed**
+**Overall progress: 268 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -111,7 +111,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 0 | Planning and repository setup | 21 | 21 |
 | 1 | On-prem Kubernetes foundations | 25 | 25 |
 | 2 | Product MVP (core services) | 26 | 26 |
-| 3 | Data layer and Helm packaging | 20 | 19 |
+| 3 | Data layer and Helm packaging | 20 | 20 |
 | 4 | GitOps and CI/CD | 19 | 18 |
 | 5 | Cloud infrastructure with Terraform | 24 | 23 |
 | 6 | Observability | 20 | 20 |
@@ -121,7 +121,7 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 16 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **267** |
+| | **Total** | **294** | **268** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -225,7 +225,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **3.15** Install Envoy Gateway and the Gateway API CRDs
 - ✅ **3.16** Gateway and HTTPRoutes for the API and the bot
 - ✅ **3.17** Probes, resource requests and resource limits for every service
-- ❌ **3.18** Deploy the MVP to the cluster with Helm and run smoke tests — *pending: needs a live cluster; run `scripts/deploy-mvp.sh` then `scripts/smoke-test.sh`*
+- ✅ **3.18** Deploy the MVP to the cluster with Helm and run smoke tests
 - ✅ **3.19** ADR-002: Gateway API instead of ingress-nginx
 - ✅ **3.20** ADR-004: CloudNativePG on-prem instead of managed RDS
 

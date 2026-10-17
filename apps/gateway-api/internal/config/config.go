@@ -21,6 +21,14 @@ type Config struct {
 	ScanTimeout     time.Duration
 	MaxTextChars    int
 	MaxImageBytes   int64
+
+	// Optional backends: empty DatabaseURL disables scan persistence, empty
+	// ValkeyAddr disables rate limiting (local docker compose runs neither).
+	DatabaseURL    string
+	ValkeyAddr     string
+	ValkeyPassword string
+	RateLimitRPS   float64
+	RateLimitBurst int
 }
 
 // Load reads configuration from the environment, applying defaults.
@@ -29,6 +37,9 @@ func Load() (Config, error) {
 		Addr:            env("ADDR", ":"+env("PORT", "8080")),
 		TextAnalyzerURL: strings.TrimRight(env("TEXT_ANALYZER_URL", "http://text-analyzer:8000"), "/"),
 		QRDecoderURL:    strings.TrimRight(env("QR_DECODER_URL", "http://qr-decoder:8001"), "/"),
+		DatabaseURL:     env("DATABASE_URL", ""),
+		ValkeyAddr:      env("VALKEY_ADDR", ""),
+		ValkeyPassword:  env("VALKEY_PASSWORD", ""),
 	}
 	var err error
 	if c.LogLevel, err = parseLevel(env("LOG_LEVEL", "info")); err != nil {
@@ -51,6 +62,12 @@ func Load() (Config, error) {
 		return c, fmt.Errorf("MAX_IMAGE_BYTES: %w", err)
 	}
 	c.MaxImageBytes = maxImg
+	if c.RateLimitRPS, err = strconv.ParseFloat(env("RATE_LIMIT_RPS", "1"), 64); err != nil || c.RateLimitRPS <= 0 {
+		return c, fmt.Errorf("RATE_LIMIT_RPS must be a positive number")
+	}
+	if c.RateLimitBurst, err = strconv.Atoi(env("RATE_LIMIT_BURST", "30")); err != nil || c.RateLimitBurst < 1 {
+		return c, fmt.Errorf("RATE_LIMIT_BURST must be a positive integer")
+	}
 	return c, nil
 }
 

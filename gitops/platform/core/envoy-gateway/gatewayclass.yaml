@@ -32,7 +32,8 @@ spec:
         type: LoadBalancer
         externalTrafficPolicy: Local
         annotations:
-          metallb.universe.tf/address-pool: default
+          # Pool created by the addons role (addons_metallb_pool_name).
+          metallb.io/address-pool: lab-pool
       envoyPDB:
         minAvailable: 1
 ---
