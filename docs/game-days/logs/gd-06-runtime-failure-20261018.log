@@ -1,0 +1,104 @@
+2026-10-18T15:45:02Z [gd-06-runtime-failure] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:45:03Z [gd-06-runtime-failure] inject: systemctl mask --now containerd on worker-1
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 5m25.432039623s ago; threshold is 3m0s]
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 7m58.494901687s ago; threshold is 3m0s]
+2026-10-18T15:57:31Z [gd-06-runtime-failure] probe https://api.satark.example/v1/scan/text: 54/600 failed
+2026-10-18T15:57:31Z [gd-06-runtime-failure] revert: unmask and start containerd on worker-1
+2026-10-18T15:57:37Z [gd-06-runtime-failure] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE    NAME                          READY   STATUS    RESTARTS   AGE    IP       NODE       NOMINATED NODE   READINESS GATES
+satark-dev   gateway-api-75856444f-269pg   0/1     Pending   0          7m3s   <none>   worker-1   <none>           <none>
+2026-10-18T16:06:57Z [gd-06-runtime-failure] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE        NAME                          READY   STATUS             RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+metallb-system   metallb-speaker-78bs4         0/4     Evicted            0          2m46s   <none>         worker-1   <none>           <none>
+satark-dev       gateway-api-75856444f-tbzlv   0/1     ImagePullBackOff   0          8m23s   10.244.0.236   worker-1   <none>           <none>
+2026-10-18T16:06:57Z [gd-06-runtime-failure] inject: systemctl stop, then mask, containerd on worker-1
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+inactive
+shims: 5
+Oct 18 21:37:55 worker-1 kubelet[424942]: E1018 21:37:55.810993  424942 kubelet.go:2530] "Skipping pod synchronization" err="container runtime is down"
+Oct 18 21:37:56 worker-1 kubelet[424942]: E1018 21:37:56.388868  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:37:57 worker-1 kubelet[424942]: E1018 21:37:57.389699  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:37:58 worker-1 kubelet[424942]: E1018 21:37:58.389972  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:37:58 worker-1 kubelet[424942]: E1018 21:37:58.712368  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+inactive
+shims: 5
+Oct 18 21:39:58 worker-1 kubelet[424942]: E1018 21:39:58.742066  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:39:59 worker-1 kubelet[424942]: E1018 21:39:59.667006  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:40:00 worker-1 kubelet[424942]: E1018 21:40:00.669059  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:40:00 worker-1 kubelet[424942]: E1018 21:40:00.839912  424942 kubelet.go:2530] "Skipping pod synchronization" err="[container runtime is down, PLEG is not healthy: pleg was last seen active 3m1.886761968s ago; threshold is 3m0s]"
+Oct 18 21:40:01 worker-1 kubelet[424942]: E1018 21:40:01.670552  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 5m30.416857682s ago; threshold is 3m0s]
+inactive
+shims: 5
+Oct 18 21:42:26 worker-1 kubelet[424942]: E1018 21:42:26.822109  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:42:27 worker-1 kubelet[424942]: E1018 21:42:27.822948  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:42:28 worker-1 kubelet[424942]: E1018 21:42:28.771138  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:42:28 worker-1 kubelet[424942]: E1018 21:42:28.824034  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:42:29 worker-1 kubelet[424942]: E1018 21:42:29.825488  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 7m54.278476021s ago; threshold is 3m0s]
+inactive
+shims: 5
+Oct 18 21:44:57 worker-1 kubelet[424942]: E1018 21:44:57.030945  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:44:58 worker-1 kubelet[424942]: E1018 21:44:58.032581  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:44:58 worker-1 kubelet[424942]: E1018 21:44:58.812080  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:44:59 worker-1 kubelet[424942]: E1018 21:44:59.034156  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+Oct 18 21:45:00 worker-1 kubelet[424942]: E1018 21:45:00.035888  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while dialing: dial unix /run/containerd/containerd.sock: connect: no such file or directory\""
+2026-10-18T16:18:37Z [gd-06-runtime-failure] probe https://api.satark.example/v1/scan/text: 0/600 failed
+2026-10-18T16:18:37Z [gd-06-runtime-failure] revert: unmask and start containerd on worker-1
+2026-10-18T16:18:42Z [gd-06-runtime-failure] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE        NAME                          READY   STATUS        RESTARTS   AGE    IP              NODE       NOMINATED NODE   READINESS GATES
+metallb-system   metallb-speaker-cqxnj         0/4     Init:0/3      0          11m    192.168.56.11   worker-1   <none>           <none>
+satark-dev       gateway-api-75856444f-jtml7   0/1     Pending       0          6m8s   <none>          worker-1   <none>           <none>
+satark-dev       gateway-api-75856444f-tbzlv   0/1     Terminating   0          20m    10.244.0.236    worker-1   <none>           <none>
