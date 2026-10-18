@@ -1,0 +1,151 @@
+NAME          READY   STATUS    RESTARTS      AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+satark-pg-1   1/1     Running   1 (64m ago)   13h     10.244.2.99    worker-2   <none>           <none>
+satark-pg-3   1/1     Running   0             8m15s   10.244.0.175   worker-1   <none>           <none>
+satark-pg-4   1/1     Running   0             25s     10.244.0.166   worker-1   <none>           <none>
+valkey-0      1/1     Running   0             21h     10.244.2.86    worker-2   <none>           <none>
+primary=satark-pg-1
+NOTICE:  relation "gd02" already exists, skipping
+===== +60s 16:07:57
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+inactive
+shims: 5
+Oct 18 21:37:55 worker-1 kubelet[424942]: E1018 21:37:55.810993  424942 kubelet.go:2530] "Skipping pod synchronization" err="container runtime is down"
+Oct 18 21:37:56 worker-1 kubelet[424942]: E1018 21:37:56.388868  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:37:57 worker-1 kubelet[424942]: E1018 21:37:57.389699  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:37:58 worker-1 kubelet[424942]: E1018 21:37:58.389972  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:37:58 worker-1 kubelet[424942]: E1018 21:37:58.712368  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:32Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:36Z"}]
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-cqxnj 0/4 Init:0/3
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-269pg 0/1 Completed
+satark-dev gateway-api-75856444f-tbzlv 0/1 ErrImagePull
+gateway-api-75856444f-269pg 0/1 Completed worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+gateway-api-75856444f-tbzlv 0/1 ErrImagePull worker-1
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running worker-1
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 5
+===== +180s 16:10:00
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+inactive
+shims: 5
+Oct 18 21:39:58 worker-1 kubelet[424942]: E1018 21:39:58.742066  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while
+Oct 18 21:39:59 worker-1 kubelet[424942]: E1018 21:39:59.667006  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:40:00 worker-1 kubelet[424942]: E1018 21:40:00.669059  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:40:00 worker-1 kubelet[424942]: E1018 21:40:00.839912  424942 kubelet.go:2530] "Skipping pod synchronization" err="[container runtime is down, PLEG is not healthy: pleg was last seen active 3m1.886761968s ago; 
+Oct 18 21:40:01 worker-1 kubelet[424942]: E1018 21:40:01.670552  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:32Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:36Z"}]
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-cqxnj 0/4 Init:0/3
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-269pg 0/1 Completed
+satark-dev gateway-api-75856444f-tbzlv 0/1 ErrImagePull
+gateway-api-75856444f-269pg 0/1 Completed worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+gateway-api-75856444f-tbzlv 0/1 ErrImagePull worker-1
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running worker-1
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 5
+===== +330s 16:12:28
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 5m30.416857682s ago; threshold is 3m0s]
+inactive
+shims: 5
+Oct 18 21:42:26 worker-1 kubelet[424942]: E1018 21:42:26.822109  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:42:27 worker-1 kubelet[424942]: E1018 21:42:27.822948  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:42:28 worker-1 kubelet[424942]: E1018 21:42:28.771138  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while
+Oct 18 21:42:28 worker-1 kubelet[424942]: E1018 21:42:28.824034  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:42:29 worker-1 kubelet[424942]: E1018 21:42:29.825488  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:32Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:36Z"}]
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-cqxnj 0/4 Init:0/3
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-269pg 0/1 Completed
+satark-dev gateway-api-75856444f-tbzlv 0/1 ErrImagePull
+gateway-api-75856444f-269pg 0/1 Completed worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+gateway-api-75856444f-tbzlv 0/1 ErrImagePull worker-1
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running worker-1
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 5
+===== +480s 16:14:57
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 7m54.278476021s ago; threshold is 3m0s]
+inactive
+shims: 5
+Oct 18 21:44:57 worker-1 kubelet[424942]: E1018 21:44:57.030945  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:44:58 worker-1 kubelet[424942]: E1018 21:44:58.032581  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:44:58 worker-1 kubelet[424942]: E1018 21:44:58.812080  424942 kubelet.go:3120] "Container runtime sanity check failed" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while
+Oct 18 21:44:59 worker-1 kubelet[424942]: E1018 21:44:59.034156  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+Oct 18 21:45:00 worker-1 kubelet[424942]: E1018 21:45:00.035888  424942 generic.go:254] "GenericPLEG: Unable to retrieve pods" err="rpc error: code = Unavailable desc = connection error: desc = \"transport: Error while d
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:32Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T16:07:36Z"}]
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-cqxnj 0/4 Init:0/3
+satark-data satark-pg-3 1/1 Terminating
+satark-data satark-pg-4 1/1 Terminating
+satark-dev gateway-api-75856444f-tbzlv 0/1 Terminating
+gateway-api-75856444f-jtml7 0/1 Pending <none>
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+gateway-api-75856444f-tbzlv 0/1 Terminating worker-1
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Terminating worker-1
+satark-pg-4 1/1 Terminating worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=1 phase=Waiting for the instances to become active
+shims on node: 5
+2026-10-18T16:06:57Z [gd-06-runtime-failure] snapshot: before
+Error: exit status 2
+2026-10-18T16:06:57Z [gd-06-runtime-failure] inject: systemctl stop, then mask, containerd on worker-1
+Created symlink /etc/systemd/system/containerd.service → /dev/null.
+2026-10-18T16:18:37Z [gd-06-runtime-failure] probe https://api.satark.example/v1/scan/text: 0/600 failed
+node/worker-1 condition met
+2026-10-18T16:18:42Z [gd-06-runtime-failure] snapshot: after
+Error: exit status 2
+node Ready again after 6s
+16:19:10 pg 3/3 ready (33s after revert start)
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-cqxnj 0/4 PodInitializing
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-jtml7 0/1 ImagePullBackOff
+metallb-system         metallb-speaker-cqxnj                                             0/4   PodInitializing    0               12m
+satark-dev             gateway-api-75856444f-jtml7                                       0/1   ImagePullBackOff   0               6m35s
+trace:
+    600 200
+writes: ok=717 err=0

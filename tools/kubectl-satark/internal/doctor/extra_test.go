@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"encoding/pem"
 	"math/big"
+	"strings"
 	"testing"
 	"time"
 
@@ -53,6 +54,7 @@ func tlsSecret(ns, name string, crt []byte) *corev1.Secret {
 func newDynamic(objs ...runtime.Object) *dynfake.FakeDynamicClient {
 	lists := map[schema.GroupVersionResource]string{
 		certificateGVR: "CertificateList",
+		certRequestGVR: "CertificateRequestList",
 		applicationGVR: "ApplicationList",
 	}
 	return dynfake.NewSimpleDynamicClientWithCustomListKinds(runtime.NewScheme(), lists, objs...)
@@ -108,6 +110,70 @@ func TestCertificates(t *testing.T) {
 	}
 	if _, ok := sev["secret/fresh"]; ok {
 		t.Error("fresh certificate should not be reported")
+	}
+}
+
+// A missing issuer only shows on the CertificateRequest; doctor quotes it.
+func TestCertificatesRequestReason(t *testing.T) {
+	env := newEnv()
+	req := u("cert-manager.io/v1", "CertificateRequest", "satark", "api-1", map[string]interface{}{
+		"conditions": []interface{}{map[string]interface{}{"type": "Ready", "status": "False", "reason": "Pending",
+			"message": `Referenced "ClusterIssuer" not found`}},
+	})
+	req.SetLabels(map[string]string{"cert-manager.io/certificate-name": "api"})
+	env.Dynamic = newDynamic(
+		u("cert-manager.io/v1", "Certificate", "satark", "api", map[string]interface{}{
+			"conditions": []interface{}{map[string]interface{}{"type": "Ready", "status": "False",
+				"message": "Issuing certificate as Secret does not exist"}},
+		}),
+		req,
+	)
+	r := runOne(t, env, "certificates")
+	if len(r.Findings) != 1 || !strings.Contains(r.Findings[0].Message, `request: Referenced "ClusterIssuer" not found`) {
+		t.Fatalf("want the request's reason in the finding, got %+v", r.Findings)
+	}
+}
+
+// A short-lived certificate that cert-manager will renew in time is healthy
+// (GD-10); its Secret is not reported separately. One whose renewal time
+// passed long ago is reported.
+func TestCertificatesRenewal(t *testing.T) {
+	ready := []interface{}{map[string]interface{}{"type": "Ready", "status": "True"}}
+	withSecret := func(o *unstructured.Unstructured, secret string) *unstructured.Unstructured {
+		o.Object["spec"] = map[string]interface{}{"secretName": secret}
+		return o
+	}
+	env := newEnv(
+		tlsSecret("satark", "short", selfSigned(t, "short.satark.example", now.Add(40*time.Minute))),
+		tlsSecret("satark", "stuck", selfSigned(t, "stuck.satark.example", now.Add(2*24*time.Hour))),
+	)
+	env.Dynamic = newDynamic(
+		withSecret(u("cert-manager.io/v1", "Certificate", "satark", "short", map[string]interface{}{
+			"notAfter":    now.Add(40 * time.Minute).Format(time.RFC3339),
+			"renewalTime": now.Add(10 * time.Minute).Format(time.RFC3339),
+			"conditions":  ready,
+		}), "short"),
+		withSecret(u("cert-manager.io/v1", "Certificate", "satark", "stuck", map[string]interface{}{
+			"notAfter":    now.Add(2 * 24 * time.Hour).Format(time.RFC3339),
+			"renewalTime": now.Add(-5 * 24 * time.Hour).Format(time.RFC3339),
+			"conditions":  ready,
+		}), "stuck"),
+	)
+	r := runOne(t, env, "certificates")
+	got := map[string][]Severity{}
+	for _, f := range r.Findings {
+		got[f.Object] = append(got[f.Object], f.Severity)
+	}
+	for _, o := range []string{"certificate/short", "secret/short"} {
+		if len(got[o]) != 0 {
+			t.Errorf("%s should not be reported, got %v", o, got[o])
+		}
+	}
+	if len(got["certificate/stuck"]) != 2 { // renewal overdue + expires in 2 days
+		t.Errorf("certificate/stuck: want 2 findings, got %+v", r.Findings)
+	}
+	if len(got["secret/stuck"]) != 1 {
+		t.Errorf("secret/stuck: want 1 finding, got %+v", r.Findings)
 	}
 }
 

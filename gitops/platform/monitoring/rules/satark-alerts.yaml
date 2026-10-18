@@ -126,6 +126,38 @@ spec:
             description: Slow DNS stalls URL checks and outbound calls.
             runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-005-dns-failures.md
 
+    # From cert-manager's own metrics (ServiceMonitor enabled in
+    # gitops/platform/cert-manager). TLS Secrets that cert-manager does not
+    # manage are only covered by `kubectl satark doctor`. Added after GD-10
+    # found RB-004 naming these alerts before they existed.
+    - name: satark-certificates
+      rules:
+        - alert: SatarkCertificateExpiringSoon
+          # Less than 7 days left and cert-manager is not going to renew it
+          # in time (renewal time already passed). Short-lived certificates
+          # that renew on schedule never match.
+          expr: |
+            (certmanager_certificate_expiration_timestamp_seconds - time() < 7 * 86400)
+            unless on (namespace, name)
+            (certmanager_certificate_renewal_timestamp_seconds > time())
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Certificate {{ $labels.namespace }}/{{ $labels.name }} expires in {{ $value | humanizeDuration }} and is not renewing"
+            description: cert-manager's renewal time has passed without a new certificate being issued.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-004-certificates.md
+        - alert: CertManagerCertNotReady
+          expr: |
+            max by (namespace, name) (certmanager_certificate_ready_status{condition!="True"}) == 1
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Certificate {{ $labels.namespace }}/{{ $labels.name }} is not Ready"
+            description: The issuer is missing or failing; check the CertificateRequest and cert-manager logs.
+            runbook_url: https://github.com/guru-bharadwaj20/satark/blob/main/docs/runbooks/RB-004-certificates.md
+
     - name: satark-api
       rules:
         - alert: SatarkHighErrorRate

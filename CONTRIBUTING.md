@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 279 / 294 subtasks completed**
+**Overall progress: 281 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -119,9 +119,9 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
-| 11 | Reliability, backups and disaster recovery | 31 | 23 |
+| 11 | Reliability, backups and disaster recovery | 31 | 25 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **279** |
+| | **Total** | **294** | **281** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -428,11 +428,11 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **11.22** Game day 3: break in-cluster DNS — *done in the on-prem lab; [GD-03](docs/game-days/GD-03-break-cluster-dns.md)*
 - ✅ **11.23** Game day 4: apply a bad NetworkPolicy — *done in the on-prem lab; [GD-04](docs/game-days/GD-04-bad-networkpolicy.md)*
 - ✅ **11.24** Game day 5: ship a bad deploy and roll back — *done in the on-prem lab; [GD-05](docs/game-days/GD-05-bad-deploy-rollback.md)*
-- ❌ **11.25** Game day 6: container runtime failure — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ✅ **11.25** Game day 6: container runtime failure — *done in the on-prem lab; [GD-06](docs/game-days/GD-06-container-runtime-failure.md)*
 - ✅ **11.26** Game day 7: disk pressure on a node — *done in the on-prem lab; [GD-07](docs/game-days/GD-07-node-disk-pressure.md)*
 - ❌ **11.27** Game day 8: WireGuard tunnel down — *pending: needs a live cluster; procedure in `docs/game-days/`*
 - ✅ **11.28** Game day 9: image pull failure — *done in the on-prem lab; [GD-09](docs/game-days/GD-09-image-pull-failure.md)*
-- ❌ **11.29** Game day 10: certificate expiry drill — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ✅ **11.29** Game day 10: certificate expiry drill — *done in the on-prem lab; [GD-10](docs/game-days/GD-10-certificate-expiry.md)*
 - ❌ **11.30** Measure time to diagnose with and without `opsbot` — *pending: needs the game days above to be run with and without opsbot*
 - ✅ **11.31** Runbooks RB-003 (Postgres), RB-004 (certificates), RB-006 (backups) and RB-010 (tunnel)
 

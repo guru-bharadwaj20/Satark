@@ -56,6 +56,20 @@ ssh <node> 'sudo systemctl status containerd --no-pager; sudo crictl info | head
 ssh <node> 'sudo systemctl restart containerd && sudo systemctl restart kubelet'
 ```
 
+While the runtime is down, pod status on that node is stale: pods can show
+`1/1 Running` and CloudNativePG can count them as ready for 5 minutes after
+their processes died, until the NoExecute eviction (GD-06). Check what is
+really running instead of trusting status:
+
+```bash
+ssh <node> 'pgrep -c -f containerd-shim; ps -e -o comm | sort | uniq -c | sort -rn | head'
+kubectl -n satark-data exec satark-pg-<primary> -c postgres --   psql -U postgres -Atc 'select application_name, state, sync_state from pg_stat_replication'
+```
+
+If both Postgres replicas were on this node, writes hang (synchronous
+replication) until CNPG relaxes `minSyncReplicas` after the eviction.
+Restarting containerd ends it sooner. See RB-003.
+
 ## 4. CNI (Cilium) not ready
 
 ```bash

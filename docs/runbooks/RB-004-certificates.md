@@ -24,10 +24,16 @@ Walk the chain from Certificate down to the ACME challenge:
 
 ```bash
 kubectl -n <ns> describe certificate <name>
-kubectl -n <ns> get certificaterequest -l cert-manager.io/certificate-name=<name>
+kubectl -n <ns> describe certificaterequest -l cert-manager.io/certificate-name=<name>
 kubectl -n <ns> describe order,challenge     # ACME only
 kubectl -n cert-manager logs deploy/cert-manager --since=1h | grep <name>
 ```
+
+The cause is usually on the CertificateRequest, not the Certificate: its
+`Ready` condition and events (e.g. `IssuerNotFound`). The Certificate only
+says "Issuing certificate as Secret does not exist", and at the default log
+level the cert-manager logs did not name the missing issuer at all (GD-10).
+`kubectl satark doctor` quotes the request's message for you.
 
 Common causes:
 

@@ -1,0 +1,153 @@
+NAME          READY   STATUS    RESTARTS      AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+satark-pg-1   1/1     Running   1 (42m ago)   13h   10.244.2.99    worker-2   <none>           <none>
+satark-pg-3   1/1     Running   1 (41m ago)   13h   10.244.0.191   worker-1   <none>           <none>
+satark-pg-4   1/1     Running   0             89m   10.244.0.192   worker-1   <none>           <none>
+valkey-0      1/1     Running   0             21h   10.244.2.86    worker-2   <none>           <none>
+primary=satark-pg-1
+NOTICE:  relation "gd02" already exists, skipping
+===== +60s 15:46:02
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+bash: line 1: container: command not found
+worker-1   NotReady   worker   34h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:33Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:36Z"}]
+cert-manager cert-manager-866d799c54-9g5vn 1/1 Running
+cert-manager cert-manager-cainjector-6b9dc6d9ff-9mq6h 1/1 Running
+cert-manager cert-manager-webhook-9db9b5dbf-chh5g 1/1 Running
+cnpg-system cnpg-cloudnative-pg-7c49578bc8-kbcxq 1/1 Running
+envoy-gateway-system envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4wrjt2 1/2 Running
+envoy-gateway-system envoy-gateway-668598dc9f-h5nwl 1/1 Running
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-2xlnv 4/4 Running
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-pgxfv 0/1 Running
+satark-dev text-analyzer-5d58b5fbd4-ztb8b 1/1 Running
+satark linkscan-operator-controller-manager-6b5fbb45f4-v4jd7 1/1 Running
+gateway-api-75856444f-pgxfv 0/1 Running worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running 13h
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 0
+===== +180s 15:48:05
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False container runtime is down
+bash: line 1: container: command not found
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:33Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:36Z"}]
+cert-manager cert-manager-866d799c54-9g5vn 1/1 Running
+cert-manager cert-manager-cainjector-6b9dc6d9ff-9mq6h 1/1 Running
+cert-manager cert-manager-webhook-9db9b5dbf-chh5g 1/1 Running
+cnpg-system cnpg-cloudnative-pg-7c49578bc8-kbcxq 1/1 Running
+envoy-gateway-system envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4wrjt2 1/2 Running
+envoy-gateway-system envoy-gateway-668598dc9f-h5nwl 1/1 Running
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-2xlnv 4/4 Running
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-pgxfv 0/1 Running
+satark-dev text-analyzer-5d58b5fbd4-ztb8b 1/1 Running
+satark linkscan-operator-controller-manager-6b5fbb45f4-v4jd7 1/1 Running
+gateway-api-75856444f-pgxfv 0/1 Running worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running 13h
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 0
+===== +330s 15:50:33
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 5m25.432039623s ago; threshold is 3m0s]
+bash: line 1: container: command not found
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:33Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:36Z"}]
+cert-manager cert-manager-866d799c54-9g5vn 1/1 Running
+cert-manager cert-manager-cainjector-6b9dc6d9ff-9mq6h 1/1 Running
+cert-manager cert-manager-webhook-9db9b5dbf-chh5g 1/1 Running
+cnpg-system cnpg-cloudnative-pg-7c49578bc8-kbcxq 1/1 Running
+envoy-gateway-system envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4wrjt2 1/2 Running
+envoy-gateway-system envoy-gateway-668598dc9f-h5nwl 1/1 Running
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-2xlnv 4/4 Running
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-pgxfv 0/1 Running
+satark-dev text-analyzer-5d58b5fbd4-ztb8b 1/1 Running
+satark linkscan-operator-controller-manager-6b5fbb45f4-v4jd7 1/1 Running
+gateway-api-75856444f-pgxfv 0/1 Running worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Running 13h
+satark-pg-4 1/1 Running worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=3 phase=Cluster in healthy state
+shims on node: 0
+===== +480s 15:53:06
+NetworkUnavailable=False Cilium is running on this node
+MemoryPressure=False kubelet has sufficient memory available
+DiskPressure=False kubelet has no disk pressure
+PIDPressure=False kubelet has sufficient PID available
+Ready=False [container runtime is down, PLEG is not healthy: pleg was last seen active 7m58.494901687s ago; threshold is 3m0s]
+bash: line 1: container: command not found
+worker-1   NotReady   worker   35h   v1.35.9
+taints=[{"effect":"NoSchedule","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:33Z"},{"effect":"NoExecute","key":"node.kubernetes.io/not-ready","timeAdded":"2026-10-18T15:45:36Z"}]
+cert-manager cert-manager-866d799c54-9g5vn 1/1 Terminating
+cert-manager cert-manager-cainjector-6b9dc6d9ff-9mq6h 1/1 Terminating
+cert-manager cert-manager-webhook-9db9b5dbf-chh5g 1/1 Terminating
+cnpg-system cnpg-cloudnative-pg-7c49578bc8-kbcxq 1/1 Terminating
+envoy-gateway-system envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4wrjt2 1/2 Terminating
+envoy-gateway-system envoy-gateway-668598dc9f-h5nwl 1/1 Terminating
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-2xlnv 4/4 Running
+satark-data satark-pg-3 1/1 Terminating
+satark-data satark-pg-4 1/1 Terminating
+satark-dev gateway-api-75856444f-pgxfv 0/1 Terminating
+satark-dev text-analyzer-5d58b5fbd4-ztb8b 1/1 Terminating
+satark linkscan-operator-controller-manager-6b5fbb45f4-v4jd7 1/1 Terminating
+gateway-api-75856444f-269pg 0/1 Pending <none>
+gateway-api-75856444f-pgxfv 0/1 Terminating worker-1
+gateway-api-75856444f-rrpzm 1/1 Running worker-2
+satark-pg-1 1/1 Running 13h
+satark-pg-3 1/1 Terminating 13h
+satark-pg-4 1/1 Terminating worker-1
+valkey-0 1/1 Running worker-2
+pg: ready=1 phase=Waiting for the instances to become active
+shims on node: 0
+2026-10-18T15:45:02Z [gd-06-runtime-failure] snapshot: before
+2026-10-18T15:45:03Z [gd-06-runtime-failure] inject: systemctl mask --now containerd on worker-1
+Created symlink /etc/systemd/system/containerd.service → /dev/null.
+2026-10-18T15:57:31Z [gd-06-runtime-failure] probe https://api.satark.example/v1/scan/text: 54/600 failed
+node/worker-1 condition met
+2026-10-18T15:57:37Z [gd-06-runtime-failure] snapshot: after
+Error: exit status 2
+node Ready again after 7s
+15:58:24 pg 3/3 ready (53s after revert start)
+kube-system cilium-envoy-kq5vd 1/1 Running
+kube-system cilium-sjg24 1/1 Running
+metallb-system metallb-speaker-2xlnv 3/4 Running
+satark-data satark-pg-3 1/1 Running
+satark-data satark-pg-4 1/1 Running
+satark-dev gateway-api-75856444f-269pg 1/1 Running
+trace:
+     44 000
+    546 200
+     10 503
+writes: ok=733 err=0
+write gap 15:48:38.973 -> 15:50:55.286 136.313s
