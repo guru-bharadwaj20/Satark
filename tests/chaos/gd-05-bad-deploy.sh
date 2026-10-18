@@ -11,8 +11,10 @@
 #   APP=gateway-api tests/chaos/gd-05-bad-deploy.sh inject
 source "$(dirname "$0")/lib.sh"
 APP="${APP:-gateway-api}"
-NS=satark
-BAD_ENV="${BAD_ENV:-TEXT_ANALYZER_URL=http://text-analyzer.satark.svc:9999}"
+NS="${NS:-satark}"
+# Lab: NS=satark-dev ARGO_APP=gateway-api-dev
+ARGO_APP="${ARGO_APP:-$APP}"
+BAD_ENV="${BAD_ENV:-TEXT_ANALYZER_URL=http://text-analyzer.$NS.svc:9999}"
 
 case "${1:-}" in
   inject)
@@ -20,8 +22,8 @@ case "${1:-}" in
     confirm "This rolls out a broken $APP with Argo CD auto-sync paused."
     snapshot before
     kubectl -n "$NS" rollout history "deploy/$APP" | tee -a "$GD_LOG"
-    event "inject: pause auto-sync on argocd/$APP"
-    kubectl -n argocd patch application "$APP" --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}'
+    event "inject: pause auto-sync on argocd/$ARGO_APP"
+    kubectl -n argocd patch application "$ARGO_APP" --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}'
     event "inject: set env $BAD_ENV"
     kubectl -n "$NS" set env "deploy/$APP" "$BAD_ENV"
     kubectl -n "$NS" annotate "deploy/$APP" kubernetes.io/change-cause="gd-05 bad release" --overwrite
@@ -31,7 +33,7 @@ case "${1:-}" in
     ;;
   observe)
     kubectl -n "$NS" rollout history "deploy/$APP" | tee -a "$GD_LOG"
-    kubectl -n argocd get application "$APP" -o jsonpath='{.status.sync.status} {.status.health.status}{"\n"}' | tee -a "$GD_LOG"
+    kubectl -n argocd get application "$ARGO_APP" -o jsonpath='{.status.sync.status} {.status.health.status}{"\n"}' | tee -a "$GD_LOG"
     ;;
   rollback)
     # What the responder is expected to do (one of):
@@ -41,9 +43,9 @@ case "${1:-}" in
     ;;
   revert)
     event "revert: re-enable auto-sync (Git is the source of truth again)"
-    kubectl -n argocd patch application "$APP" --type merge \
+    kubectl -n argocd patch application "$ARGO_APP" --type merge \
       -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
-    kubectl -n argocd annotate application "$APP" argocd.argoproj.io/refresh=hard --overwrite
+    kubectl -n argocd annotate application "$ARGO_APP" argocd.argoproj.io/refresh=hard --overwrite
     kubectl -n "$NS" rollout status "deploy/$APP" --timeout=5m
     snapshot after
     ;;

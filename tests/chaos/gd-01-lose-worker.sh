@@ -4,6 +4,8 @@
 source "$(dirname "$0")/lib.sh"
 NODE="${NODE:-worker-2}"
 VAGRANT_DIR="${VAGRANT_DIR:-$GD_ROOT/infra/vagrant}"
+# On Windows the lab VMs belong to WSL: VAGRANT="wsl -d Ubuntu-24.04 -- vagrant"
+VAGRANT="${VAGRANT:-vagrant}"
 
 case "${1:-}" in
   inject)
@@ -11,7 +13,7 @@ case "${1:-}" in
     confirm "This hard-stops $NODE without draining."
     snapshot before
     event "inject: power off $NODE"
-    (cd "$VAGRANT_DIR" && vagrant halt --force "$NODE")
+    (cd "$VAGRANT_DIR" && $VAGRANT halt --force "$NODE")
     probe 600
     ;;
   observe)
@@ -21,7 +23,7 @@ case "${1:-}" in
     ;;
   revert)
     event "revert: power on $NODE"
-    (cd "$VAGRANT_DIR" && vagrant up "$NODE")
+    (cd "$VAGRANT_DIR" && $VAGRANT up "$NODE")
     kubectl wait --for=condition=Ready "node/$NODE" --timeout=10m
     event "node Ready"
     snapshot after

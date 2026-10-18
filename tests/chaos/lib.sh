@@ -45,12 +45,15 @@ snapshot() {
 }
 
 # Probe the public API once a second for N seconds and log failures.
+# PROBE_CURL_OPTS adds curl flags, e.g. for the lab's MetalLB IP and
+# self-signed certificate: "-k --resolve api.satark.example:443:192.168.56.240".
 probe() {
   local seconds="${1:-60}" url="${PROBE_URL:-}"
   [[ -z "$url" ]] && { event "probe skipped (PROBE_URL not set)"; return 0; }
   local fail=0 i
   for ((i = 0; i < seconds; i++)); do
-    curl -fsS --max-time 2 -o /dev/null "$url" || fail=$((fail + 1))
+    # shellcheck disable=SC2086
+    curl -fsS --max-time 2 ${PROBE_CURL_OPTS:-} -o /dev/null "$url" || fail=$((fail + 1))
     sleep 1
   done
   event "probe ${url}: ${fail}/${seconds} failed"
