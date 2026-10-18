@@ -1,0 +1,89 @@
+{
+  "overall": "fail",
+  "checkedAt": "2026-10-18T15:58:26Z",
+  "results": [
+    {
+      "check": "nodes",
+      "status": "ok",
+      "summary": "3/3 nodes Ready"
+    },
+    {
+      "check": "pods",
+      "status": "warn",
+      "summary": "47/48 pods healthy",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container frr restarted 15 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container speaker restarted 20 times"
+        }
+      ]
+    },
+    {
+      "check": "pvcs",
+      "status": "ok",
+      "summary": "7/7 PVCs Bound"
+    },
+    {
+      "check": "deployments",
+      "status": "ok",
+      "summary": "24/24 deployments fully available"
+    },
+    {
+      "check": "certificates",
+      "status": "fail",
+      "summary": "13 certificates checked, soonest expiry 2026-10-18",
+      "findings": [
+        {
+          "severity": "fail",
+          "namespace": "gd10-certs",
+          "object": "certificate/gd10-broken-issuer",
+          "message": "not Ready: Issuing certificate as Secret does not exist"
+        },
+        {
+          "severity": "fail",
+          "namespace": "gd10-certs",
+          "object": "certificate/gd10-short-lived",
+          "message": "expires in 0 days (2026-10-18)"
+        },
+        {
+          "severity": "fail",
+          "namespace": "gd10-certs",
+          "object": "secret/gd10-expiring",
+          "message": "expires in 0 days (2026-10-19) (CN=gd10-expiring.satark.example)"
+        },
+        {
+          "severity": "fail",
+          "namespace": "gd10-certs",
+          "object": "secret/gd10-short-lived",
+          "message": "expires in 0 days (2026-10-18) (CN=gd10-short.satark.example)"
+        }
+      ]
+    },
+    {
+      "check": "pdbs",
+      "status": "warn",
+      "summary": "7 PDBs, 1 blocking drains",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "satark-data",
+          "object": "pdb/satark-pg-primary",
+          "message": "0 disruptions allowed (healthy 1/1, expected 1): node drains will block"
+        }
+      ]
+    },
+    {
+      "check": "argocd",
+      "status": "ok",
+      "summary": "1/1 applications Synced and Healthy"
+    }
+  ]
+}
