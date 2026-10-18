@@ -97,6 +97,12 @@ worker (SOP-02) rather than by tuning.
 - Improvement: breaking rate from about 95 req/s to at least 160 req/s
   (+70%), text p95 at 100 req/s from 697 ms to 25 ms, and losing one node no
   longer takes every replica with it.
+- Found after the re-run: both `envoy-gateway` controller replicas had been
+  rescheduled onto `worker-1`. When it locked up, the proxies kept two dead
+  `gateway-api` pod IPs and half the requests failed with `503 No route to
+  host` until the controller was restarted. Fixed by a hard spread for the
+  controller (`values.yaml`) and a Gateway-wide `BackendTrafficPolicy`
+  (passive health checks plus retry on connect failure).
 - Follow-ups:
   - Set real CPU requests on `text-analyzer` and `qr-decoder` from the
     `kubectl top` snapshots in the run directory.

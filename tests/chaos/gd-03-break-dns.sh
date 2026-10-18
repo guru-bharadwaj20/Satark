@@ -20,8 +20,8 @@ case "${1:-}" in
       kubectl -n kube-system scale deploy coredns --replicas=0
     else
       event "inject: forward . 192.0.2.1 (TEST-NET-1, unroutable)"
-      kubectl -n kube-system get configmap coredns -o json \
-        | jq '.data.Corefile |= sub("forward \\. [^{\\n]*"; "forward . 192.0.2.1 ")' \
+      kubectl -n kube-system get configmap coredns -o yaml \
+        | sed -E 's#forward \. [^{]*#forward . 192.0.2.1 #' \
         | kubectl apply -f -
       kubectl -n kube-system rollout restart deploy coredns
     fi

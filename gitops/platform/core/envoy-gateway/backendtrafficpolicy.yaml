@@ -1,0 +1,34 @@
+# Resilience for every route on the public Gateway. After a node lockup the
+# proxies kept two dead pod IPs and failed half the requests with "No route
+# to host" (task 11.17). Passive health checks eject an endpoint that fails
+# to connect, and a connect failure is retried on another endpoint. Only
+# connection-level failures are retried: the request never reached the app,
+# so retrying a POST cannot record a scan twice.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: satark-public-resilience
+  namespace: envoy-gateway-system
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: satark-public
+  healthCheck:
+    passive:
+      splitExternalLocalOriginErrors: true
+      consecutiveLocalOriginFailures: 2
+      consecutiveGatewayErrors: 5
+      interval: 5s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+  retry:
+    numRetries: 2
+    retryOn:
+      triggers:
+        - connect-failure
+        - refused-stream
+    perRetry:
+      backOff:
+        baseInterval: 50ms
+        maxInterval: 500ms

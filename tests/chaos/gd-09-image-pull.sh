@@ -6,7 +6,8 @@
 #   APP=text-analyzer MODE=tag tests/chaos/gd-09-image-pull.sh inject
 source "$(dirname "$0")/lib.sh"
 APP="${APP:-text-analyzer}"
-NS=satark
+NS="${NS:-satark}"
+ARGO_APP="${ARGO_APP:-$APP}"
 MODE="${MODE:-tag}"
 NODE="${NODE:-worker-1}"
 SSH="${SSH:-ssh}"
@@ -21,7 +22,10 @@ case "${1:-}" in
     if [[ "$MODE" == tag ]]; then
       img=$(kubectl -n "$NS" get deploy "$APP" -o jsonpath='{.spec.template.spec.containers[0].image}')
       echo "$img" > "$STATE"
-      kubectl -n argocd patch application "$APP" --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}'
+      # Pause self-heal, if Argo CD manages the app, so it does not undo the bad tag.
+      if kubectl -n argocd get application "$ARGO_APP" >/dev/null 2>&1; then
+        kubectl -n argocd patch application "$ARGO_APP" --type merge -p '{"spec":{"syncPolicy":{"automated":null}}}'
+      fi
       bad="${img%:*}:v0.0.0-doesnotexist"
       event "inject: set image $bad"
       kubectl -n "$NS" set image "deploy/$APP" "*=$bad"
@@ -43,8 +47,10 @@ REMOTE
     if [[ "$MODE" == tag ]]; then
       event "revert: restore image $(cat "$STATE")"
       kubectl -n "$NS" set image "deploy/$APP" "*=$(cat "$STATE")"
-      kubectl -n argocd patch application "$APP" --type merge \
-        -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
+      if kubectl -n argocd get application "$ARGO_APP" >/dev/null 2>&1; then
+        kubectl -n argocd patch application "$ARGO_APP" --type merge \
+          -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
+      fi
     else
       event "revert: unblock $REGISTRY_HOST on $NODE"
       $SSH "$NODE" -- sudo sed -i "/ $REGISTRY_HOST\$/d" /etc/hosts
