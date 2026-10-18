@@ -1,0 +1,83 @@
+{
+  "overall": "warn",
+  "checkedAt": "2026-10-18T15:28:27Z",
+  "results": [
+    {
+      "check": "nodes",
+      "status": "ok",
+      "summary": "3/3 nodes Ready"
+    },
+    {
+      "check": "pods",
+      "status": "warn",
+      "summary": "45/48 pods healthy",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "cnpg-system",
+          "object": "pod/cnpg-cloudnative-pg-7c49578bc8-kbcxq",
+          "message": "container manager restarted 12 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "envoy-gateway-system",
+          "object": "pod/envoy-gateway-668598dc9f-h5nwl",
+          "message": "container envoy-gateway restarted 6 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container frr restarted 15 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container speaker restarted 20 times"
+        }
+      ]
+    },
+    {
+      "check": "pvcs",
+      "status": "ok",
+      "summary": "7/7 PVCs Bound"
+    },
+    {
+      "check": "deployments",
+      "status": "ok",
+      "summary": "24/24 deployments fully available"
+    },
+    {
+      "check": "certificates",
+      "status": "ok",
+      "summary": "9 certificates checked, soonest expiry 2026-11-16"
+    },
+    {
+      "check": "pdbs",
+      "status": "warn",
+      "summary": "7 PDBs, 1 blocking drains",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "satark-data",
+          "object": "pdb/satark-pg-primary",
+          "message": "0 disruptions allowed (healthy 1/1, expected 1): node drains will block"
+        }
+      ]
+    },
+    {
+      "check": "argocd",
+      "status": "warn",
+      "summary": "0/1 applications Synced and Healthy",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "argocd",
+          "object": "application/gateway-api-dev",
+          "message": "sync OutOfSync"
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,7 @@ on:
       - "charts/**"
       - "gitops/**"
       - "policies/**"
+      - "scripts/check-networkpolicy-selectors.py"
       - ".github/workflows/helm.yml"
   push:
     branches: [main]
@@ -13,6 +14,7 @@ on:
       - "charts/**"
       - "gitops/**"
       - "policies/**"
+      - "scripts/check-networkpolicy-selectors.py"
       - ".github/workflows/helm.yml"
 
 permissions:
@@ -72,6 +74,28 @@ jobs:
               echo "::endgroup::"
             done
           done
+      - name: NetworkPolicy selectors match real pods and keep DNS egress
+        run: |
+          set -euo pipefail
+          python3 -c 'import yaml' 2>/dev/null || sudo apt-get install -y -qq python3-yaml
+          render() {
+            for c in charts/*/Chart.yaml; do
+              dir=$(dirname "$c"); svc=$(basename "$dir")
+              grep -q '^type: library' "$c" && continue
+              vf="gitops/envs/$1/apps/$svc/values.yaml"
+              if [ -n "$1" ] && [ -f "$vf" ]; then helm template "$svc" "$dir" -f "$vf"; else helm template "$svc" "$dir"; fi
+              echo "---"
+            done
+          }
+          for env in "" $(ls gitops/envs/ | grep -v '\.'); do
+            echo "== ${env:-chart defaults}"
+            render "$env" | scripts/check-networkpolicy-selectors.py
+          done
+          # Self-test: the GD-04 policy (misspelt label) must be rejected.
+          bad=$(sed 's/name: url-intel$/name: text-analyzer/; /namespace: satark$/d' tests/chaos/gd-04-bad-networkpolicy.yaml)
+          if { render ""; echo "---"; echo "$bad"; } | scripts/check-networkpolicy-selectors.py >/dev/null; then
+            echo "::error::checker accepted the known-bad GD-04 policy"; exit 1
+          fi
       - name: validate raw GitOps manifests
         run: |
           find gitops policies -name '*.yaml' -not -name 'values.yaml' \

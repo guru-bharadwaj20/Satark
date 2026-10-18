@@ -1,0 +1,86 @@
+NAME                                            POD-SELECTOR                                                                    AGE
+networkpolicy.networking.k8s.io/gateway-api     app.kubernetes.io/instance=gateway-api,app.kubernetes.io/name=gateway-api       32h
+networkpolicy.networking.k8s.io/qr-decoder      app.kubernetes.io/instance=qr-decoder,app.kubernetes.io/name=qr-decoder         32h
+networkpolicy.networking.k8s.io/telegram-bot    app.kubernetes.io/instance=telegram-bot,app.kubernetes.io/name=telegram-bot     32h
+networkpolicy.networking.k8s.io/text-analyzer   app.kubernetes.io/instance=text-analyzer,app.kubernetes.io/name=text-analyzer   32h
+2026-10-18T14:33:40Z [gd-04-bad-networkpolicy] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T14:33:41Z [gd-04-bad-networkpolicy] inject: apply gd04-url-intel-lockdown to satark-dev/text-analyzer
+NAME                                                      POD-SELECTOR                                                                    AGE
+networkpolicy.networking.k8s.io/gateway-api               app.kubernetes.io/instance=gateway-api,app.kubernetes.io/name=gateway-api       32h
+networkpolicy.networking.k8s.io/gd04-url-intel-lockdown   app.kubernetes.io/name=text-analyzer                                            44s
+networkpolicy.networking.k8s.io/qr-decoder                app.kubernetes.io/instance=qr-decoder,app.kubernetes.io/name=qr-decoder         32h
+networkpolicy.networking.k8s.io/telegram-bot              app.kubernetes.io/instance=telegram-bot,app.kubernetes.io/name=telegram-bot     32h
+networkpolicy.networking.k8s.io/text-analyzer             app.kubernetes.io/instance=text-analyzer,app.kubernetes.io/name=text-analyzer   32h
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+2026-10-18T14:39:11Z [gd-04-bad-networkpolicy] probe https://api.satark.example/v1/scan/text: 0/300 failed
+2026-10-18T14:39:11Z [gd-04-bad-networkpolicy] revert: delete gd04 policy
+2026-10-18T14:39:11Z [gd-04-bad-networkpolicy] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+NAME                                            POD-SELECTOR                                                                    AGE
+networkpolicy.networking.k8s.io/gateway-api     app.kubernetes.io/instance=gateway-api,app.kubernetes.io/name=gateway-api       33h
+networkpolicy.networking.k8s.io/qr-decoder      app.kubernetes.io/instance=qr-decoder,app.kubernetes.io/name=qr-decoder         33h
+networkpolicy.networking.k8s.io/telegram-bot    app.kubernetes.io/instance=telegram-bot,app.kubernetes.io/name=telegram-bot     33h
+networkpolicy.networking.k8s.io/text-analyzer   app.kubernetes.io/instance=text-analyzer,app.kubernetes.io/name=text-analyzer   33h
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+2026-10-18T14:39:23Z [gd-04-bad-networkpolicy] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T14:39:23Z [gd-04-bad-networkpolicy] inject: replace networkpolicy satark-dev/text-analyzer with the bad spec
+NAME                                            POD-SELECTOR                                                                  AGE
+networkpolicy.networking.k8s.io/gateway-api     app.kubernetes.io/instance=gateway-api,app.kubernetes.io/name=gateway-api     33h
+networkpolicy.networking.k8s.io/qr-decoder      app.kubernetes.io/instance=qr-decoder,app.kubernetes.io/name=qr-decoder       33h
+networkpolicy.networking.k8s.io/telegram-bot    app.kubernetes.io/instance=telegram-bot,app.kubernetes.io/name=telegram-bot   33h
+networkpolicy.networking.k8s.io/text-analyzer   app.kubernetes.io/name=text-analyzer                                          33h
+Oct 18 14:40:05.871: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:05.871: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:06.767: satark-dev/gateway-api-75856444f-j42vk:55384 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:06.767: satark-dev/gateway-api-75856444f-j42vk:55384 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:06.774: satark-dev/gateway-api-75856444f-lssgv:41210 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:06.774: satark-dev/gateway-api-75856444f-lssgv:41210 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:06.838: satark-dev/gateway-api-75856444f-lssgv:33862 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:06.838: satark-dev/gateway-api-75856444f-lssgv:33862 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:06.896: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:06.896: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:07.919: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:07.920: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:07.924: satark-dev/gateway-api-75856444f-lssgv:42888 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:07.924: satark-dev/gateway-api-75856444f-lssgv:42888 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:08.887: satark-dev/gateway-api-75856444f-lssgv:33862 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:08.887: satark-dev/gateway-api-75856444f-lssgv:33862 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:08.944: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:08.944: satark-dev/gateway-api-75856444f-j42vk:60608 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+Oct 18 14:40:08.950: satark-dev/gateway-api-75856444f-lssgv:42888 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+Oct 18 14:40:08.950: satark-dev/gateway-api-75856444f-lssgv:42888 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-k4lgc:8000 (ID:8036) Policy denied DROPPED (TCP Flags: SYN)
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+EVENTS LOST: HUBBLE_RING_BUFFER CPU(0) 1
+2026-10-18T14:54:51Z [gd-04-bad-networkpolicy] probe https://api.satark.example/v1/scan/text: 300/300 failed
+2026-10-18T14:54:52Z [gd-04-bad-networkpolicy] revert: restore networkpolicy satark-dev/text-analyzer
+2026-10-18T14:54:52Z [gd-04-bad-networkpolicy] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+NAME                                            POD-SELECTOR                                                                    AGE
+networkpolicy.networking.k8s.io/gateway-api     app.kubernetes.io/instance=gateway-api,app.kubernetes.io/name=gateway-api       33h
+networkpolicy.networking.k8s.io/qr-decoder      app.kubernetes.io/instance=qr-decoder,app.kubernetes.io/name=qr-decoder         33h
+networkpolicy.networking.k8s.io/telegram-bot    app.kubernetes.io/instance=telegram-bot,app.kubernetes.io/name=telegram-bot     33h
+networkpolicy.networking.k8s.io/text-analyzer   app.kubernetes.io/instance=text-analyzer,app.kubernetes.io/name=text-analyzer   33h
+Oct 18 14:54:50.675: satark-dev/gateway-api-75856444f-j42vk:36480 (ID:47494) <> satark-dev/text-analyzer-5d58b5fbd4-jp4lc:8000 (ID:8036) policy-verdict:none INGRESS DENIED (TCP Flags: SYN)
+O
