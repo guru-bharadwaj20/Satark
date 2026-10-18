@@ -9,15 +9,19 @@ deployment:
       limits:
         memory: 512Mi
   pod:
-    affinity:
-      podAntiAffinity:
-        preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  control-plane: envoy-gateway
+    # One controller per node. A soft anti-affinity let a rollout put both on
+    # one worker; when that node locked up, the proxies kept serving stale
+    # endpoints until the controller was restarted (task 11.17).
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        nodeTaintsPolicy: Honor
+        matchLabelKeys:
+          - pod-template-hash
+        labelSelector:
+          matchLabels:
+            control-plane: envoy-gateway
 
 config:
   envoyGateway:
