@@ -1,0 +1,31 @@
+{"lastHeartbeatTime":"2026-10-18T15:57:38Z","lastTransitionTime":"2026-10-18T15:12:31Z","message":"kubelet has no disk pressure","reason":"KubeletHasNoDiskPressure","status":"False","type":"DiskPressure"}
+
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G   15G   14G  53% /
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G   15G   14G  53% /
+2026-10-18T15:58:25Z [gd-07-disk-pressure] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:58:26Z [gd-07-disk-pressure] inject: filler written on worker-1
+2026-10-18T16:03:57Z [gd-07-disk-pressure] probe https://api.satark.example/v1/scan/text: 0/300 failed
+{"lastHeartbeatTime":"2026-10-18T16:03:48Z","lastTransitionTime":"2026-10-18T15:58:29Z","message":"kubelet has disk pressure","reason":"KubeletHasDiskPressure","status":"True","type":"DiskPressure"}
+[{"effect":"NoSchedule","key":"node.kubernetes.io/disk-pressure","timeAdded":"2026-10-18T15:58:30Z"}]
+NAMESPACE        NAME                    READY   STATUS    RESTARTS   AGE
+metallb-system   metallb-speaker-c22jc   0/4     Evicted   0          85s
+Filesystem                         Size  Used Avail Use% Mounted on
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G   21G  8.5G  71% /
+/dev/mapper/ubuntu--vg-ubuntu--lv   31G   21G  8.5G  71% /
+2026-10-18T16:04:11Z [gd-07-disk-pressure] revert: remove filler on worker-1
+2026-10-18T16:05:53Z [gd-07-disk-pressure] DiskPressure cleared
+2026-10-18T16:05:53Z [gd-07-disk-pressure] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE        NAME                          READY   STATUS         RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+metallb-system   metallb-speaker-78bs4         0/4     Evicted        0          102s    <none>         worker-1   <none>           <none>
+satark-data      satark-pg-3                   0/1     Init:0/1       0          7m22s   <none>         worker-1   <none>           <none>
+satark-dev       gateway-api-75856444f-tbzlv   0/1     ErrImagePull   0          7m19s   10.244.0.236   worker-1   <none>           <none>
