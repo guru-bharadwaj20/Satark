@@ -16,6 +16,7 @@ import (
 
 var (
 	certificateGVR = schema.GroupVersionResource{Group: "cert-manager.io", Version: "v1", Resource: "certificates"}
+	certRequestGVR = schema.GroupVersionResource{Group: "cert-manager.io", Version: "v1", Resource: "certificaterequests"}
 	applicationGVR = schema.GroupVersionResource{Group: "argoproj.io", Version: "v1alpha1", Resource: "applications"}
 )
 
@@ -42,6 +43,10 @@ func (e *Env) certFail() time.Duration {
 	return 7 * 24 * time.Hour
 }
 
+// renewalGrace is how long past status.renewalTime a certificate may stay
+// unrenewed before doctor warns.
+const renewalGrace = time.Hour
+
 func (e *Env) expirySeverity(notAfter time.Time) (Severity, string) {
 	left := notAfter.Sub(e.now())
 	days := int(left.Hours() / 24)
@@ -62,6 +67,7 @@ func (e *Env) expirySeverity(notAfter time.Time) (Severity, string) {
 func checkCertificates(ctx context.Context, env *Env) ([]Finding, string, error) {
 	var out []Finding
 	certCount, soonest := 0, time.Time{}
+	renewed := map[string]bool{} // namespace/secret of certificates cert-manager will renew in time
 	track := func(t time.Time) {
 		if soonest.IsZero() || t.Before(soonest) {
 			soonest = t
@@ -82,13 +88,34 @@ func checkCertificates(ctx context.Context, env *Env) ([]Finding, string, error)
 				}
 				certCount++
 				name := obj("certificate", c.GetName())
-				if st, msg := readyCondition(c); st != "True" {
+				st, msg := readyCondition(c)
+				if st != "True" {
+					if why := requestFailure(ctx, env, c.GetNamespace(), c.GetName()); why != "" {
+						msg += "; request: " + why
+					}
 					out = append(out, Finding{Fail, c.GetNamespace(), name, "not Ready: " + msg})
+				}
+				// A Ready certificate whose renewal is still ahead is fine
+				// however close notAfter is: short-lived certificates
+				// (hours) would otherwise always fail. Found in GD-10.
+				renewing := false
+				if rt, ok, _ := unstructured.NestedString(c.Object, "status", "renewalTime"); ok && st == "True" {
+					if t, err := time.Parse(time.RFC3339, rt); err == nil {
+						switch {
+						case t.After(env.now()):
+							renewing = true
+						case env.now().Sub(t) > renewalGrace:
+							out = append(out, Finding{Warn, c.GetNamespace(), name, "renewal overdue since " + t.UTC().Format(time.RFC3339)})
+						}
+					}
+				}
+				if sn, ok, _ := unstructured.NestedString(c.Object, "spec", "secretName"); ok && renewing {
+					renewed[c.GetNamespace()+"/"+sn] = true
 				}
 				if na, ok, _ := unstructured.NestedString(c.Object, "status", "notAfter"); ok {
 					if t, err := time.Parse(time.RFC3339, na); err == nil {
 						track(t)
-						if sev, msg := env.expirySeverity(t); sev != OK {
+						if sev, msg := env.expirySeverity(t); sev != OK && !renewing {
 							out = append(out, Finding{sev, c.GetNamespace(), name, msg})
 						}
 					}
@@ -117,6 +144,9 @@ func checkCertificates(ctx context.Context, env *Env) ([]Finding, string, error)
 		}
 		certCount++
 		track(cert.NotAfter)
+		if renewed[s.Namespace+"/"+s.Name] {
+			continue
+		}
 		if sev, msg := env.expirySeverity(cert.NotAfter); sev != OK {
 			out = append(out, Finding{sev, s.Namespace, obj("secret", s.Name), fmt.Sprintf("%s (CN=%s)", msg, cert.Subject.CommonName)})
 		}
@@ -200,6 +230,25 @@ func checkArgoCD(ctx context.Context, env *Env) ([]Finding, string, error) {
 		}
 	}
 	return out, fmt.Sprintf("%d/%d applications Synced and Healthy", good, len(list.Items)), nil
+}
+
+// requestFailure returns the Ready message of a failing CertificateRequest
+// for the certificate. The Certificate itself only says "Issuing certificate
+// as Secret does not exist"; the cause (e.g. issuer not found) is on the
+// request (GD-10).
+func requestFailure(ctx context.Context, env *Env, ns, cert string) string {
+	list, err := env.Dynamic.Resource(certRequestGVR).Namespace(ns).List(ctx, metav1.ListOptions{
+		LabelSelector: "cert-manager.io/certificate-name=" + cert,
+	})
+	if err != nil {
+		return ""
+	}
+	for _, r := range list.Items {
+		if st, msg := readyCondition(r); st == "False" && msg != "" {
+			return msg
+		}
+	}
+	return ""
 }
 
 func readyCondition(u unstructured.Unstructured) (status, message string) {

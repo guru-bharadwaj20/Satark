@@ -17,8 +17,11 @@ case "${1:-}" in
     snapshot before
     kubectl create namespace "$NS" --dry-run=client -o yaml | kubectl apply -f -
     tmp=$(mktemp -d)
-    openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
-      -subj "/CN=gd10-expiring.satark.example" -keyout "$tmp/tls.key" -out "$tmp/tls.crt" 2>/dev/null
+    # Git Bash on Windows: openssl is a native binary, so give it a Windows
+    # path and stop MSYS rewriting "/CN=..." into one. No-ops elsewhere.
+    command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp")
+    MSYS_NO_PATHCONV=1 openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:P-256 -nodes -days 1 \
+      -subj "/CN=gd10-expiring.satark.example" -keyout "$tmp/tls.key" -out "$tmp/tls.crt"
     kubectl -n "$NS" create secret tls gd10-expiring --cert="$tmp/tls.crt" --key="$tmp/tls.key" \
       --dry-run=client -o yaml | kubectl apply -f -
     rm -rf "$tmp"

@@ -1,0 +1,246 @@
+2026-10-18T14:54:10Z [gd-10-cert-expiry] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+[ OK ] nodes        3/3 nodes Ready
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[ OK ] certificates 0 certificates checked
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[ OK ] argocd       1/1 applications Synced and Healthy
+
+Overall: OK
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+[ OK ] nodes        3/3 nodes Ready
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[ OK ] certificates 0 certificates checked
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[WARN] argocd       0/1 applications Synced and Healthy
+       WARN argocd/application/gateway-api-dev: sync OutOfSync
+
+Overall: WARN
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+[FAIL] nodes        2/3 nodes Ready
+       FAIL node/worker-1: NotReady: [container runtime is down, PLEG is not healthy: pleg was last seen active 9m9.990705246s ago; threshold is 3m0s]
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[ OK ] certificates 0 certificates checked
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[WARN] argocd       0/1 applications Synced and Healthy
+       WARN argocd/application/gateway-api-dev: health Progressing
+
+Overall: FAIL
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+2026-10-18T15:54:18Z [gd-10-cert-expiry] revert: delete namespace gd10-certs
+2026-10-18T15:54:24Z [gd-10-cert-expiry] snapshot: after
+NAME       STATUS     ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready      control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   NotReady   worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://Unknown
+worker-2   Ready      worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE    NAME                          READY   STATUS    RESTARTS   AGE     IP       NODE     NOMINATED NODE   READINESS GATES
+satark-dev   gateway-api-75856444f-269pg   0/1     Pending   0          3m50s   <none>   <none>   <none>           <none>
+2026-10-18T15:55:16Z [gd-10-cert-expiry] snapshot: before
+NAME       STATUS     ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready      control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   NotReady   worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://Unknown
+worker-2   Ready      worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+NAMESPACE    NAME                          READY   STATUS    RESTARTS   AGE     IP       NODE     NOMINATED NODE   READINESS GATES
+satark-dev   gateway-api-75856444f-269pg   0/1     Pending   0          4m42s   <none>   <none>   <none>           <none>
+2026-10-18T15:55:17Z [gd-10-cert-expiry] inject: secret gd10-expiring (expires in 1 day)
+2026-10-18T15:55:17Z [gd-10-cert-expiry] inject: certificates gd10-short-lived and gd10-broken-issuer
+NAME                                             READY   SECRET               AGE
+certificate.cert-manager.io/gd10-broken-issuer   False   gd10-broken-issuer   21s
+certificate.cert-manager.io/gd10-short-lived     True    gd10-short-lived     21s
+
+NAME                                                      APPROVED   DENIED   READY   ISSUER            REQUESTER                                         AGE
+certificaterequest.cert-manager.io/gd10-broken-issuer-1   True                False   does-not-exist    system:serviceaccount:cert-manager:cert-manager   20s
+certificaterequest.cert-manager.io/gd10-short-lived-1     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   20s
+[FAIL] nodes        2/3 nodes Ready
+       FAIL node/worker-1: NotReady: [container runtime is down, PLEG is not healthy: pleg was last seen active 10m31.570230801s ago; threshold is 3m0s]
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[FAIL] certificates 4 certificates checked, soonest expiry 2026-10-18
+       FAIL gd10-certs/certificate/gd10-broken-issuer: not Ready: Issuing certificate as Secret does not exist
+       FAIL gd10-certs/certificate/gd10-short-lived: expires in 0 days (2026-10-18)
+       FAIL gd10-certs/secret/gd10-expiring: expires in 0 days (2026-10-19) (CN=gd10-expiring.satark.example)
+       FAIL gd10-certs/secret/gd10-short-lived: expires in 0 days (2026-10-18) (CN=gd10-short.satark.example)
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[WARN] argocd       0/1 applications Synced and Healthy
+       WARN argocd/application/gateway-api-dev: health Progressing
+
+Overall: FAIL
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+NAME                                             READY   SECRET               AGE
+certificate.cert-manager.io/gd10-broken-issuer   False   gd10-broken-issuer   12m
+certificate.cert-manager.io/gd10-short-lived     True    gd10-short-lived     12m
+
+NAME                                                      APPROVED   DENIED   READY   ISSUER            REQUESTER                                         AGE
+certificaterequest.cert-manager.io/gd10-broken-issuer-1   True                False   does-not-exist    system:serviceaccount:cert-manager:cert-manager   12m
+certificaterequest.cert-manager.io/gd10-short-lived-1     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   12m
+certificaterequest.cert-manager.io/gd10-short-lived-2     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   2m1s
+[ OK ] nodes        3/3 nodes Ready
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[FAIL] certificates 4 certificates checked, soonest expiry 2026-10-18
+       FAIL gd10-certs/certificate/gd10-broken-issuer: not Ready: Issuing certificate as Secret does not exist
+       FAIL gd10-certs/certificate/gd10-short-lived: expires in 0 days (2026-10-18)
+       FAIL gd10-certs/secret/gd10-expiring: expires in 0 days (2026-10-19) (CN=gd10-expiring.satark.example)
+       FAIL gd10-certs/secret/gd10-short-lived: expires in 0 days (2026-10-18) (CN=gd10-short.satark.example)
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[WARN] argocd       0/1 applications Synced and Healthy
+       WARN argocd/application/gateway-api-dev: health Progressing
+
+Overall: FAIL
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+NAME                                             READY   SECRET               AGE
+certificate.cert-manager.io/gd10-broken-issuer   False   gd10-broken-issuer   24m
+certificate.cert-manager.io/gd10-short-lived     True    gd10-short-lived     24m
+
+NAME                                                      APPROVED   DENIED   READY   ISSUER            REQUESTER                                         AGE
+certificaterequest.cert-manager.io/gd10-broken-issuer-1   True                False   does-not-exist    system:serviceaccount:cert-manager:cert-manager   24m
+certificaterequest.cert-manager.io/gd10-short-lived-1     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   24m
+certificaterequest.cert-manager.io/gd10-short-lived-2     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   14m
+certificaterequest.cert-manager.io/gd10-short-lived-3     True                True    gd10-selfsigned   system:serviceaccount:cert-manager:cert-manager   4m44s
+[ OK ] nodes        3/3 nodes Ready
+[ OK ] pods         0/0 pods healthy
+[ OK ] pvcs         0/0 PVCs Bound
+[ OK ] deployments  0/0 deployments fully available
+[FAIL] certificates 4 certificates checked, soonest expiry 2026-10-18
+       FAIL gd10-certs/certificate/gd10-broken-issuer: not Ready: Issuing certificate as Secret does not exist
+       FAIL gd10-certs/certificate/gd10-short-lived: expires in 0 days (2026-10-18)
+       FAIL gd10-certs/secret/gd10-expiring: expires in 0 days (2026-10-19) (CN=gd10-expiring.satark.example)
+       FAIL gd10-certs/secret/gd10-short-lived: expires in 0 days (2026-10-18) (CN=gd10-short.satark.example)
+[ OK ] pdbs         0 PDBs, 0 blocking drains
+[ OK ] argocd       1/1 applications Synced and Healthy
+
+Overall: FAIL
+[check-expiration] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[check-expiration] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+
+CERTIFICATE                EXPIRES                  RESIDUAL TIME   CERTIFICATE AUTHORITY   EXTERNALLY MANAGED
+admin.conf                 Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver                  Oct 17, 2027 04:25 UTC   363d            ca                      no      
+apiserver-etcd-client      Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+apiserver-kubelet-client   Oct 17, 2027 04:25 UTC   363d            ca                      no      
+controller-manager.conf    Oct 17, 2027 04:25 UTC   363d            ca                      no      
+etcd-healthcheck-client    Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-peer                  Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+etcd-server                Oct 17, 2027 04:25 UTC   363d            etcd-ca                 no      
+front-proxy-client         Oct 17, 2027 04:25 UTC   363d            front-proxy-ca          no      
+scheduler.conf             Oct 17, 2027 04:25 UTC   363d            ca                      no      
+super-admin.conf           Oct 17, 2027 04:25 UTC   363d            ca                      no      
+
+CERTIFICATE AUTHORITY   EXPIRES                  RESIDUAL TIME   EXTERNALLY MANAGED
+ca                      Oct 14, 2036 04:25 UTC   9y              no      
+etcd-ca                 Oct 14, 2036 04:25 UTC   9y              no      
+front-proxy-ca          Oct 14, 2036 04:25 UTC   9y              no      
+2026-10-18T16:20:04Z [gd-10-cert-expiry] revert: delete namespace gd10-certs
+2026-10-18T16:20:10Z [gd-10-cert-expiry] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          35h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          35h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
