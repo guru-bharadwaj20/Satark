@@ -3,15 +3,24 @@ image:
   repository: ghcr.io/guru-bharadwaj20/satark/gateway-api
   # Updated automatically by CI (dev) or by a promotion PR (prod).
   tag: "0.1.0"
-replicaCount: 1
+replicaCount: 2
 service:
   port: 8080
+# The 11.17 stress test measured about 430m CPU per replica at 90 req/s. With
+# a 25m request the scheduler saw the pod as free and packed it, both Envoy
+# replicas and both backends onto one node, which locked up at 96% CPU.
+# Requests close to real use let the scheduler and the HPA work.
 resources:
     requests:
-      cpu: 25m
+      cpu: 200m
       memory: 64Mi
     limits:
       memory: 192Mi
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
 env:
   SATARK_ENV: dev
   LOG_LEVEL: debug

@@ -1,6 +1,7 @@
 # GatewayClass "satark" served by Envoy Gateway. The EnvoyProxy config makes
 # each Gateway's data plane a MetalLB LoadBalancer Service with two
-# hardened Envoy replicas.
+# hardened Envoy replicas, kept on different nodes so that losing one node
+# does not take down the public entry point (see docs/game-days/load-test-bottleneck.md).
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
@@ -15,6 +16,18 @@ spec:
     kubernetes:
       envoyDeployment:
         replicas: 2
+        pod:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              # Cordoned and tainted nodes are not counted, so a drain can
+              # still reschedule the evicted replica.
+              nodeTaintsPolicy: Honor
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: envoy
+                  gateway.envoyproxy.io/owning-gateway-name: satark-public
         container:
           resources:
             requests:
