@@ -1,0 +1,134 @@
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Non-authoritative answer:
+Name:	example.com
+Address: 172.66.147.243
+Name:	example.com
+Address: 104.20.23.154
+
+Non-authoritative answer:
+Name:	example.com
+Address: 2606:4700:10::6814:179a
+Name:	example.com
+Address: 2606:4700:10::ac42:93f3
+
+pod "gd03-dnsprobe-23087" deleted from default namespace
+NAME                       READY   STATUS    RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+coredns-7d764666f9-clkfl   1/1     Running   0          12h   10.244.2.38   worker-2   <none>           <none>
+coredns-7d764666f9-zbct5   1/1     Running   0          27h   10.244.1.46   cp-1       <none>           <none>
+2026-10-18T14:17:46Z [gd-03-break-dns] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   33h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T14:17:47Z [gd-03-break-dns] inject: scale coredns to 0
+nslookup: can't connect to remote host (10.96.0.10): Operation not permitted
+nslookup: can't connect to remote host (10.96.0.10): Operation not permitted
+pod "gd03-dnsprobe-29944" deleted from default namespace
+pod default/gd03-dnsprobe-29944 terminated (Error)
+2026-10-18T14:23:05Z [gd-03-break-dns] probe https://api.satark.example/v1/scan/text: 282/300 failed
+2026-10-18T14:23:05Z [gd-03-break-dns] revert: restore coredns config and replicas
+2026-10-18T14:23:09Z [gd-03-break-dns] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   33h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Non-authoritative answer:
+Name:	example.com
+Address: 104.20.23.154
+Name:	example.com
+Address: 172.66.147.243
+
+Non-authoritative answer:
+Name:	example.com
+Address: 2606:4700:10::ac42:93f3
+Name:	example.com
+Address: 2606:4700:10::6814:179a
+
+pod "gd03-dnsprobe-2327" deleted from default namespace
+NAME                       READY   STATUS        RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+coredns-657585d98c-kmmn2   1/1     Running       0          6s    10.244.2.229   worker-2   <none>           <none>
+coredns-657585d98c-xcq9q   1/1     Running       0          6s    10.244.1.36    cp-1       <none>           <none>
+coredns-7d764666f9-lrcfm   1/1     Terminating   0          7s    10.244.0.224   worker-1   <none>           <none>
+2026-10-18T14:25:43Z [gd-03-break-dns] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   33h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T14:25:43Z [gd-03-break-dns] inject: forward . 192.0.2.1 (TEST-NET-1, unroutable)
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+
+All commands and output from this session will be recorded in container logs, including credentials and sensitive information passed through the command prompt.
+If you don't see a command prompt, try pressing enter.
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+;; connection timed out; no servers could be reached
+
+pod "gd03-dnsprobe-27402" deleted from default namespace
+pod default/gd03-dnsprobe-27402 terminated (Error)
+NAME                       READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+coredns-85cbf9f58c-2x99l   1/1     Running   0          66s   10.244.1.146   cp-1       <none>           <none>
+coredns-85cbf9f58c-tlb9d   1/1     Running   0          66s   10.244.0.59    worker-1   <none>           <none>
+2026-10-18T14:31:15Z [gd-03-break-dns] probe https://api.satark.example/v1/scan/text: 0/300 failed
+2026-10-18T14:31:15Z [gd-03-break-dns] revert: restore coredns config and replicas
+2026-10-18T14:31:18Z [gd-03-break-dns] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Name:	kubernetes.default.svc.cluster.local
+Address: 10.96.0.1
+
+
+Server:		10.96.0.10
+Address:	10.96.0.10:53
+
+Non-authoritative answer:
+Name:	example.com
+Address: 104.20.23.154
+Name:	example.com
+Address: 172.66.147.243
+
+Non-authoritative answer:
+Name:	example.com
+Address: 2606:4700:10::6814:179a
+Name:	example.com
+Address: 2606:4700:10::ac42:93f3
+
+pod "gd03-dnsprobe-10648" deleted from default namespace
+NAME                       READY   STATUS        RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
+coredns-85cbf9f58c-2x99l   1/1     Terminating   0          5m37s   10.244.1.146   cp-1       <none>           <none>
+coredns-85cbf9f58c-tlb9d   0/1     Completed     0          5m37s   10.244.0.59    worker-1   <none>           <none>
+coredns-f6f5bf699-4rnvv    1/1     Running       0          5s      10.244.1.32    cp-1       <none>           <none>
+coredns-f6f5bf699-sp2qt    1/1     Running       0          5s      10.244.2.44    worker-2   <none>           <none>

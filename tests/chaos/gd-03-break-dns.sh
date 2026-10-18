@@ -13,7 +13,9 @@ case "${1:-}" in
     require_context
     confirm "This breaks DNS ($MODE) for the whole cluster."
     snapshot before
-    kubectl -n kube-system get configmap coredns -o yaml > "$BACKUP"
+    # Drop resourceVersion/uid so the revert can apply over the edited copy.
+    kubectl -n kube-system get configmap coredns -o yaml \
+      | grep -v -E '^  (resourceVersion|uid|creationTimestamp):' > "$BACKUP"
     kubectl -n kube-system get deploy coredns -o jsonpath='{.spec.replicas}' > "${BACKUP}.replicas"
     if [[ "$MODE" == scale ]]; then
       event "inject: scale coredns to 0"

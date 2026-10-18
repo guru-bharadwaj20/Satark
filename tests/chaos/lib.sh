@@ -47,13 +47,17 @@ snapshot() {
 # Probe the public API once a second for N seconds and log failures.
 # PROBE_CURL_OPTS adds curl flags, e.g. for the lab's MetalLB IP and
 # self-signed certificate: "-k --resolve api.satark.example:443:192.168.56.240".
+# PROBE_TRACE=FILE also writes "HH:MM:SS http_code" per request, for timelines
+# (000 means no response within the timeout).
 probe() {
   local seconds="${1:-60}" url="${PROBE_URL:-}"
   [[ -z "$url" ]] && { event "probe skipped (PROBE_URL not set)"; return 0; }
-  local fail=0 i
+  local fail=0 i code
   for ((i = 0; i < seconds; i++)); do
     # shellcheck disable=SC2086
-    curl -fsS --max-time 2 ${PROBE_CURL_OPTS:-} -o /dev/null "$url" || fail=$((fail + 1))
+    code=$(curl -sS --max-time 2 ${PROBE_CURL_OPTS:-} -o /dev/null -w '%{http_code}' "$url" 2>/dev/null) || true
+    [[ "$code" == 2* ]] || fail=$((fail + 1))
+    [[ -n "${PROBE_TRACE:-}" ]] && echo "$(date -u +%T) ${code:-000}" >> "$PROBE_TRACE"
     sleep 1
   done
   event "probe ${url}: ${fail}/${seconds} failed"
