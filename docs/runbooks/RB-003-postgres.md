@@ -42,10 +42,15 @@ Decide which case you are in:
   writes are normal. Sustained lag usually means disk or network on the
   replica node: check `kubectl describe node` and node-exporter disk latency.
 - Replica crash-looping with `requested WAL segment has already been removed`:
-  delete the replica's PVC and pod; CNPG rebuilds it from the primary:
+  delete the replica's data **and WAL** PVCs and its pod; CNPG builds a new
+  instance (next serial number) from the primary:
   ```bash
-  kubectl -n satark-data delete pvc satark-pg-2 && kubectl -n satark-data delete pod satark-pg-2
+  kubectl -n satark-data delete pvc satark-pg-2 satark-pg-2-wal --wait=false
+  kubectl -n satark-data delete pod satark-pg-2
   ```
+  If only the data PVC goes, CNPG recreates the pod against the missing claim
+  and it sits `Pending` (`persistentvolumeclaim "satark-pg-2" not found`)
+  forever. Fix: delete the leftover `-wal` PVC and the Pending pod (GD-02).
 
 ## 4. Connection exhaustion
 

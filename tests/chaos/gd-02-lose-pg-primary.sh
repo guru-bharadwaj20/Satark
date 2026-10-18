@@ -18,8 +18,11 @@ case "${1:-}" in
     snapshot before
     event "primary before: $p"
     if [[ "${2:-}" == "--with-pvc" ]]; then
-      event "inject: delete PVC $p (and pod)"
+      # Delete the WAL PVC too. If it is left behind, CNPG recreates the pod
+      # against the missing data PVC and it sits Pending forever (GD-02 finding).
+      event "inject: delete PVCs $p and $p-wal (and pod)"
       kubectl -n "$NS" delete pvc "$p" --wait=false
+      kubectl -n "$NS" delete pvc "$p-wal" --wait=false --ignore-not-found
     fi
     event "inject: delete pod $p"
     kubectl -n "$NS" delete pod "$p" --grace-period=0 --force

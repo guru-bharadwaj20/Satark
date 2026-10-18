@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 273 / 294 subtasks completed**
+**Overall progress: 274 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -119,9 +119,9 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
-| 11 | Reliability, backups and disaster recovery | 31 | 17 |
+| 11 | Reliability, backups and disaster recovery | 31 | 18 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **273** |
+| | **Total** | **294** | **274** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -424,7 +424,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **11.18** `kubectl-satark doctor`: nodes, pods, PVCs and deployments
 - ✅ **11.19** `kubectl-satark doctor`: certificate expiry, PDBs, Argo CD status and `--json` output
 - ❌ **11.20** Game day 1: lose a worker node — *pending: needs a live cluster; procedure in `docs/game-days/`*
-- ❌ **11.21** Game day 2: lose the Postgres primary — *pending: needs a live cluster; procedure in `docs/game-days/`*
+- ✅ **11.21** Game day 2: lose the Postgres primary — *done in the on-prem lab; [GD-02](docs/game-days/GD-02-lose-postgres-primary.md)*
 - ❌ **11.22** Game day 3: break in-cluster DNS — *pending: needs a live cluster; procedure in `docs/game-days/`*
 - ❌ **11.23** Game day 4: apply a bad NetworkPolicy — *pending: needs a live cluster; procedure in `docs/game-days/`*
 - ❌ **11.24** Game day 5: ship a bad deploy and roll back — *pending: needs a live cluster; procedure in `docs/game-days/`*

@@ -1,0 +1,38 @@
+2026-10-18T02:24:05Z [gd-02-lose-pg-primary] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   21h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          21h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          21h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T02:24:05Z [gd-02-lose-pg-primary] primary before: satark-pg-1
+2026-10-18T02:24:05Z [gd-02-lose-pg-primary] inject: delete pod satark-pg-1
+2026-10-18T02:24:09Z [gd-02-lose-pg-primary] new primary satark-pg-2 after 3s
+2026-10-18T02:27:28Z [gd-02-lose-pg-primary] probe https://api.satark.example/v1/scan/text: 1/180 failed
+2026-10-18T02:27:28Z [gd-02-lose-pg-primary] all 3 instances ready; primary satark-pg-2
+2026-10-18T02:27:28Z [gd-02-lose-pg-primary] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   22h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          21h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          21h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T02:28:49Z [gd-02-lose-pg-primary] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   22h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          21h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          21h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T02:28:50Z [gd-02-lose-pg-primary] primary before: satark-pg-2
+2026-10-18T02:28:50Z [gd-02-lose-pg-primary] inject: delete PVC satark-pg-2 (and pod)
+2026-10-18T02:28:50Z [gd-02-lose-pg-primary] inject: delete pod satark-pg-2
+2026-10-18T02:28:54Z [gd-02-lose-pg-primary] new primary satark-pg-1 after 4s
+2026-10-18T02:32:11Z [gd-02-lose-pg-primary] probe https://api.satark.example/v1/scan/text: 1/180 failed
+2026-10-18T14:15:17Z [gd-02-lose-pg-primary] all 3 instances ready; primary satark-pg-1
+2026-10-18T14:15:17Z [gd-02-lose-pg-primary] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   33h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          33h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          33h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T14:14:16Z [gd-02-lose-pg-primary] found: satark-pg-2 Pending since 02:28:54 (persistentvolumeclaim "satark-pg-2" not found); satark-pg-2-wal still Bound
+2026-10-18T14:14:51Z [gd-02-lose-pg-primary] fix: delete pvc satark-pg-2-wal and pod satark-pg-2
+2026-10-18T14:15:22Z [gd-02-lose-pg-primary] satark-pg-4 built from primary; all 3 instances ready; primary satark-pg-1
