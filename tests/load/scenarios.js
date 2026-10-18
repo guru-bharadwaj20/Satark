@@ -3,10 +3,17 @@
 //   k6 run -e BASE_URL=https://api.satark.example -e PROFILE=load tests/load/scenarios.js
 //
 // PROFILE: smoke | load | stress | spike
-// Traffic mix mirrors production: ~80% text checks, ~20% link checks.
+// Traffic mix: ~80% text scans (links are scanned inside the text), ~20% QR
+// image scans.
+//
+// Against the lab cluster (Envoy on the MetalLB IP, self-signed certificate):
+//   k6 run -c tests/load/lab.json -e BASE_URL=https://api.satark.example ...
 import { sleep } from 'k6';
-import { checkText, checkURL } from './lib/client.js';
-import { texts, urls, pick } from './lib/payloads.js';
+import { scanText, scanQR } from './lib/client.js';
+import { texts, qrFixtures, pick } from './lib/payloads.js';
+
+const FIXTURES = '../../apps/qr-decoder/tests/fixtures/';
+const images = qrFixtures.map((name) => ({ name, data: open(FIXTURES + name, 'b') }));
 
 const PROFILE = __ENV.PROFILE || 'smoke';
 
@@ -65,8 +72,8 @@ export const options = {
   scenarios: { [PROFILE]: profiles[PROFILE] },
   thresholds: {
     'http_req_failed': ['rate<0.01'],
-    'http_req_duration{name:check_text}': ['p(95)<500', 'p(99)<1500'],
-    'http_req_duration{name:check_url}': ['p(95)<3000'],
+    'http_req_duration{name:scan_text}': ['p(95)<500', 'p(99)<1500'],
+    'http_req_duration{name:scan_qr}': ['p(95)<1000', 'p(99)<2500'],
     'checks': ['rate>0.99'],
   },
   summaryTrendStats: ['avg', 'p(50)', 'p(90)', 'p(95)', 'p(99)', 'max'],
@@ -74,9 +81,10 @@ export const options = {
 
 export default function () {
   if (Math.random() < 0.8) {
-    checkText(pick(texts, __ITER));
+    scanText(pick(texts, __ITER));
   } else {
-    checkURL(pick(urls, __ITER));
+    const img = pick(images, __ITER);
+    scanQR(img.data, img.name);
   }
   if (PROFILE === 'smoke') sleep(1);
 }

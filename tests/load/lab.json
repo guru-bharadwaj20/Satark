@@ -1,0 +1,4 @@
+{
+  "hosts": { "api.satark.example": "192.168.56.240" },
+  "insecureSkipTLSVerify": true
+}

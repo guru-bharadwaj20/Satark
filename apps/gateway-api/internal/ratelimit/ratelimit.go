@@ -9,16 +9,14 @@
 //	rl := ratelimit.New(rdb, ratelimit.Options{})
 //	mux.Handle("/v1/", rl.Middleware(ratelimit.Limit{Rate: 1, Burst: 30}, ratelimit.ClientKey, apiHandler))
 //
-// ClientKey uses the X-API-Key header when present (hashed, never stored raw),
-// otherwise the client IP (X-Forwarded-For set by Envoy Gateway). On Valkey
+// ClientKey uses the client IP: the last X-Forwarded-For entry, which Envoy
+// Gateway appends, or else the peer address. On Valkey
 // errors the limiter fails open and logs, so an outage of the cache does not
 // take the API down. Denied requests get 429 with Retry-After.
 package ratelimit
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"fmt"
 	"log/slog"
 	"math"
@@ -134,19 +132,22 @@ func (l *Limiter) AllowN(ctx context.Context, key string, lim Limit, n int) (Res
 // KeyFunc derives the bucket key for a request.
 type KeyFunc func(*http.Request) string
 
-// ClientKey keys by API key (SHA-256, truncated) or else by client IP.
+// ClientKey keys by client IP.
+//
+// It does not key by an X-API-Key header: no keys are issued or validated, so
+// a made-up key per request would get a fresh bucket each time. Key by API
+// key only once keys are checked against a store.
 func ClientKey(r *http.Request) string {
-	if k := r.Header.Get("X-API-Key"); k != "" {
-		sum := sha256.Sum256([]byte(k))
-		return "key:" + hex.EncodeToString(sum[:16])
-	}
 	return "ip:" + clientIP(r)
 }
 
+// clientIP trusts only the last X-Forwarded-For entry. Envoy appends the
+// address it received the connection from; anything before it came from the
+// client and can be forged to get a new bucket.
 func clientIP(r *http.Request) string {
 	if xff := r.Header.Get("X-Forwarded-For"); xff != "" {
-		first, _, _ := strings.Cut(xff, ",")
-		if ip := net.ParseIP(strings.TrimSpace(first)); ip != nil {
+		last := xff[strings.LastIndex(xff, ",")+1:]
+		if ip := net.ParseIP(strings.TrimSpace(last)); ip != nil {
 			return ip.String()
 		}
 	}
