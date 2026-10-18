@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 272 / 294 subtasks completed**
+**Overall progress: 273 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -119,9 +119,9 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
-| 11 | Reliability, backups and disaster recovery | 31 | 16 |
+| 11 | Reliability, backups and disaster recovery | 31 | 17 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **272** |
+| | **Total** | **294** | **273** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -420,7 +420,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **11.14** Terraform for a temporary DR VM running k3s
 - ❌ **11.15** DR drill: Velero restore and DNS switch, recording RTO and RPO — *pending: needs Velero and Route 53 live; run `scripts/dr-drill.sh`*
 - ✅ **11.16** SOP-05: Disaster recovery drill
-- ❌ **11.17** k6 load tests; find and fix the first bottleneck — *pending: needs a deployed stack to load test (scripts in `tests/load`)*
+- ✅ **11.17** k6 load tests; find and fix the first bottleneck
 - ✅ **11.18** `kubectl-satark doctor`: nodes, pods, PVCs and deployments
 - ✅ **11.19** `kubectl-satark doctor`: certificate expiry, PDBs, Argo CD status and `--json` output
 - ❌ **11.20** Game day 1: lose a worker node — *pending: needs a live cluster; procedure in `docs/game-days/`*

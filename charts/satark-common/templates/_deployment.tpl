@@ -128,10 +128,15 @@ spec:
       topologySpreadConstraints:
         {{- toYaml .Values.topologySpreadConstraints | nindent 8 }}
       {{- else }}
+      {{- /* matchLabelKeys counts only pods from the same ReplicaSet. Without it
+      the old pods count during a rollout and every new pod lands on the other
+      node (seen in task 11.17). */}}
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: ScheduleAnyway
+          matchLabelKeys:
+            - pod-template-hash
           labelSelector:
             matchLabels:
               {{- include "satark-common.selectorLabels" . | nindent 14 }}
