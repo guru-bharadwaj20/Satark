@@ -9,12 +9,9 @@ export const texts = [
   { text: 'Work from home job! Earn 5000 daily by liking videos. Pay 500 registration to fake@upi', lang: 'en' },
 ];
 
-export const urls = [
-  'https://example.com/',
-  'http://bit.example.test/abc123',
-  'https://paytm-refund.example.test/claim',
-  'https://www.wikipedia.org/',
-];
+// QR images from the qr-decoder test fixtures: a UPI collect-request scam, a
+// legitimate merchant code and a plain URL. Paths are relative to scenarios.js.
+export const qrFixtures = ['upi_receive_scam.png', 'upi_merchant.png', 'url.png'];
 
 export function pick(list, i) {
   return list[i % list.length];

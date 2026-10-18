@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 	"time"
 
@@ -95,14 +94,24 @@ func TestClientKey(t *testing.T) {
 	if got := ClientKey(r); got != "ip:10.0.0.5" {
 		t.Fatalf("got %q", got)
 	}
-	r.Header.Set("X-Forwarded-For", "203.0.113.9, 10.0.0.1")
+	// Envoy appends the peer address; earlier entries are client-supplied.
+	r.Header.Set("X-Forwarded-For", "203.0.113.9")
 	if got := ClientKey(r); got != "ip:203.0.113.9" {
 		t.Fatalf("got %q", got)
 	}
-	r.Header.Set("X-API-Key", "sk_test_123")
-	got := ClientKey(r)
-	if !strings.HasPrefix(got, "key:") || strings.Contains(got, "sk_test") {
-		t.Fatalf("api key must be hashed: %q", got)
+	r.Header.Set("X-Forwarded-For", "198.51.100.1, 203.0.113.9")
+	if got := ClientKey(r); got != "ip:203.0.113.9" {
+		t.Fatalf("forged first entry must be ignored, got %q", got)
+	}
+	r.Header.Set("X-Forwarded-For", "203.0.113.9, garbage")
+	if got := ClientKey(r); got != "ip:10.0.0.5" {
+		t.Fatalf("unparseable last entry falls back to the peer, got %q", got)
+	}
+	// An unchecked API key must not buy a separate bucket.
+	r.Header.Del("X-Forwarded-For")
+	r.Header.Set("X-API-Key", "made-up-1")
+	if got := ClientKey(r); got != "ip:10.0.0.5" {
+		t.Fatalf("api key must not change the key, got %q", got)
 	}
 }
 

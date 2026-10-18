@@ -39,10 +39,10 @@ const messages = [
 
 export default function () {
   const body = JSON.stringify({ text: messages[__ITER % messages.length], lang: 'en' });
-  const res = http.post(`${BASE_URL}/v1/check/text`, body, {
+  const res = http.post(`${BASE_URL}/v1/scan/text`, body, {
     headers: { 'Content-Type': 'application/json' },
     timeout: '10s',
-    tags: { name: 'check_text' },
+    tags: { name: 'scan_text' },
   });
   const ok = check(res, { 'status is 200': (r) => r.status === 200 });
   if (!ok) {
