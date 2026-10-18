@@ -31,6 +31,14 @@ cat /etc/resolv.conf
 | fail from some pods only | — | NetworkPolicy or a node's Cilium agent | 4 |
 | work but slow | slow | CoreDNS overloaded or `ndots` amplification | 5 |
 
+A DNS outage can look partial at first. Clients that already hold a
+keep-alive connection (gateway-api's analyzer clients keep idle connections
+for 90 s; the Telegram bot's long poll holds one open) keep working until
+that connection closes, so some requests succeed while new lookups fail.
+GD-03 saw about 35 s of mixed 200/503 before every text scan failed. Mixed
+success does not rule DNS out; the gateway log says
+`lookup <name> on 10.96.0.10:53`.
+
 ## 2. CoreDNS down or unreachable
 
 ```bash
