@@ -33,7 +33,11 @@ case "${1:-}" in
       event "inject: blackhole $REGISTRY_HOST on $NODE and clear its cached $APP image"
       $SSH "$NODE" -- sudo bash -s <<REMOTE
 echo "0.0.0.0 $REGISTRY_HOST" >> /etc/hosts
-crictl images | awk '/$APP/ {print \$3}' | xargs -r crictl rmi || true
+if command -v crictl >/dev/null; then
+  crictl images | awk '/$APP/ {print \$3}' | xargs -r crictl rmi || true
+else
+  ctr -n k8s.io images ls -q | grep '$APP' | xargs -r ctr -n k8s.io images rm || true
+fi
 REMOTE
       kubectl -n "$NS" delete pod -l "app.kubernetes.io/name=$APP" --field-selector "spec.nodeName=$NODE"
     fi
@@ -53,7 +57,9 @@ REMOTE
       fi
     else
       event "revert: unblock $REGISTRY_HOST on $NODE"
-      $SSH "$NODE" -- sudo sed -i "/ $REGISTRY_HOST\$/d" /etc/hosts
+      # ssh joins its arguments into one remote command line, so quote for
+      # the remote shell (unquoted, sed received "/" and "ghcr.io$/d").
+      $SSH "$NODE" -- "sudo sed -i '/ $REGISTRY_HOST\$/d' /etc/hosts"
     fi
     kubectl -n "$NS" rollout status "deploy/$APP" --timeout=5m
     snapshot after

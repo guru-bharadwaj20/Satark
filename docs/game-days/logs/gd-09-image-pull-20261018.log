@@ -1,0 +1,34 @@
+2026-10-18T15:30:27Z [gd-09-image-pull] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:30:28Z [gd-09-image-pull] inject: set image ghcr.io/guru-bharadwaj20/satark/text-analyzer:v0.0.0-doesnotexist
+NAME                             READY   STATUS         RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+text-analyzer-5d58b5fbd4-jp4lc   1/1     Running        0          13h   10.244.2.177   worker-2   <none>           <none>
+text-analyzer-5d58b5fbd4-k4lgc   1/1     Running        0          13h   10.244.2.6     worker-2   <none>           <none>
+text-analyzer-66dccd7b97-mpg44   0/1     ErrImagePull   0          59s   10.244.0.166   worker-1   <none>           <none>
+LAST SEEN   TYPE      REASON   OBJECT                               MESSAGE
+16s         Warning   Failed   pod/text-analyzer-66dccd7b97-mpg44   Failed to pull image "ghcr.io/guru-bharadwaj20/satark/text-analyzer:v0.0.0-doesnotexist": failed to pull and unpack image "ghcr.io/guru-bharadwaj20/satark/text-analyzer:v0.0.0-doesnotexist": failed to resolve image: failed to authorize: failed to fetch anonymous token: unexpected status from GET request to https://ghcr.io/token?scope=repository%3Aguru-bharadwaj20%2Fsatark%2Ftext-analyzer%3Apull&service=ghcr.io: 403 Forbidden
+16s         Warning   Failed   pod/text-analyzer-66dccd7b97-mpg44   Error: ErrImagePull
+3s          Warning   Failed   pod/text-analyzer-66dccd7b97-mpg44   Error: ImagePullBackOff
+2026-10-18T15:33:46Z [gd-09-image-pull] probe https://api.satark.example/v1/scan/text: 0/180 failed
+2026-10-18T15:40:58Z [gd-09-image-pull] revert: restore image ghcr.io/guru-bharadwaj20/satark/text-analyzer:lab
+2026-10-18T15:40:58Z [gd-09-image-pull] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:41:21Z [gd-09-image-pull] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:41:22Z [gd-09-image-pull] inject: blackhole ghcr.io on worker-2 and clear its cached text-analyzer image
+2026-10-18T15:44:41Z [gd-09-image-pull] probe https://api.satark.example/v1/scan/text: 4/180 failed
+2026-10-18T15:44:44Z [gd-09-image-pull] revert: unblock ghcr.io on worker-2
+2026-10-18T15:48:20Z [gd-09-image-pull] fix: revert's remote sed failed (quoting); removed ghcr.io from /etc/hosts on worker-2 by hand, deleted the ImagePullBackOff pod
+2026-10-18T15:48:35Z [gd-09-image-pull] text-analyzer 2/2 ready (one pod per worker)
