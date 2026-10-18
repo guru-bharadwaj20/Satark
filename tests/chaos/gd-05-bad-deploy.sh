@@ -38,11 +38,14 @@ case "${1:-}" in
   rollback)
     # What the responder is expected to do (one of):
     event "rollback: kubectl rollout undo deploy/$APP"
+    # Drop the change-cause first, or it is copied onto the good revision.
+    kubectl -n "$NS" annotate "deploy/$APP" kubernetes.io/change-cause- 2>/dev/null || true
     kubectl -n "$NS" rollout undo "deploy/$APP"
     kubectl -n "$NS" rollout status "deploy/$APP" --timeout=5m
     ;;
   revert)
     event "revert: re-enable auto-sync (Git is the source of truth again)"
+    kubectl -n "$NS" annotate "deploy/$APP" kubernetes.io/change-cause- 2>/dev/null || true
     kubectl -n argocd patch application "$ARGO_APP" --type merge \
       -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
     kubectl -n argocd annotate application "$ARGO_APP" argocd.argoproj.io/refresh=hard --overwrite

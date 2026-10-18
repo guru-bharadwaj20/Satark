@@ -1,0 +1,73 @@
+deployment.apps/gateway-api 
+REVISION  CHANGE-CAUSE
+3         <none>
+4         <none>
+5         <none>
+6         <none>
+7         <none>
+8         <none>
+
+Synced Healthy
+2026-10-18T14:55:13Z [gd-05-bad-deploy] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+deployment.apps/gateway-api 
+REVISION  CHANGE-CAUSE
+3         <none>
+4         <none>
+5         <none>
+6         <none>
+7         <none>
+8         <none>
+
+2026-10-18T14:55:14Z [gd-05-bad-deploy] inject: pause auto-sync on argocd/gateway-api-dev
+2026-10-18T14:55:14Z [gd-05-bad-deploy] inject: set env TEXT_ANALYZER_URL=http://text-analyzer.satark-dev.svc:9999
+2026-10-18T14:55:26Z [gd-05-bad-deploy] bad rollout complete
+2026-10-18T15:10:49Z [gd-05-bad-deploy] probe https://api.satark.example/v1/scan/text: 300/300 failed
+2026-10-18T15:10:49Z [gd-05-bad-deploy] rollback: kubectl rollout undo deploy/gateway-api
+2026-10-18T15:11:01Z [gd-05-bad-deploy] revert: re-enable auto-sync (Git is the source of truth again)
+2026-10-18T15:11:02Z [gd-05-bad-deploy] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+2026-10-18T15:12:50Z [gd-05-bad-deploy] snapshot: before
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   34h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+deployment.apps/gateway-api 
+REVISION  CHANGE-CAUSE
+4         <none>
+5         <none>
+6         <none>
+7         <none>
+9         gd-05 bad release
+10        <none>
+
+2026-10-18T15:12:51Z [gd-05-bad-deploy] inject: pause auto-sync on argocd/gateway-api-dev
+2026-10-18T15:12:51Z [gd-05-bad-deploy] inject: set env TEXT_ANALYZER_URL=http://text-analyzer.satark-dev.svc:9999
+2026-10-18T15:13:04Z [gd-05-bad-deploy] bad rollout complete
+2026-10-18T15:28:26Z [gd-05-bad-deploy] probe https://api.satark.example/v1/scan/text: 300/300 failed
+2026-10-18T15:28:26Z [gd-05-bad-deploy] revert: re-enable auto-sync (Git is the source of truth again)
+2026-10-18T15:28:26Z [gd-05-bad-deploy] snapshot: after
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION     CONTAINER-RUNTIME
+cp-1       Ready    control-plane   35h   v1.35.9   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-1   Ready    worker          34h   v1.35.9   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+worker-2   Ready    worker          34h   v1.35.9   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-86-generic   containerd://2.2.1
+No resources found
+deployment.apps/gateway-api 
+REVISION  CHANGE-CAUSE
+4         <none>
+5         <none>
+6         <none>
+7         <none>
+11        gd-05 bad release
+12        gd-05 bad release
+
+Synced Healthy
