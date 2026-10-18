@@ -24,6 +24,10 @@ spec:
               # Cordoned and tainted nodes are not counted, so a drain can
               # still reschedule the evicted replica.
               nodeTaintsPolicy: Honor
+              # Count only the new ReplicaSet, or a rollout skews towards the
+              # node the old pods are leaving.
+              matchLabelKeys:
+                - pod-template-hash
               labelSelector:
                 matchLabels:
                   app.kubernetes.io/name: envoy
