@@ -2,6 +2,11 @@
 - name: Switch package repository
   ansible.builtin.import_tasks: repo.yml
 
+- name: Prepare CloudNativePG for the drain
+  ansible.builtin.include_tasks: cnpg.yml
+  vars:
+    k8s_upgrade_cnpg_phase: pre
+
 - name: Upgrade control plane
   ansible.builtin.include_tasks: control_plane.yml
   when: inventory_hostname in groups[k8s_upgrade_cp_group]
@@ -9,3 +14,8 @@
 - name: Upgrade worker
   ansible.builtin.include_tasks: worker.yml
   when: inventory_hostname in groups[k8s_upgrade_worker_group]
+
+- name: Return CloudNativePG to normal
+  ansible.builtin.include_tasks: cnpg.yml
+  vars:
+    k8s_upgrade_cnpg_phase: post

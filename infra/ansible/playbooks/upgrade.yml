@@ -37,10 +37,33 @@
       changed_when: false
       failed_when: "'False' in ready.stdout or 'Unknown' in ready.stdout"
 
+    - name: Check for the etcd backup unit (roles/etcd_backup, uploads to S3)
+      ansible.builtin.stat:
+        path: /etc/systemd/system/etcd-backup.service
+      register: etcd_backup_unit
+
     - name: Take an etcd snapshot before touching anything
       ansible.builtin.systemd:
         name: etcd-backup.service
         state: started
+      when: etcd_backup_unit.stat.exists
+
+    # Clusters without the S3 unit (the on-prem lab) still get a snapshot,
+    # kept on the node next to the etcd data dir.
+    - name: Take a local etcd snapshot (no backup unit installed)
+      when: not etcd_backup_unit.stat.exists
+      ansible.builtin.shell: |
+        set -euo pipefail
+        k="kubectl --kubeconfig /etc/kubernetes/admin.conf -n kube-system"
+        pod=$($k get pods -l component=etcd -o jsonpath='{.items[0].metadata.name}')
+        $k exec "$pod" -- etcdctl --endpoints=https://127.0.0.1:2379 \
+          --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+          --cert=/etc/kubernetes/pki/etcd/healthcheck-client.crt \
+          --key=/etc/kubernetes/pki/etcd/healthcheck-client.key \
+          snapshot save "/var/lib/etcd/pre-upgrade-$(date -u +%Y%m%dT%H%M%SZ).db"
+      args:
+        executable: /bin/bash
+      changed_when: true
 
 - name: Upgrade control plane
   hosts: control_plane
