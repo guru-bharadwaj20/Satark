@@ -1,0 +1,716 @@
+
+PLAY [Pre-flight checks] *******************************************************
+
+TASK [Require an explicit target minor] ****************************************
+Sunday 18 October 2026  16:23:03 +0000 (0:00:00.072)       0:00:00.072 ******** 
+ok: [cp-1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [Read current server version] *********************************************
+Sunday 18 October 2026  16:23:03 +0000 (0:00:00.077)       0:00:00.149 ******** 
+ok: [cp-1]
+
+TASK [Refuse to skip minors or downgrade] **************************************
+Sunday 18 October 2026  16:23:06 +0000 (0:00:02.845)       0:00:02.995 ******** 
+ok: [cp-1] => {
+    "changed": false,
+    "msg": "All assertions passed"
+}
+
+TASK [All nodes must be Ready] *************************************************
+Sunday 18 October 2026  16:23:06 +0000 (0:00:00.073)       0:00:03.069 ******** 
+ok: [cp-1]
+
+TASK [Check for the etcd backup unit (roles/etcd_backup, uploads to S3)] *******
+Sunday 18 October 2026  16:23:07 +0000 (0:00:00.933)       0:00:04.002 ******** 
+ok: [cp-1]
+
+TASK [Take an etcd snapshot before touching anything] **************************
+Sunday 18 October 2026  16:23:07 +0000 (0:00:00.518)       0:00:04.521 ******** 
+skipping: [cp-1]
+
+TASK [Take a local etcd snapshot (no backup unit installed)] *******************
+Sunday 18 October 2026  16:23:07 +0000 (0:00:00.025)       0:00:04.546 ******** 
+changed: [cp-1]
+
+PLAY [Upgrade control plane] ***************************************************
+
+TASK [Gathering Facts] *********************************************************
+Sunday 18 October 2026  16:23:10 +0000 (0:00:02.564)       0:00:07.111 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Ensure keyrings directory exists] **************************
+Sunday 18 October 2026  16:23:13 +0000 (0:00:03.090)       0:00:10.202 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Download signing key for target minor] *********************
+Sunday 18 October 2026  16:23:13 +0000 (0:00:00.506)       0:00:10.708 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Dearmor signing key] ***************************************
+Sunday 18 October 2026  16:23:15 +0000 (0:00:01.532)       0:00:12.240 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Switch apt repository to target minor] *********************
+Sunday 18 October 2026  16:23:17 +0000 (0:00:02.162)       0:00:14.403 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Refresh apt cache] *****************************************
+Sunday 18 October 2026  16:23:18 +0000 (0:00:01.316)       0:00:15.720 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Resolve target package version] ****************************
+Sunday 18 October 2026  16:23:38 +0000 (0:00:19.522)       0:00:35.242 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Record resolved versions] **********************************
+Sunday 18 October 2026  16:23:39 +0000 (0:00:00.919)       0:00:36.162 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Prepare CloudNativePG for the drain] ***********************
+Sunday 18 October 2026  16:23:39 +0000 (0:00:00.045)       0:00:36.207 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for cp-1
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:23:39 +0000 (0:00:00.055)       0:00:36.263 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:23:40 +0000 (0:00:01.569)       0:00:37.832 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.060)       0:00:37.892 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.034)       0:00:37.927 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.025)       0:00:37.952 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.048)       0:00:38.001 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Upgrade control plane] *************************************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.030)       0:00:38.031 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/control_plane.yml for cp-1
+
+TASK [k8s_upgrade : Unhold kubeadm] ********************************************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.067)       0:00:38.098 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Install target kubeadm] ************************************
+Sunday 18 October 2026  16:23:41 +0000 (0:00:00.713)       0:00:38.811 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Hold kubeadm] **********************************************
+Sunday 18 October 2026  16:23:58 +0000 (0:00:16.464)       0:00:55.276 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Verify kubeadm binary version] *****************************
+Sunday 18 October 2026  16:23:58 +0000 (0:00:00.471)       0:00:55.747 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Plan upgrade (first control plane)] ************************
+Sunday 18 October 2026  16:23:59 +0000 (0:00:00.790)       0:00:56.538 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Apply upgrade (first control plane)] ***********************
+Sunday 18 October 2026  16:24:09 +0000 (0:00:09.742)       0:01:06.280 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Upgrade additional control plane] **************************
+Sunday 18 October 2026  16:28:18 +0000 (0:04:08.678)       0:05:14.959 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Drain control-plane node] **********************************
+Sunday 18 October 2026  16:28:18 +0000 (0:00:00.037)       0:05:14.997 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Upgrade kubelet and kubectl] *******************************
+Sunday 18 October 2026  16:28:27 +0000 (0:00:09.237)       0:05:24.234 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/kubelet.yml for cp-1
+
+TASK [k8s_upgrade : Unhold kubelet and kubectl] ********************************
+Sunday 18 October 2026  16:28:27 +0000 (0:00:00.056)       0:05:24.290 ******** 
+changed: [cp-1] => (item=kubelet)
+changed: [cp-1] => (item=kubectl)
+
+TASK [k8s_upgrade : Install target kubelet and kubectl] ************************
+Sunday 18 October 2026  16:28:28 +0000 (0:00:00.763)       0:05:25.054 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Hold kubelet and kubectl] **********************************
+Sunday 18 October 2026  16:28:46 +0000 (0:00:18.809)       0:05:43.863 ******** 
+changed: [cp-1] => (item=kubelet)
+changed: [cp-1] => (item=kubectl)
+
+TASK [k8s_upgrade : Restart kubelet] *******************************************
+Sunday 18 October 2026  16:28:48 +0000 (0:00:01.851)       0:05:45.715 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Wait for node to report target kubelet version and Ready] ***
+Sunday 18 October 2026  16:28:51 +0000 (0:00:02.901)       0:05:48.616 ******** 
+FAILED - RETRYING: [cp-1]: Wait for node to report target kubelet version and Ready (60 retries left).
+FAILED - RETRYING: [cp-1]: Wait for node to report target kubelet version and Ready (59 retries left).
+FAILED - RETRYING: [cp-1]: Wait for node to report target kubelet version and Ready (58 retries left).
+FAILED - RETRYING: [cp-1]: Wait for node to report target kubelet version and Ready (57 retries left).
+ok: [cp-1]
+
+TASK [k8s_upgrade : Uncordon control-plane node] *******************************
+Sunday 18 October 2026  16:29:42 +0000 (0:00:50.705)       0:06:39.322 ******** 
+changed: [cp-1]
+
+TASK [k8s_upgrade : Wait for API server health] ********************************
+Sunday 18 October 2026  16:29:43 +0000 (0:00:00.723)       0:06:40.046 ******** 
+ok: [cp-1]
+
+TASK [k8s_upgrade : Upgrade worker] ********************************************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:01.024)       0:06:41.070 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Return CloudNativePG to normal] ****************************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.024)       0:06:41.095 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for cp-1
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.045)       0:06:41.140 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.044)       0:06:41.185 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.024)       0:06:41.209 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.022)       0:06:41.232 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.020)       0:06:41.252 ******** 
+skipping: [cp-1]
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.024)       0:06:41.277 ******** 
+skipping: [cp-1]
+
+PLAY [Upgrade workers] *********************************************************
+
+TASK [Gathering Facts] *********************************************************
+Sunday 18 October 2026  16:29:44 +0000 (0:00:00.044)       0:06:41.322 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Ensure keyrings directory exists] **************************
+Sunday 18 October 2026  16:29:47 +0000 (0:00:03.045)       0:06:44.367 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Download signing key for target minor] *********************
+Sunday 18 October 2026  16:29:47 +0000 (0:00:00.383)       0:06:44.751 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Dearmor signing key] ***************************************
+Sunday 18 October 2026  16:29:49 +0000 (0:00:01.216)       0:06:45.967 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Switch apt repository to target minor] *********************
+Sunday 18 October 2026  16:29:49 +0000 (0:00:00.459)       0:06:46.426 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Refresh apt cache] *****************************************
+Sunday 18 October 2026  16:29:50 +0000 (0:00:01.192)       0:06:47.619 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Resolve target package version] ****************************
+Sunday 18 October 2026  16:30:12 +0000 (0:00:21.382)       0:07:09.001 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Record resolved versions] **********************************
+Sunday 18 October 2026  16:30:12 +0000 (0:00:00.509)       0:07:09.510 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Prepare CloudNativePG for the drain] ***********************
+Sunday 18 October 2026  16:30:12 +0000 (0:00:00.027)       0:07:09.537 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for worker-1
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:30:12 +0000 (0:00:00.027)       0:07:09.565 ******** 
+ok: [worker-1 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:30:13 +0000 (0:00:00.475)       0:07:10.040 ******** 
+ok: [worker-1]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:30:13 +0000 (0:00:00.033)       0:07:10.074 ******** 
+changed: [worker-1 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:30:13 +0000 (0:00:00.650)       0:07:10.724 ******** 
+ok: [worker-1 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:30:14 +0000 (0:00:01.116)       0:07:11.841 ******** 
+skipping: [worker-1] => (item=satark-data/satark-pg) 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:30:14 +0000 (0:00:00.047)       0:07:11.888 ******** 
+skipping: [worker-1] => (item=satark-data/satark-pg) 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Upgrade control plane] *************************************
+Sunday 18 October 2026  16:30:15 +0000 (0:00:00.047)       0:07:11.936 ******** 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Upgrade worker] ********************************************
+Sunday 18 October 2026  16:30:15 +0000 (0:00:00.027)       0:07:11.963 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/worker.yml for worker-1
+
+TASK [k8s_upgrade : Drain worker] **********************************************
+Sunday 18 October 2026  16:30:15 +0000 (0:00:00.060)       0:07:12.023 ******** 
+changed: [worker-1 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Unhold kubeadm] ********************************************
+Sunday 18 October 2026  16:30:55 +0000 (0:00:40.703)       0:07:52.727 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Install target kubeadm] ************************************
+Sunday 18 October 2026  16:30:56 +0000 (0:00:00.446)       0:07:53.173 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Hold kubeadm] **********************************************
+Sunday 18 October 2026  16:31:05 +0000 (0:00:09.559)       0:08:02.733 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Upgrade node configuration] ********************************
+Sunday 18 October 2026  16:31:06 +0000 (0:00:00.429)       0:08:03.162 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Upgrade kubelet and kubectl] *******************************
+Sunday 18 October 2026  16:31:07 +0000 (0:00:01.168)       0:08:04.331 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/kubelet.yml for worker-1
+
+TASK [k8s_upgrade : Unhold kubelet and kubectl] ********************************
+Sunday 18 October 2026  16:31:07 +0000 (0:00:00.057)       0:08:04.388 ******** 
+changed: [worker-1] => (item=kubelet)
+changed: [worker-1] => (item=kubectl)
+
+TASK [k8s_upgrade : Install target kubelet and kubectl] ************************
+Sunday 18 October 2026  16:31:09 +0000 (0:00:02.238)       0:08:06.626 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Hold kubelet and kubectl] **********************************
+Sunday 18 October 2026  16:31:20 +0000 (0:00:11.148)       0:08:17.775 ******** 
+changed: [worker-1] => (item=kubelet)
+changed: [worker-1] => (item=kubectl)
+
+TASK [k8s_upgrade : Restart kubelet] *******************************************
+Sunday 18 October 2026  16:31:21 +0000 (0:00:00.865)       0:08:18.641 ******** 
+changed: [worker-1]
+
+TASK [k8s_upgrade : Wait for node to report target kubelet version and Ready] ***
+Sunday 18 October 2026  16:31:22 +0000 (0:00:01.152)       0:08:19.793 ******** 
+ok: [worker-1 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Uncordon worker] *******************************************
+Sunday 18 October 2026  16:31:23 +0000 (0:00:00.789)       0:08:20.582 ******** 
+changed: [worker-1 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Wait for pods on this node to settle] **********************
+Sunday 18 October 2026  16:31:24 +0000 (0:00:00.748)       0:08:21.331 ******** 
+FAILED - RETRYING: [worker-1 -> cp-1]: Wait for pods on this node to settle (30 retries left).
+ok: [worker-1 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Return CloudNativePG to normal] ****************************
+Sunday 18 October 2026  16:31:36 +0000 (0:00:11.653)       0:08:32.984 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for worker-1
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:31:36 +0000 (0:00:00.051)       0:08:33.036 ******** 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:31:36 +0000 (0:00:00.049)       0:08:33.085 ******** 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:31:36 +0000 (0:00:00.026)       0:08:33.112 ******** 
+skipping: [worker-1] => (item=satark-data/satark-pg) 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:31:36 +0000 (0:00:00.042)       0:08:33.154 ******** 
+skipping: [worker-1] => (item=satark-data/satark-pg) 
+skipping: [worker-1]
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:31:36 +0000 (0:00:00.043)       0:08:33.197 ******** 
+changed: [worker-1 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:31:37 +0000 (0:00:00.803)       0:08:34.001 ******** 
+FAILED - RETRYING: [worker-1 -> cp-1]: Wait for every CNPG instance to be ready (60 retries left).
+ok: [worker-1 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+PLAY [Upgrade workers] *********************************************************
+
+TASK [Gathering Facts] *********************************************************
+Sunday 18 October 2026  16:31:49 +0000 (0:00:12.688)       0:08:46.689 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Ensure keyrings directory exists] **************************
+Sunday 18 October 2026  16:31:58 +0000 (0:00:08.274)       0:08:54.964 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Download signing key for target minor] *********************
+Sunday 18 October 2026  16:31:58 +0000 (0:00:00.476)       0:08:55.440 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Dearmor signing key] ***************************************
+Sunday 18 October 2026  16:32:00 +0000 (0:00:01.815)       0:08:57.256 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Switch apt repository to target minor] *********************
+Sunday 18 October 2026  16:32:01 +0000 (0:00:00.695)       0:08:57.951 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Refresh apt cache] *****************************************
+Sunday 18 October 2026  16:32:02 +0000 (0:00:01.640)       0:08:59.592 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Resolve target package version] ****************************
+Sunday 18 October 2026  16:32:31 +0000 (0:00:28.467)       0:09:28.059 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Record resolved versions] **********************************
+Sunday 18 October 2026  16:32:32 +0000 (0:00:01.071)       0:09:29.131 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Prepare CloudNativePG for the drain] ***********************
+Sunday 18 October 2026  16:32:32 +0000 (0:00:00.047)       0:09:29.178 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for worker-2
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:32:32 +0000 (0:00:00.048)       0:09:29.227 ******** 
+ok: [worker-2 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:32:33 +0000 (0:00:00.677)       0:09:29.904 ******** 
+ok: [worker-2]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:32:33 +0000 (0:00:00.044)       0:09:29.948 ******** 
+changed: [worker-2 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:32:33 +0000 (0:00:00.711)       0:09:30.660 ******** 
+changed: [worker-2 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:32:40 +0000 (0:00:06.835)       0:09:37.496 ******** 
+skipping: [worker-2] => (item=satark-data/satark-pg) 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:32:40 +0000 (0:00:00.052)       0:09:37.548 ******** 
+skipping: [worker-2] => (item=satark-data/satark-pg) 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Upgrade control plane] *************************************
+Sunday 18 October 2026  16:32:40 +0000 (0:00:00.066)       0:09:37.615 ******** 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Upgrade worker] ********************************************
+Sunday 18 October 2026  16:32:40 +0000 (0:00:00.028)       0:09:37.643 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/worker.yml for worker-2
+
+TASK [k8s_upgrade : Drain worker] **********************************************
+Sunday 18 October 2026  16:32:40 +0000 (0:00:00.058)       0:09:37.701 ******** 
+changed: [worker-2 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Unhold kubeadm] ********************************************
+Sunday 18 October 2026  16:35:34 +0000 (0:02:53.665)       0:12:31.367 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Install target kubeadm] ************************************
+Sunday 18 October 2026  16:35:35 +0000 (0:00:01.174)       0:12:32.542 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Hold kubeadm] **********************************************
+Sunday 18 October 2026  16:35:46 +0000 (0:00:11.168)       0:12:43.711 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Upgrade node configuration] ********************************
+Sunday 18 October 2026  16:35:47 +0000 (0:00:00.378)       0:12:44.090 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Upgrade kubelet and kubectl] *******************************
+Sunday 18 October 2026  16:35:48 +0000 (0:00:01.637)       0:12:45.727 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/kubelet.yml for worker-2
+
+TASK [k8s_upgrade : Unhold kubelet and kubectl] ********************************
+Sunday 18 October 2026  16:35:48 +0000 (0:00:00.053)       0:12:45.780 ******** 
+changed: [worker-2] => (item=kubelet)
+changed: [worker-2] => (item=kubectl)
+
+TASK [k8s_upgrade : Install target kubelet and kubectl] ************************
+Sunday 18 October 2026  16:35:49 +0000 (0:00:00.927)       0:12:46.708 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Hold kubelet and kubectl] **********************************
+Sunday 18 October 2026  16:35:59 +0000 (0:00:10.066)       0:12:56.774 ******** 
+changed: [worker-2] => (item=kubelet)
+changed: [worker-2] => (item=kubectl)
+
+TASK [k8s_upgrade : Restart kubelet] *******************************************
+Sunday 18 October 2026  16:36:00 +0000 (0:00:00.577)       0:12:57.352 ******** 
+changed: [worker-2]
+
+TASK [k8s_upgrade : Wait for node to report target kubelet version and Ready] ***
+Sunday 18 October 2026  16:36:01 +0000 (0:00:00.802)       0:12:58.155 ******** 
+ok: [worker-2 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Uncordon worker] *******************************************
+Sunday 18 October 2026  16:36:01 +0000 (0:00:00.448)       0:12:58.603 ******** 
+changed: [worker-2 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Wait for pods on this node to settle] **********************
+Sunday 18 October 2026  16:36:02 +0000 (0:00:00.550)       0:12:59.153 ******** 
+FAILED - RETRYING: [worker-2 -> cp-1]: Wait for pods on this node to settle (30 retries left).
+ok: [worker-2 -> cp-1(127.0.0.1)]
+
+TASK [k8s_upgrade : Return CloudNativePG to normal] ****************************
+Sunday 18 October 2026  16:36:15 +0000 (0:00:12.768)       0:13:11.922 ******** 
+included: /mnt/c/Users/Temp/Desktop/Satark/infra/ansible/roles/k8s_upgrade/tasks/cnpg.yml for worker-2
+
+TASK [k8s_upgrade : Find CNPG clusters with an instance on this node] **********
+Sunday 18 October 2026  16:36:15 +0000 (0:00:00.055)       0:13:11.977 ******** 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Remember them for after the drain] *************************
+Sunday 18 October 2026  16:36:15 +0000 (0:00:00.048)       0:13:12.025 ******** 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Start node maintenance on CNPG clusters] *******************
+Sunday 18 October 2026  16:36:15 +0000 (0:00:00.028)       0:13:12.054 ******** 
+skipping: [worker-2] => (item=satark-data/satark-pg) 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : Switch CNPG primaries off this node] ***********************
+Sunday 18 October 2026  16:36:15 +0000 (0:00:00.058)       0:13:12.113 ******** 
+skipping: [worker-2] => (item=satark-data/satark-pg) 
+skipping: [worker-2]
+
+TASK [k8s_upgrade : End node maintenance on CNPG clusters] *********************
+Sunday 18 October 2026  16:36:15 +0000 (0:00:00.050)       0:13:12.163 ******** 
+changed: [worker-2 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+TASK [k8s_upgrade : Wait for every CNPG instance to be ready] ******************
+Sunday 18 October 2026  16:36:16 +0000 (0:00:01.193)       0:13:13.357 ******** 
+ok: [worker-2 -> cp-1(127.0.0.1)] => (item=satark-data/satark-pg)
+
+PLAY [CIS hardening - kubelet (all nodes)] *************************************
+
+TASK [Gathering Facts] *********************************************************
+Sunday 18 October 2026  16:36:17 +0000 (0:00:00.799)       0:13:14.156 ******** 
+ok: [worker-2]
+ok: [cp-1]
+ok: [worker-1]
+
+TASK [Find the kubelet files CIS 4.1.x checks] *********************************
+Sunday 18 October 2026  16:36:23 +0000 (0:00:05.856)       0:13:20.013 ******** 
+ok: [cp-1] => (item=/usr/lib/systemd/system/kubelet.service)
+ok: [worker-2] => (item=/usr/lib/systemd/system/kubelet.service)
+ok: [worker-1] => (item=/usr/lib/systemd/system/kubelet.service)
+ok: [cp-1] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [worker-2] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [cp-1] => (item=/etc/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [worker-2] => (item=/etc/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [cp-1] => (item=/etc/kubernetes/kubelet.conf)
+ok: [worker-1] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [worker-2] => (item=/etc/kubernetes/kubelet.conf)
+ok: [cp-1] => (item=/var/lib/kubelet/config.yaml)
+ok: [worker-1] => (item=/etc/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [worker-2] => (item=/var/lib/kubelet/config.yaml)
+ok: [worker-1] => (item=/etc/kubernetes/kubelet.conf)
+ok: [worker-1] => (item=/var/lib/kubelet/config.yaml)
+
+TASK [CIS 4.1.1/4.1.5/4.1.9: kubelet service file, kubeconfig and config are 0600 root:root] ***
+Sunday 18 October 2026  16:36:26 +0000 (0:00:03.407)       0:13:23.420 ******** 
+changed: [cp-1] => (item=/usr/lib/systemd/system/kubelet.service)
+changed: [worker-1] => (item=/usr/lib/systemd/system/kubelet.service)
+changed: [worker-2] => (item=/usr/lib/systemd/system/kubelet.service)
+changed: [cp-1] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+changed: [worker-2] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+changed: [worker-1] => (item=/usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf)
+ok: [cp-1] => (item=/etc/kubernetes/kubelet.conf)
+ok: [worker-2] => (item=/etc/kubernetes/kubelet.conf)
+ok: [cp-1] => (item=/var/lib/kubelet/config.yaml)
+ok: [worker-1] => (item=/etc/kubernetes/kubelet.conf)
+ok: [worker-2] => (item=/var/lib/kubelet/config.yaml)
+ok: [worker-1] => (item=/var/lib/kubelet/config.yaml)
+
+TASK [CIS 4.1.7/4.1.8: client CA file is 0600 root:root] ***********************
+Sunday 18 October 2026  16:36:28 +0000 (0:00:02.007)       0:13:25.427 ******** 
+ok: [cp-1]
+ok: [worker-2]
+ok: [worker-1]
+
+TASK [CIS 4.2.6 prerequisite: kernel parameters kubelet expects] ***************
+Sunday 18 October 2026  16:36:29 +0000 (0:00:00.561)       0:13:25.989 ******** 
+ok: [cp-1] => (item={'key': 'vm.overcommit_memory', 'value': 1})
+ok: [worker-2] => (item={'key': 'vm.overcommit_memory', 'value': 1})
+ok: [worker-1] => (item={'key': 'vm.overcommit_memory', 'value': 1})
+ok: [worker-2] => (item={'key': 'vm.panic_on_oom', 'value': 0})
+ok: [cp-1] => (item={'key': 'vm.panic_on_oom', 'value': 0})
+ok: [worker-1] => (item={'key': 'vm.panic_on_oom', 'value': 0})
+ok: [worker-2] => (item={'key': 'kernel.panic', 'value': 10})
+ok: [cp-1] => (item={'key': 'kernel.panic', 'value': 10})
+ok: [worker-1] => (item={'key': 'kernel.panic', 'value': 10})
+ok: [worker-2] => (item={'key': 'kernel.panic_on_oops', 'value': 1})
+ok: [cp-1] => (item={'key': 'kernel.panic_on_oops', 'value': 1})
+ok: [worker-1] => (item={'key': 'kernel.panic_on_oops', 'value': 1})
+ok: [worker-2] => (item={'key': 'kernel.keys.root_maxkeys', 'value': 1000000})
+ok: [worker-2] => (item={'key': 'kernel.keys.root_maxbytes', 'value': 25000000})
+ok: [worker-1] => (item={'key': 'kernel.keys.root_maxkeys', 'value': 1000000})
+ok: [cp-1] => (item={'key': 'kernel.keys.root_maxkeys', 'value': 1000000})
+ok: [worker-1] => (item={'key': 'kernel.keys.root_maxbytes', 'value': 25000000})
+ok: [cp-1] => (item={'key': 'kernel.keys.root_maxbytes', 'value': 25000000})
+
+TASK [Read the kubelet config] *************************************************
+Sunday 18 October 2026  16:36:32 +0000 (0:00:03.497)       0:13:29.486 ******** 
+ok: [cp-1]
+ok: [worker-2]
+ok: [worker-1]
+
+TASK [CIS 4.2.x: kubelet read-only port, kernel defaults, cert rotation, ciphers] ***
+Sunday 18 October 2026  16:36:33 +0000 (0:00:00.852)       0:13:30.338 ******** 
+changed: [cp-1]
+changed: [worker-2]
+changed: [worker-1]
+
+RUNNING HANDLER [Restart kubelet] **********************************************
+Sunday 18 October 2026  16:36:34 +0000 (0:00:01.485)       0:13:31.824 ******** 
+changed: [cp-1]
+changed: [worker-2]
+changed: [worker-1]
+
+PLAY [CIS hardening - control plane] *******************************************
+
+TASK [Gathering Facts] *********************************************************
+Sunday 18 October 2026  16:36:36 +0000 (0:00:01.170)       0:13:32.994 ******** 
+ok: [cp-1]
+
+TASK [Find the control-plane files CIS 1.1.x checks] ***************************
+Sunday 18 October 2026  16:36:38 +0000 (0:00:02.534)       0:13:35.528 ******** 
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-apiserver.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-controller-manager.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-scheduler.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/etcd.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/admin.conf)
+ok: [cp-1] => (item=/etc/kubernetes/super-admin.conf)
+ok: [cp-1] => (item=/etc/kubernetes/scheduler.conf)
+ok: [cp-1] => (item=/etc/kubernetes/controller-manager.conf)
+
+TASK [CIS 1.1.1-1.1.8, 1.1.13-1.1.18: control-plane manifests and kubeconfigs are 0600] ***
+Sunday 18 October 2026  16:36:42 +0000 (0:00:03.831)       0:13:39.360 ******** 
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-apiserver.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-controller-manager.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/kube-scheduler.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/manifests/etcd.yaml)
+ok: [cp-1] => (item=/etc/kubernetes/admin.conf)
+ok: [cp-1] => (item=/etc/kubernetes/super-admin.conf)
+ok: [cp-1] => (item=/etc/kubernetes/scheduler.conf)
+ok: [cp-1] => (item=/etc/kubernetes/controller-manager.conf)
+
+TASK [CIS 1.1.19-1.1.21: PKI directory owned by root, keys and certs 0600] *****
+Sunday 18 October 2026  16:36:47 +0000 (0:00:04.612)       0:13:43.973 ******** 
+ok: [cp-1]
+
+TASK [Ensure etcd system user exists] ******************************************
+Sunday 18 October 2026  16:36:47 +0000 (0:00:00.462)       0:13:44.435 ******** 
+ok: [cp-1]
+
+TASK [Set etcd data dir permissions] *******************************************
+Sunday 18 October 2026  16:36:48 +0000 (0:00:00.661)       0:13:45.097 ******** 
+ok: [cp-1]
+
+TASK [CIS 1.2.x: kube-apiserver flags] *****************************************
+Sunday 18 October 2026  16:36:48 +0000 (0:00:00.402)       0:13:45.500 ******** 
+ok: [cp-1] => (item={'flag': 'profiling', 'value': 'false'})
+changed: [cp-1] => (item={'flag': 'kubelet-certificate-authority', 'value': '/etc/kubernetes/pki/ca.crt'})
+ok: [cp-1] => (item={'flag': 'enable-admission-plugins', 'value': 'NodeRestriction'})
+changed: [cp-1] => (item={'flag': 'request-timeout', 'value': '60s'})
+changed: [cp-1] => (item={'flag': 'service-account-lookup', 'value': 'true'})
+changed: [cp-1] => (item={'flag': 'tls-min-version', 'value': 'VersionTLS12'})
+changed: [cp-1] => (item={'flag': 'service-account-extend-token-expiration', 'value': 'false'})
+
+TASK [CIS 1.3.2 / 1.3.7: kube-controller-manager profiling off] ****************
+Sunday 18 October 2026  16:36:51 +0000 (0:00:03.169)       0:13:48.669 ******** 
+ok: [cp-1] => (item={'flag': 'profiling', 'value': 'false'})
+changed: [cp-1] => (item={'flag': 'terminated-pod-gc-threshold', 'value': '1000'})
+
+TASK [CIS 1.4.1 / 1.4.2: kube-scheduler profiling off] *************************
+Sunday 18 October 2026  16:36:52 +0000 (0:00:00.799)       0:13:49.468 ******** 
+ok: [cp-1] => (item={'flag': 'profiling', 'value': 'false'})
+
+TASK [Wait for kube-apiserver to restart with the new flags] *******************
+Sunday 18 October 2026  16:36:52 +0000 (0:00:00.358)       0:13:49.827 ******** 
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (30 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (29 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (28 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (27 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (26 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (25 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (24 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (23 retries left).
+FAILED - RETRYING: [cp-1]: Wait for kube-apiserver to restart with the new flags (22 retries left).
+ok: [cp-1]
+
+TASK [Wait for the API server to come back on this node] ***********************
+Sunday 18 October 2026  16:37:43 +0000 (0:00:50.934)       0:14:40.761 ******** 
+FAILED - RETRYING: [cp-1]: Wait for the API server to come back on this node (30 retries left).
+ok: [cp-1]
+
+TASK [Approve pending kubelet serving certificate requests from cluster nodes] ***
+Sunday 18 October 2026  16:37:59 +0000 (0:00:15.303)       0:14:56.065 ******** 
+ok: [cp-1]
+
+PLAY RECAP *********************************************************************
+cp-1                       : ok=54   changed=19   unreachable=0    failed=0    skipped=13   rescued=0    ignored=0   
+worker-1                   : ok=38   changed=18   unreachable=0    failed=0    skipped=7    rescued=0    ignored=0   
+worker-2                   : ok=38   changed=19   unreachable=0    failed=0    skipped=7    rescued=0    ignored=0   
+
+
+TASKS RECAP ********************************************************************
+Sunday 18 October 2026  16:37:59 +0000 (0:00:00.724)       0:14:56.790 ******** 
+=============================================================================== 
+k8s_upgrade : Apply upgrade (first control plane) --------------------- 248.68s
+k8s_upgrade : Drain worker -------------------------------------------- 173.67s
+Wait for kube-apiserver to restart with the new flags ------------------ 50.93s
+k8s_upgrade : Wait for node to report target kubelet version and Ready -- 50.71s
+k8s_upgrade : Refresh apt cache ---------------------------------------- 49.85s
+k8s_upgrade : Drain worker --------------------------------------------- 40.70s
+k8s_upgrade : Refresh apt cache ---------------------------------------- 19.52s
+k8s_upgrade : Install target kubelet and kubectl ----------------------- 18.81s
+k8s_upgrade : Install target kubeadm ----------------------------------- 16.46s
+Wait for the API server to come back on this node ---------------------- 15.30s
+k8s_upgrade : Wait for pods on this node to settle --------------------- 12.77s
+k8s_upgrade : Wait for every CNPG instance to be ready ----------------- 12.69s
+k8s_upgrade : Wait for pods on this node to settle --------------------- 11.65s
+k8s_upgrade : Install target kubeadm ----------------------------------- 11.17s
+k8s_upgrade : Install target kubelet and kubectl ----------------------- 11.15s
+k8s_upgrade : Install target kubelet and kubectl ----------------------- 10.07s
+k8s_upgrade : Plan upgrade (first control plane) ------------------------ 9.74s
+k8s_upgrade : Install target kubeadm ------------------------------------ 9.56s
+k8s_upgrade : Drain control-plane node ---------------------------------- 9.24s
+Gathering Facts --------------------------------------------------------- 8.27s

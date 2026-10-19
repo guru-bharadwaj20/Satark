@@ -14,6 +14,6 @@ metallb_address_pool:
 # the latest upstream release (N-1) so that a real N-1 -> N upgrade can be
 # rehearsed with the k8s_upgrade role. Bump kubernetes_minor only through
 # SOP-01.
-kubernetes_minor: "1.35"
+kubernetes_minor: "1.36"
 # Exact patch to install; "*" means the newest patch of kubernetes_minor.
 kubernetes_patch: "*"

@@ -1,0 +1,88 @@
+---
+# CloudNativePG and node drains. CNPG keeps two PodDisruptionBudgets per
+# cluster: one on the primary that never allows an eviction, and one on the
+# replicas that allows one at a time. With local storage an evicted replica
+# cannot come back until its node does, so the second replica on a node
+# blocks the drain too. Found in the upgrade-under-load run (task 11.10).
+#
+# k8s_upgrade_cnpg_phase=pre  (before drain): put every cluster with an instance on this
+#   node into node maintenance (drops the replica PDB, keeps the PVCs) and
+#   switch its primary to a ready replica on another node.
+# k8s_upgrade_cnpg_phase=post (after uncordon): end the maintenance window and wait for
+#   every instance to be ready again.
+- name: Find CNPG clusters with an instance on this node
+  ansible.builtin.command: >-
+    kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} get pods -A -l cnpg.io/cluster
+    --field-selector spec.nodeName={{ k8s_node_name }}
+    -o jsonpath='{range .items[*]}{.metadata.namespace}/{.metadata.labels.cnpg\.io/cluster}{"\n"}{end}'
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  register: k8s_upgrade_cnpg_here
+  changed_when: false
+  failed_when: false # no CNPG installed is fine
+  when: k8s_upgrade_cnpg_phase == 'pre'
+
+- name: Remember them for after the drain
+  ansible.builtin.set_fact:
+    k8s_upgrade_cnpg_clusters: "{{ (k8s_upgrade_cnpg_here.stdout_lines | default([])) | unique }}"
+  when: k8s_upgrade_cnpg_phase == 'pre'
+
+- name: Start node maintenance on CNPG clusters
+  ansible.builtin.command: >-
+    kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} -n {{ item.split('/')[0] }}
+    patch cluster {{ item.split('/')[1] }} --type merge
+    -p '{"spec":{"nodeMaintenanceWindow":{"inProgress":true,"reusePVC":true}}}'
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  loop: "{{ k8s_upgrade_cnpg_clusters }}"
+  changed_when: true
+  when: k8s_upgrade_cnpg_phase == 'pre'
+
+# Same mechanism as `kubectl cnpg promote`: set status.targetPrimary and let
+# the operator run a switchover.
+- name: Switch CNPG primaries off this node
+  ansible.builtin.shell: |
+    set -euo pipefail
+    k="kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} -n {{ item.split('/')[0] }}"
+    c="{{ item.split('/')[1] }}"
+    primary=$($k get cluster "$c" -o jsonpath='{.status.currentPrimary}')
+    [ "$($k get pod "$primary" -o jsonpath='{.spec.nodeName}')" = "{{ k8s_node_name }}" ] || exit 0
+    target=$($k get pods -l "cnpg.io/cluster=$c,cnpg.io/instanceRole=replica" \
+      -o jsonpath='{range .items[?(@.status.containerStatuses[0].ready==true)]}{.metadata.name} {.spec.nodeName}{"\n"}{end}' \
+      | awk -v n="{{ k8s_node_name }}" '$2 != n {print $1; exit}')
+    [ -n "$target" ] || { echo "no ready replica of $c off {{ k8s_node_name }}" >&2; exit 1; }
+    $k patch cluster "$c" --subresource=status --type merge -p "{\"status\":{\"targetPrimary\":\"$target\"}}"
+    for _ in $(seq 60); do
+      [ "$($k get cluster "$c" -o jsonpath='{.status.currentPrimary}')" = "$target" ] && { echo "switched $c to $target"; exit 0; }
+      sleep 5
+    done
+    echo "switchover of $c to $target timed out" >&2
+    exit 1
+  args:
+    executable: /bin/bash
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  loop: "{{ k8s_upgrade_cnpg_clusters }}"
+  register: k8s_upgrade_cnpg_switch
+  changed_when: "'switched' in k8s_upgrade_cnpg_switch.stdout"
+  when: k8s_upgrade_cnpg_phase == 'pre'
+
+- name: End node maintenance on CNPG clusters
+  ansible.builtin.command: >-
+    kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} -n {{ item.split('/')[0] }}
+    patch cluster {{ item.split('/')[1] }} --type merge
+    -p '{"spec":{"nodeMaintenanceWindow":{"inProgress":false,"reusePVC":true}}}'
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  loop: "{{ k8s_upgrade_cnpg_clusters | default([]) }}"
+  changed_when: true
+  when: k8s_upgrade_cnpg_phase == 'post'
+
+- name: Wait for every CNPG instance to be ready
+  ansible.builtin.command: >-
+    kubectl --kubeconfig {{ k8s_upgrade_kubeconfig }} -n {{ item.split('/')[0] }}
+    get cluster {{ item.split('/')[1] }} -o jsonpath='{.status.readyInstances}/{.spec.instances}'
+  delegate_to: "{{ k8s_upgrade_first_cp }}"
+  loop: "{{ k8s_upgrade_cnpg_clusters | default([]) }}"
+  register: k8s_upgrade_cnpg_ready
+  changed_when: false
+  until: k8s_upgrade_cnpg_ready.stdout.split('/')[0] == k8s_upgrade_cnpg_ready.stdout.split('/')[1]
+  retries: 60
+  delay: 10
+  when: k8s_upgrade_cnpg_phase == 'post'

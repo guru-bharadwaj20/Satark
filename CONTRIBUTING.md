@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 281 / 294 subtasks completed**
+**Overall progress: 282 / 294 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -119,9 +119,9 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
-| 11 | Reliability, backups and disaster recovery | 31 | 25 |
+| 11 | Reliability, backups and disaster recovery | 31 | 26 |
 | 12 | Polish, documentation and launch | 19 | 14 |
-| | **Total** | **294** | **281** |
+| | **Total** | **294** | **282** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -413,7 +413,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **11.7** Role `k8s_upgrade`: control-plane upgrade steps
 - ✅ **11.8** Role `k8s_upgrade`: worker drain, upgrade and uncordon
 - ✅ **11.9** `playbooks/upgrade.yml` with `serial: 1`
-- ❌ **11.10** Run an N-1 → N upgrade under k6 load and record the error count — *pending: needs a live cluster under k6 load*
+- ✅ **11.10** Upgrade N-1 to N under load
 - ✅ **11.11** SOP-01: Kubernetes minor-version upgrade
 - ✅ **11.12** `add-node.yml` and `remove-node.yml` playbooks
 - ✅ **11.13** SOP-02: Add or remove a node

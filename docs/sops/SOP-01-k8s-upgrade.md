@@ -22,7 +22,11 @@ kubeadm supports moving exactly **one minor version** at a time (for example
    Envoy Gateway, cert-manager, KEDA, CNPG, Argo CD, Velero, kube-prometheus-stack.
    Upgrade any that do not **before** this SOP.
 3. Make sure every Deployment with more than one replica has a
-   PodDisruptionBudget, and that no PDB has `ALLOWED DISRUPTIONS` of 0:
+   PodDisruptionBudget, and that no PDB has `ALLOWED DISRUPTIONS` of 0.
+   The exception is CNPG's `<cluster>-primary` PDB, which is always 0 by design:
+   the playbook switches the primary off a node before draining it and puts
+   the cluster into node maintenance so replicas on local storage do not
+   block the drain (`roles/k8s_upgrade/tasks/cnpg.yml`):
    ```bash
    kubectl get pdb -A
    kubectl satark doctor
@@ -58,7 +62,10 @@ kubeadm supports moving exactly **one minor version** at a time (for example
    - on the first control plane runs `kubeadm upgrade plan` and
      `kubeadm upgrade apply`, then drains, upgrades kubelet and uncordons;
    - for each worker (`serial: 1`): drain, `kubeadm upgrade node`, kubelet,
-     uncordon, wait for pods to schedule.
+     uncordon, wait for pods to schedule;
+   - around every drain: CNPG node maintenance on, primary switched to a
+     replica on another node, and afterwards maintenance off and a wait until
+     every instance is ready again.
 3. Watch while it runs:
    ```bash
    watch kubectl get nodes -o wide
