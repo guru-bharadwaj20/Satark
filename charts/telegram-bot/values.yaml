@@ -43,7 +43,7 @@ env:
   LOG_LEVEL: info
   PORT: "8082"
   GATEWAY_API_URL: http://gateway-api:8080
-  # polling (default) or webhook; webhook uses the HTTPRoute from task 3.16.
+  # polling (default) or webhook; webhook uses the HTTPRoute from
   TELEGRAM_MODE: polling
 
 extraEnv:
@@ -70,7 +70,7 @@ networkPolicy:
             except: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16]
       ports: [{port: 443, protocol: TCP}]
 
-# Telegram webhook endpoint, used only when TELEGRAM_MODE=webhook (task 3.16).
+# Telegram webhook endpoint, used only when TELEGRAM_MODE=webhook.
 route:
   enabled: true
   hostnames: ["bot.satark.example"]

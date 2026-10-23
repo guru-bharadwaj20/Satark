@@ -1,4 +1,4 @@
-# Trivy Operator (task 9.7): continuous vulnerability, config-audit,
+# Trivy Operator: continuous vulnerability, config-audit,
 # exposed-secret and RBAC scanning. Results are stored as CRDs
 # (VulnerabilityReport, ConfigAuditReport, ...) and exported as Prometheus
 # metrics scraped by the monitoring stack.

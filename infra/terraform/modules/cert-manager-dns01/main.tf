@@ -1,4 +1,4 @@
-# IAM identity for cert-manager's Route 53 DNS-01 solver (task 5.13).
+# IAM identity for cert-manager's Route 53 DNS-01 solver.
 #
 # Permissions follow the cert-manager docs and are scoped to the one hosted
 # zone. ChangeResourceRecordSets is further limited to TXT records named

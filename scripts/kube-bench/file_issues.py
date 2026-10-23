@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""File kube-bench FAIL findings as GitHub issues (task 9.9).
+"""File kube-bench FAIL findings as GitHub issues.
 
 Reads kube-bench JSON reports (from scripts/kube-bench/run.sh) and creates
 one issue per failing check, labelled `security` and `kube-bench`. A check

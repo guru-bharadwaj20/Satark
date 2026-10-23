@@ -1,4 +1,4 @@
-# Satark alert rules (task 6.14). Every alert carries a runbook_url; an alert
+# Satark alert rules. Every alert carries a runbook_url; an alert
 # without a runbook is not allowed (enforced by scripts/check-alert-runbooks.sh).
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule

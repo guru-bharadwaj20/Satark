@@ -6,7 +6,7 @@
     "cluster",
     "node"
   ],
-  "description": "Per-node Linux metrics from node-exporter (task 6.8).",
+  "description": "Per-node Linux metrics from node-exporter.",
   "editable": false,
   "schemaVersion": 39,
   "version": 1,

@@ -1,4 +1,4 @@
-# Route 53 hosted zone and records (task 5.12). Public hostnames point to the
+# Route 53 hosted zone and records. Public hostnames point to the
 # edge Elastic IP. CAA restricts issuance to Let's Encrypt.
 
 terraform {

@@ -1,4 +1,4 @@
-# Task 9.3: every container must run as a non-root user.
+# Every container must run as a non-root user.
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:

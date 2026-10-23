@@ -1,4 +1,4 @@
-# Argo CD Application: Grafana Alloy DaemonSet shipping pod logs to Loki (task 6.2).
+# Argo CD Application: Grafana Alloy DaemonSet shipping pod logs to Loki.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

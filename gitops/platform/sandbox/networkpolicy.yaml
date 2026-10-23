@@ -1,4 +1,4 @@
-# Sandbox network isolation (task 8.19).
+# Sandbox network isolation.
 #
 # Sandbox pods open attacker-controlled URLs, so they must not be able to
 # reach anything internal (SSRF): no ingress at all, and egress only to the

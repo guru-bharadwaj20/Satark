@@ -1,6 +1,6 @@
 # Resilience for every route on the public Gateway. After a node lockup the
 # proxies kept two dead pod IPs and failed half the requests with "No route
-# to host" (task 11.17). Passive health checks eject an endpoint that fails
+# to host". Passive health checks eject an endpoint that fails
 # to connect, and a connect failure is retried on another endpoint. Only
 # connection-level failures are retried: the request never reached the app,
 # so retrying a POST cannot record a scan twice.

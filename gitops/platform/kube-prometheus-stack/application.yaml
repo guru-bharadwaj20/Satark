@@ -1,5 +1,5 @@
 # Argo CD Application: kube-prometheus-stack (Prometheus Operator, Prometheus,
-# Alertmanager, Grafana, node-exporter, kube-state-metrics). Task 6.1.
+# Alertmanager, Grafana, node-exporter, kube-state-metrics).
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

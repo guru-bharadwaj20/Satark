@@ -82,5 +82,5 @@
     - k8s_upgrade
 
 # kubeadm upgrade rewrites the static pod manifests and kubelet config, and
-# package upgrades reset file modes, so re-apply the CIS hardening (task 9.10).
+# package upgrades reset file modes, so re-apply the CIS hardening.
 - import_playbook: cis-hardening.yml

@@ -5,7 +5,7 @@
     "satark",
     "slo"
   ],
-  "description": "Gateway API availability (99.5%) and latency (95% under 800 ms) over 30 days. Built on slo:* recording rules (task 6.11).",
+  "description": "Gateway API availability (99.5%) and latency (95% under 800 ms) over 30 days. Built on slo:* recording rules.",
   "editable": false,
   "schemaVersion": 39,
   "version": 1,

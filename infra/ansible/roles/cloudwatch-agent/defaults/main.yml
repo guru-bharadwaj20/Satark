@@ -9,7 +9,7 @@ cloudwatch_agent_statsd_port: 8125
 # The namespace above must match local.metric_namespace there.
 cloudwatch_agent_log_group_prefix: "/satark/{{ edge_name | default('satark-prod-edge') }}"
 
-# WireGuard handshake-age metric (task 5.23).
+# WireGuard handshake-age metric.
 wireguard_metric_interface: wg0
 # Reported when the peer has never completed a handshake, so the alarm fires.
 wireguard_metric_never_value: 999999

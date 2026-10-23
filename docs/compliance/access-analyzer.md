@@ -1,6 +1,6 @@
 # IAM Access Analyzer
 
-Task 9.17. Analyzers are created by `infra/terraform/modules/access-analyzer`:
+Analyzers are created by `infra/terraform/modules/access-analyzer`:
 
 - `satark-<env>-external`: resources (S3 buckets, KMS keys, IAM roles) that a principal outside the account can reach.
 - `satark-<env>-unused`: IAM users and roles with access keys, passwords or permissions unused for 90 days.

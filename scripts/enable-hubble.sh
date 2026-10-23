@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Enable Hubble Relay + UI + metrics on the existing Cilium release (task 6.3).
+# Enable Hubble Relay + UI + metrics on the existing Cilium release.
 # Run after kube-prometheus-stack is installed (ServiceMonitor CRD must exist).
 set -euo pipefail
 

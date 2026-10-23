@@ -1,4 +1,4 @@
-# terraform apply from protected GitHub environments (task 5.22).
+# terraform apply from protected GitHub environments.
 #
 # The apply role trusts only `repo:<repo>:environment:<env>` subjects, so
 # only jobs running in the `dev` or `prod` environment can assume it. Set up

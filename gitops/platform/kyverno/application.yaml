@@ -1,4 +1,4 @@
-# Kyverno admission controller (task 9.2), installed by Argo CD from the
+# Kyverno admission controller, installed by Argo CD from the
 # upstream Helm chart. Policies live in policies/kyverno and are synced by
 # the separate `kyverno-policies` Application after the CRDs exist.
 apiVersion: argoproj.io/v1alpha1

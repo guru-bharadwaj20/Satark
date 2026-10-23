@@ -1,4 +1,4 @@
-# Weekly compliance snapshot (task 9.18). Every Monday the CronJob collects a
+# Weekly compliance snapshot. Every Monday the CronJob collects a
 # summary of Kyverno PolicyReports, Trivy Operator vulnerability and
 # config-audit reports, PSA namespace labels and NetworkPolicy coverage, and
 # writes one JSON document per run to a PVC (kept 12 weeks) and to stdout,

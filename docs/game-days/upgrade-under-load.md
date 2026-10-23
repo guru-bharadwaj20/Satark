@@ -1,7 +1,7 @@
 # Upgrade under load: N-1 to N
 
-Status: **executed on 2026-10-18 (on-prem lab), 1.35.9 to 1.36.5.** Task
-11.10. Re-run with `tests/load/upgrade-under-load.sh <target-minor> <inventory>`.
+Status: **executed on 2026-10-18 (on-prem lab), 1.35.9 to 1.36.5.**
+Re-run with `tests/load/upgrade-under-load.sh <target-minor> <inventory>`.
 
 ## Setup
 
@@ -113,7 +113,7 @@ That is: the drains cost little, and the control-plane step cost most.
 | Envoy serves a stale endpoint while the API server is down | Upgrade Envoy Gateway (v1.2.1 is old) and add a `BackendTrafficPolicy` with retries on `connect-failure`/`reset` and passive health checks (outlier detection) | guru-bharadwaj20 | |
 | Evicted gateway pods still get traffic | `preStop: sleep 10` and `terminationGracePeriodSeconds: 30` on gateway-api, text-analyzer, qr-decoder | guru-bharadwaj20 | |
 | Gateway exits on one failed DB ping at startup | Retry with backoff for 60 s before exiting; readiness, not startup, should gate on the DB | guru-bharadwaj20 | |
-| Single control plane: API restart = data-plane drift | 3 control-plane nodes in the cloud cluster (task 5.x); on-prem accept it | guru-bharadwaj20 | |
+| Single control plane: API restart = data-plane drift | 3 control-plane nodes in the cloud cluster; on-prem accept it | guru-bharadwaj20 | |
 | Platform pods all on one worker | Spread constraints for Envoy proxies and CoreDNS; Envoy proxy `preStop` drain shorter than its 60 s timeout | guru-bharadwaj20 | |
 | Cilium version skew | Upgrade Cilium before the next Kubernetes minor (SOP-01 pre-check) | guru-bharadwaj20 | |
 | k6 cannot be stopped from Git Bash | Documented in the script: set `DURATION` to upgrade time + 10 min in the lab | guru-bharadwaj20 | ✅ |

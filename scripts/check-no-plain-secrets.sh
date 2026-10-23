@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fail if any committed Kubernetes manifest is a plain `kind: Secret` with
-# data (task 9.12). Secrets must be committed as SealedSecret resources.
+# data. Secrets must be committed as SealedSecret resources.
 # Helm templates are allowed to render Secrets from SealedSecret-provided
 # values only via `existingSecret`, so charts/*/templates are checked too.
 set -euo pipefail

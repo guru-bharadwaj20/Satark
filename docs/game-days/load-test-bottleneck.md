@@ -1,6 +1,6 @@
 # Load test: first bottleneck
 
-Status: **done on the lab cluster, 2026-10-17 and 2026-10-18 (task 11.17).**
+Status: **done on the lab cluster, 2026-10-17 and 2026-10-18.**
 
 Lab: kubeadm 1.35 on three VirtualBox VMs (2 vCPU, 4 GB each; two workers),
 Envoy Gateway on a MetalLB IP, k6 on the same Windows host. Run with

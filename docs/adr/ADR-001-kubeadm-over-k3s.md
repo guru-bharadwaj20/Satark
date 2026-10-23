@@ -30,7 +30,7 @@ Build the on-prem cluster with **kubeadm**, driven by the Ansible roles
 upstream `pkgs.k8s.io` packages pinned to the N-1 minor version.
 
 k3s stays in use for one narrow case: the temporary single-VM disaster
-recovery target in Phase 11, where startup speed matters more than fidelity.
+recovery target, where startup speed matters more than fidelity.
 
 ## Alternatives considered
 
@@ -52,7 +52,7 @@ recovery target in Phase 11, where startup speed matters more than fidelity.
   `protectKernelDefaults` are configured explicitly in `kubeadm-config.yaml`
   and reviewed in Git.
 - The N-1 version pin makes a real `N-1 → N` upgrade possible under load
-  (Phase 11).
+  (see `docs/game-days/upgrade-under-load.md`).
 
 **Negative**
 
@@ -62,7 +62,7 @@ recovery target in Phase 11, where startup speed matters more than fidelity.
   which is why the recommended host has 16 GB of RAM; an 8 GB host runs one
   worker (`SATARK_WORKERS=1`).
 - A single control-plane node is not highly available. This is accepted for a
-  lab; etcd snapshots to S3 (Phase 11) and the DR drill cover recovery.
+  lab; etcd snapshots to S3 and the DR drill cover recovery.
 
 ## References
 

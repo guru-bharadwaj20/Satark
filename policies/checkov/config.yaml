@@ -2,7 +2,7 @@
 framework:
   - terraform
 download-external-modules: false
-# Satark custom policies (task 5.20): CKV2_SATARK_1 mandatory tags,
+# Satark custom policies: CKV2_SATARK_1 mandatory tags,
 # CKV_SATARK_2 no SSH open to the internet. Path is relative to the repo root.
 external-checks-dir:
   - policies/checkov/custom

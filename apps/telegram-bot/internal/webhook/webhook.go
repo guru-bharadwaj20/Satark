@@ -1,5 +1,5 @@
 // Package webhook receives Telegram updates over HTTPS webhooks instead of
-// long polling (task 5.18).
+// long polling.
 //
 // Telegram POSTs each update as JSON to the URL registered with setWebhook.
 // The server here:

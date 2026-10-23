@@ -14,8 +14,8 @@ Control scan (`https://example.com/`): **Succeeded**
 
 Overall: **PASS**
 
-Produced by `scripts/verify-sandbox-ssrf.sh --report` (task 8.20), which
-checks the policies from task 8.19 (`gitops/platform/sandbox/networkpolicy.yaml`).
+Produced by `scripts/verify-sandbox-ssrf.sh --report`, which
+checks the sandbox network policies (`gitops/platform/sandbox/networkpolicy.yaml`).
 
 ## What the drops were
 

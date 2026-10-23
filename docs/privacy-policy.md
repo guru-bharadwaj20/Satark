@@ -34,7 +34,7 @@ Reports are stored as one-way hashes. We cannot see who reported what, and other
 Under India's Digital Personal Data Protection Act, 2023 you can ask to access, correct or erase your data, and to withdraw consent.
 
 - **Delete everything:** send `/forget` to the bot. Your settings, history and reports are deleted. Copies in backups age out within 30 days.
-- **Ask a question or complain:** contact the maintainer privately through GitHub (see `CONTRIBUTING.md`). We aim to reply within 7 days.
+- **Ask a question or complain:** contact the maintainer privately through GitHub (see `SECURITY.md` for the private channel). We aim to reply within 7 days.
 - **Number, UPI ID or website wrongly reported?** Request a review; see `docs/sops/SOP-07-delisting-requests.md`.
 
 ## Children

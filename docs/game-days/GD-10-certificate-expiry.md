@@ -129,7 +129,7 @@ timings are not affected.
   found"). RB-004 step 2 now says the cause is on the request, and not in
   the logs at the default level.
 - **kubeadm certificates are fine** (363 days left, CAs 9 years). They are
-  renewed by the upgrade in task 11.10 anyway.
+  renewed by the Kubernetes upgrade anyway.
 - **Script bug on Windows:** the first attempt created the Certificates but
   not the Secret. Under Git Bash, MSYS rewrote `-subj "/CN=..."` into a
   Windows path, and `openssl` stderr went to `/dev/null`, so the inject

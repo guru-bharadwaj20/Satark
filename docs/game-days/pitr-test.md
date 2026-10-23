@@ -1,6 +1,6 @@
 # PITR test results
 
-Status: **executed on 2026-10-23 (on-prem lab). PASS.** Task 11.2.
+Status: **executed on 2026-10-23 (on-prem lab). PASS.**
 Re-run with `tests/chaos/pitr/onprem/setup.sh`, then `tests/chaos/pitr/pitr-test.sh`
 (see the header of `setup.sh` for the variables), then `setup.sh --teardown`.
 

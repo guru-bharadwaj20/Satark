@@ -1,5 +1,5 @@
 ---
-# Enable Kubernetes API audit logging on control-plane nodes (task 9.14).
+# Enable Kubernetes API audit logging on control-plane nodes.
 # Logs are written to /var/log/kubernetes/audit/audit.log as JSON lines and
 # shipped to Loki by the `alloy-audit` DaemonSet (gitops/platform/audit-logs).
 - name: Kubernetes API audit logging

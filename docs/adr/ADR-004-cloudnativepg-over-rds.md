@@ -23,7 +23,7 @@ Run PostgreSQL **in the cluster with the CloudNativePG (CNPG) operator**:
   replicas), synchronous replication to one replica, pod anti-affinity by
   host, separate WAL volume.
 - Schema changes via golang-migrate run as a Kubernetes Job.
-- Backups (Phase 11): CNPG's Barman Cloud integration streams WAL and base
+- Backups: CNPG's Barman Cloud integration streams WAL and base
   backups to S3, giving PITR without managing Barman separately.
 
 ## Alternatives considered
@@ -47,7 +47,7 @@ Run PostgreSQL **in the cluster with the CloudNativePG (CNPG) operator**:
 **Negative**
 
 - The team owns database operations: storage capacity, upgrades, restore
-  drills (scheduled game days in Phase 11), and monitoring.
+  drills (scheduled game days), and monitoring.
 - `local-path` storage ties each instance to a node; losing a node means
   rebuilding that replica from the primary. Acceptable with three instances,
   but a shared/replicated StorageClass would be needed for larger data sets.

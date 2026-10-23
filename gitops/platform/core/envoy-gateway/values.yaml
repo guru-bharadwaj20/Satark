@@ -11,7 +11,7 @@ deployment:
   pod:
     # One controller per node. A soft anti-affinity let a rollout put both on
     # one worker; when that node locked up, the proxies kept serving stale
-    # endpoints until the controller was restarted (task 11.17).
+    # endpoints until the controller was restarted.
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname

@@ -8,9 +8,9 @@
 
 The on-prem kubeadm cluster (ADR-001) needs a CNI plugin. Satark's needs:
 
-- **Strict NetworkPolicy.** The link sandbox (Phase 8) runs untrusted pages and
+- **Strict NetworkPolicy.** The link sandbox runs untrusted pages and
   must be limited to egress-only internet access with no route to cluster
-  services. Application namespaces get default-deny policies (Phase 9). Some of
+  services. Application namespaces get default-deny policies. Some of
   these rules need FQDN or L7 awareness, which standard Kubernetes
   NetworkPolicy cannot express.
 - **Observability of network flows.** When a policy breaks traffic (game day 4:
@@ -50,7 +50,7 @@ management separate from the CNI and simple to debug.
 - One tool covers networking, Service load balancing, policy enforcement and
   flow observability.
 - `hubble observe --verdict DROPPED` shows dropped flows during incidents and
-  game days; Hubble metrics feed the Grafana dashboards in Phase 6.
+  game days; Hubble metrics feed the Grafana dashboards.
 - FQDN-aware egress policies make the sandbox egress rules precise.
 - No kube-proxy means no large iptables rule sets on the nodes.
 

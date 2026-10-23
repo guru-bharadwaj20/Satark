@@ -1,4 +1,4 @@
-# terraform plan for dev and prod, posted as a sticky PR comment (task 5.21).
+# terraform plan for dev and prod, posted as a sticky PR comment.
 #
 # Uses the read-only plan role (infra/terraform/modules/ci-roles) via OIDC.
 # Repository variables:

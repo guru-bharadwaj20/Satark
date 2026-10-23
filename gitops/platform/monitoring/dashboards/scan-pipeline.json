@@ -6,7 +6,7 @@
     "pipeline",
     "red"
   ],
-  "description": "RED metrics per service, LLM and cache behaviour, and error logs (task 6.10).",
+  "description": "RED metrics per service, LLM and cache behaviour, and error logs.",
   "editable": false,
   "schemaVersion": 39,
   "version": 1,

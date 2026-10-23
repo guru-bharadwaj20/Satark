@@ -1,0 +1,117 @@
+{
+  "overall": "warn",
+  "checkedAt": "2026-10-23T14:17:56Z",
+  "results": [
+    {
+      "check": "nodes",
+      "status": "ok",
+      "summary": "3/3 nodes Ready"
+    },
+    {
+      "check": "pods",
+      "status": "warn",
+      "summary": "38/48 pods healthy",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "argocd",
+          "object": "pod/argocd-repo-server-c4977564f-9qnpl",
+          "message": "container argocd-repo-server restarted 15 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "cert-manager",
+          "object": "pod/cert-manager-866d799c54-2plst",
+          "message": "container cert-manager-controller restarted 17 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "cert-manager",
+          "object": "pod/cert-manager-cainjector-6b9dc6d9ff-578nn",
+          "message": "container cert-manager-cainjector restarted 73 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "cnpg-system",
+          "object": "pod/cnpg-cloudnative-pg-7c49578bc8-ktd82",
+          "message": "container manager restarted 90 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "envoy-gateway-system",
+          "object": "pod/envoy-gateway-668598dc9f-4j7ks",
+          "message": "container envoy-gateway restarted 43 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "envoy-gateway-system",
+          "object": "pod/envoy-gateway-668598dc9f-nplxl",
+          "message": "container envoy-gateway restarted 38 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "kube-system",
+          "object": "pod/kube-scheduler-cp-1",
+          "message": "container kube-scheduler restarted 6 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "kube-system",
+          "object": "pod/metrics-server-7cfb49d6c6-nd6ln",
+          "message": "container metrics-server restarted 11 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container frr restarted 16 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "metallb-system",
+          "object": "pod/metallb-speaker-v6nt9",
+          "message": "container speaker restarted 22 times"
+        },
+        {
+          "severity": "warn",
+          "namespace": "satark",
+          "object": "pod/linkscan-operator-controller-manager-6b5fbb45f4-8fn5b",
+          "message": "container manager restarted 23 times"
+        }
+      ]
+    },
+    {
+      "check": "pvcs",
+      "status": "ok",
+      "summary": "7/7 PVCs Bound"
+    },
+    {
+      "check": "deployments",
+      "status": "ok",
+      "summary": "24/24 deployments fully available"
+    },
+    {
+      "check": "certificates",
+      "status": "ok",
+      "summary": "9 certificates checked, soonest expiry 2026-11-16"
+    },
+    {
+      "check": "pdbs",
+      "status": "warn",
+      "summary": "7 PDBs, 1 blocking drains",
+      "findings": [
+        {
+          "severity": "warn",
+          "namespace": "satark-data",
+          "object": "pdb/satark-pg-primary",
+          "message": "0 disruptions allowed (healthy 1/1, expected 1): node drains will block"
+        }
+      ]
+    },
+    {
+      "check": "argocd",
+      "status": "ok",
+      "summary": "1/1 applications Synced and Healthy"
+    }
+  ]
+}

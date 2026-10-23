@@ -1,4 +1,4 @@
-# ServiceMonitors for every Satark service (task 6.6).
+# ServiceMonitors for every Satark service.
 #
 # Contract with charts/satark-common: each service's Service carries
 #   app.kubernetes.io/part-of: satark

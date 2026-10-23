@@ -1,4 +1,4 @@
-# Static checks for Terraform (task 5.19). This workflow needs no AWS
+# Static checks for Terraform. This workflow needs no AWS
 # credentials: validate runs with -backend=false.
 name: terraform
 

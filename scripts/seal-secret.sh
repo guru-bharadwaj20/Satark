@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Seal a secret for GitOps (task 9.11). Reads values from env-style KEY=VALUE
+# Seal a secret for GitOps. Reads values from env-style KEY=VALUE
 # lines on stdin so they never appear in shell history or process args.
 #
 #   scripts/seal-secret.sh <namespace> <name> <output.yaml> < secret.env

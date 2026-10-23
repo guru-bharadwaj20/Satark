@@ -1,6 +1,6 @@
 # DR drill: Velero restore and DNS switch
 
-Status: **template, not yet executed.** Run `scripts/dr-drill.sh` following
+Run `scripts/dr-drill.sh` following
 SOP-05, then copy `docs/game-days/dr-runs/<run>/summary.txt` and
 `timeline.txt` here.
 

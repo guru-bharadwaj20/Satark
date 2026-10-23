@@ -3,7 +3,6 @@
 <!-- What does this PR change, and why? -->
 
 Closes #<!-- issue number -->
-Roadmap task: <!-- e.g. Task 2.12 -->
 
 ## Type of change
 

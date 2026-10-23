@@ -1,4 +1,4 @@
-# Network for the edge node (task 5.8): one VPC with a single public subnet,
+# Network for the edge node: one VPC with a single public subnet,
 # an internet gateway and a route table. There are no private subnets and no
 # NAT gateway, so nothing here bills by the hour.
 

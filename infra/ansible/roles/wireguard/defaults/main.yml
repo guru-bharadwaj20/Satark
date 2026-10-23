@@ -15,7 +15,7 @@ wireguard_client_address: 10.200.0.2
 wireguard_server_endpoint: ""
 
 # Keepalive from the client keeps the NAT mapping on the home router open
-# so the edge can always reach worker-1 (task 5.15).
+# so the edge can always reach worker-1.
 wireguard_persistent_keepalive: 25
 
 # Cluster networks reached through the client: the MetalLB address pool

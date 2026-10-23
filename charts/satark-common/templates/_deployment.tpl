@@ -7,7 +7,7 @@ tolerations, affinity, topologySpreadConstraints, volumes, volumeMounts,
 serviceAccount, podSecurityContext, securityContext, autoscaling.enabled.
 */}}
 {{- define "satark-common.deployment" -}}
-{{- /* Every Satark service must declare probes and resources (task 3.17). */ -}}
+{{- /* Every Satark service must declare probes and resources. */ -}}
 {{- if not (and .Values.livenessProbe .Values.readinessProbe) -}}
 {{- fail (printf "%s: livenessProbe and readinessProbe are required" .Chart.Name) -}}
 {{- end -}}
@@ -130,7 +130,7 @@ spec:
       {{- else }}
       {{- /* matchLabelKeys counts only pods from the same ReplicaSet. Without it
       the old pods count during a rollout and every new pod lands on the other
-      node (seen in task 11.17). */}}
+      node. */}}
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname

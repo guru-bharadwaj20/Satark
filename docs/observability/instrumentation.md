@@ -9,7 +9,7 @@ and alerts depend on these names; do not hand-roll metrics in a service.
 | Go | `libs/go/observability` | `github.com/guru-bharadwaj20/satark/libs/go/observability` |
 | Python | `libs/python/satark_obs` | `satark_obs` |
 
-## RED metrics (task 6.4)
+## RED metrics
 
 | Series | Type | Labels |
 |--------|------|--------|
@@ -64,7 +64,7 @@ app.add_middleware(PrometheusMiddleware, metrics=metrics)
 mount_endpoints(app, metrics, checks={"valkey": ping_valkey})
 ```
 
-## Business metrics (task 6.5)
+## Business metrics
 
 | Series | Type | Labels |
 |--------|------|--------|
@@ -103,7 +103,7 @@ with biz.time_llm("anthropic", "claude-haiku") as call:
 biz.cache_lookup("verdict", "miss")
 ```
 
-## Structured JSON logging (task 6.7)
+## Structured JSON logging
 
 Services log one JSON object per line to stdout. Alloy parses these lines and
 promotes `level` and `service` to Loki labels; `trace_id` is kept as

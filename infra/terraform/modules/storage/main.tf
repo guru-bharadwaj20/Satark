@@ -1,4 +1,4 @@
-# Application buckets (task 5.5):
+# Application buckets:
 #   - velero:      cluster backups (Velero)
 #   - pg-wal:      CloudNativePG base backups and WAL archive for satark-pg
 #   - screenshots: sandbox-browser page screenshots (short retention, may hold PII)

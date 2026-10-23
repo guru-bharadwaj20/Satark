@@ -1,6 +1,6 @@
 ---
 # Remediate high-severity kube-bench (CIS Kubernetes Benchmark) findings on a
-# kubeadm cluster (task 9.10). Every change here maps to a CIS check ID so the
+# kubeadm cluster. Every change here maps to a CIS check ID so the
 # result can be confirmed with scripts/kube-bench/run.sh. Checks left as
 # accepted exceptions are listed in docs/compliance/kube-bench-remediation.md.
 #

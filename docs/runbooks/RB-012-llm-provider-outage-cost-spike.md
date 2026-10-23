@@ -103,7 +103,7 @@ then run `/ask is the LLM healthy?` in the ops channel.
 
 ## Prevention
 
-- Keep the eval gate (task 10.12) green and watch token count per scan in PRs.
+- Keep the eval gate green and watch token count per scan in PRs.
 - Keep cache TTL at 7 days and alert on Valkey availability.
 - Review the price table (`SATARK_LLM_PRICES`) when changing models.
 - Run a quarterly drill: set an invalid key in dev and confirm the fallback and alerts.

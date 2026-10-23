@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Verify the sandbox SSRF block with Hubble (task 8.20).
+# Verify the sandbox SSRF block with Hubble.
 #
 # Creates LinkScans aimed at internal targets (cloud metadata, the Kubernetes
 # API, an in-cluster service, an RFC 1918 address) plus one public control

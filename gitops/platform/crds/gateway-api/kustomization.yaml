@@ -1,5 +1,5 @@
 # Gateway API CRDs (standard channel), pinned. Applied before Envoy Gateway
-# (sync wave 0 in Phase 4); Helm does not overwrite CRDs that already exist,
+# (sync wave 0); Helm does not overwrite CRDs that already exist,
 # so this file is the single source of the CRD version.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization

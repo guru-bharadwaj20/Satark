@@ -13,7 +13,7 @@ info:
     Personal data (phone numbers, card numbers, Aadhaar, PAN, e-mail,
     account numbers, UPI IDs) is redacted by `text-analyzer` before any
     further processing. Raw message text is not stored unless the caller
-    opts in (`store: true`, honoured from Phase 3 onward).
+    opts in (`store: true`).
   license:
     name: MIT
     identifier: MIT

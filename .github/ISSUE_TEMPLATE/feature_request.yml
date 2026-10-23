@@ -20,12 +20,6 @@ body:
     id: alternatives
     attributes:
       label: Alternatives considered
-  - type: input
-    id: task
-    attributes:
-      label: Related roadmap task
-      description: If this maps to a task in CONTRIBUTING.md, give its number.
-      placeholder: e.g. Task 2.12
   - type: checkboxes
     id: contribute
     attributes:

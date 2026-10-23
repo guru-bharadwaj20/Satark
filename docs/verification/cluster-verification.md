@@ -1,4 +1,4 @@
-# Phase 1 cluster verification report
+# Cluster verification report
 
 Result of running `scripts/bootstrap.sh` and `scripts/verify-cluster.sh` on a
 freshly built lab.

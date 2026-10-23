@@ -59,7 +59,7 @@ Have the Hindi and Kannada versions checked by a native speaker in the family be
 
 ## After wave 3
 
-- Retro in `docs/sprints/`: what broke, what people actually used, top 5 requests.
+- Retro in `docs/launch/`: what broke, what people actually used, top 5 requests.
 - Decide on public launch (blog post, video, Product Hunt / Hacker News).
 
-**Requires manual execution:** this plan is carried out by a person sharing links in real groups.
+This plan is carried out by a person sharing links in real groups.

@@ -1,4 +1,4 @@
-# Default-deny NetworkPolicies for every application namespace (task 9.15).
+# Default-deny NetworkPolicies for every application namespace.
 # Each namespace starts with no ingress or egress; the only baseline
 # exceptions are DNS to CoreDNS and metric scraping from the monitoring
 # namespace. Service-to-service flows are opened by per-app policies in

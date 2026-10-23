@@ -3,7 +3,7 @@
 # cluster: one on the primary that never allows an eviction, and one on the
 # replicas that allows one at a time. With local storage an evicted replica
 # cannot come back until its node does, so the second replica on a node
-# blocks the drain too. Found in the upgrade-under-load run (task 11.10).
+# blocks the drain too. Found in the upgrade-under-load run.
 #
 # k8s_upgrade_cnpg_phase=pre  (before drain): put every cluster with an instance on this
 #   node into node maintenance (drops the replica PDB, keeps the PVCs) and

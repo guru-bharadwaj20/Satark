@@ -1,4 +1,4 @@
-# Tunnel-down alarm with SNS email (task 5.24).
+# Tunnel-down alarm with SNS email.
 #
 # WireGuard re-handshakes about every 2 minutes on a live tunnel (the client
 # sends a keepalive every 25s), so a handshake age above

@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Status | **Planned (requires manual execution against AWS and the live cluster)** |
+| Scope | The AWS edge and the on-prem cluster |
 | Script | `tests/chaos/gd-08-wireguard-down.sh` |
 | Runbook under test | RB-010 (tunnel) |
 | Expected duration | 30 minutes |
