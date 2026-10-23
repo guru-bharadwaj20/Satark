@@ -7,7 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](apps/text-analyzer/pyproject.toml)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-kubeadm-326CE5?logo=kubernetes&logoColor=white)](infra/ansible)
 [![Terraform](https://img.shields.io/badge/Terraform-AWS-844FBA?logo=terraform&logoColor=white)](infra/terraform)
-[![Progress](https://img.shields.io/badge/subtasks-282%2F294-informational)](CONTRIBUTING.md#project-timeline)
+[![Progress](https://img.shields.io/badge/subtasks-284%2F293-informational)](CONTRIBUTING.md#project-timeline)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Forward a suspicious SMS, link, QR code, phone number or UPI ID to Satark. In a
@@ -29,7 +29,7 @@ seconds *before* someone taps the link or scans the code.
 | [Architecture](#architecture) | Product layer, platform layer, hybrid cloud |
 | [How a check travels](#how-a-check-travels) | Redact, analyse, sandbox, score |
 | [Quick start](#quick-start) | The API on your laptop, then the full cluster |
-| [Project status](#project-status) | Every phase, and the twelve open items |
+| [Project status](#project-status) | Every phase, and the nine open items |
 | [Design decisions](#design-decisions) | The tradeoffs, and why |
 | [Repository layout](#repository-layout) | Where things live |
 | [Documentation](#documentation) | Which file answers which question |
@@ -64,6 +64,22 @@ Satark:  🔴 Likely scam (risk 91/100)
          What to do: don't call the number, check your bill on the official
          website or app, and report it on 1930 / cybercrime.gov.in / Chakshu.
 ```
+
+### Screenshots
+
+The PWA on a phone-sized screen, checking real inputs against the on-prem
+lab cluster (gateway-api, text-analyzer and qr-decoder on Kubernetes 1.36):
+
+<p align="center">
+  <img src="docs/images/pwa-demo.gif" width="280" alt="Pasting an SBI KYC scam message into the Satark PWA and getting a high-risk result">
+</p>
+
+| Likely scam | Suspicious | No red flags | UPI QR code |
+|---|---|---|---|
+| <img src="docs/images/pwa-likely-scam.png" width="200" alt="High risk result for a KYC message asking for an OTP"> | <img src="docs/images/pwa-suspicious.png" width="200" alt="Warning result for an electricity disconnection message"> | <img src="docs/images/pwa-no-red-flags.png" width="200" alt="No warning signs result for a family message"> | <img src="docs/images/pwa-qr.png" width="200" alt="High risk result for a UPI QR that sends money"> |
+
+There is no "safe" verdict: the best the app says is "No warning signs found",
+and every result ends with the 1930 helpline.
 
 ### What Satark will not do
 
@@ -219,7 +235,7 @@ run two nodes.
 
 ## Project status
 
-**283 of 293 subtasks are complete.** Phases 0–4 produce a working MVP: a
+**284 of 293 subtasks are complete.** Phases 0–4 produce a working MVP: a
 Telegram bot that checks messages and QR codes, running on a GitOps-managed
 on-prem cluster.
 
@@ -260,9 +276,9 @@ gantt
 | 9 | Security and compliance | 19/20 |
 | 10 | GenAI | ✅ 25/25 |
 | 11 | Reliability, backups and disaster recovery | 27/31 |
-| 12 | Polish, documentation and launch | 14/18 |
+| 12 | Polish, documentation and launch | 15/18 |
 
-**The ten open items are not code.** Each needs a live cluster, a cloud
+**The nine open items are not code.** Each needs a live cluster, a cloud
 account or a real-world action; its script, procedure and report template are
 already in the repo.
 
@@ -270,7 +286,7 @@ already in the repo.
 |---|---|
 | Needs the AWS account | 5.1 account setup · 9.17 IAM Access Analyzer |
 | Needs the live cluster and backups | 11.15 DR drill · 11.20 and 11.27 game days · 11.30 opsbot time-to-diagnose |
-| Needs the deployed app or a person | 12.14 screenshots · 12.17 launch · 12.18 KPIs · 12.19 monthly scam-trends report |
+| Needs a person or live usage | 12.17 launch · 12.18 KPIs · 12.19 monthly scam-trends report |
 
 ### What the load tests found
 

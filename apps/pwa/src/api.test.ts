@@ -14,13 +14,13 @@ describe("isLink", () => {
 });
 
 describe("checkInput", () => {
-  it("routes links to the URL check and text to the text check", async () => {
-    const f = ok({ risk: "high", reasons: ["New domain"] });
+  it("sends links and text to the text scan", async () => {
+    const f = ok({ verdict: "likely_scam", reasons: [{ code: "kyc.update", message: "New domain" }] });
     await checkInput("https://kyc-update.example", f);
-    await checkInput("Dear customer, update KYC", f);
+    await checkInput(" Dear customer, update KYC ", f);
     const calls = (f as unknown as { mock: { calls: [string, RequestInit][] } }).mock.calls;
-    expect(calls[0][0]).toBe("/api/v1/check/url");
-    expect(calls[1][0]).toBe("/api/v1/check/text");
+    expect(calls[0][0]).toBe("/api/v1/scan/text");
+    expect(calls[1][0]).toBe("/api/v1/scan/text");
     expect(JSON.parse(calls[1][1].body as string)).toEqual({ text: "Dear customer, update KYC" });
   });
 
@@ -31,8 +31,24 @@ describe("checkInput", () => {
 });
 
 describe("parseResult", () => {
+  it("maps the gateway response", () => {
+    expect(
+      parseResult({
+        verdict: "suspicious",
+        risk_score: 44,
+        reasons: [{ code: "kyc.update", message: "Banks do not ask for KYC by link", weight: 30 }],
+        next_steps: ["Check directly with the bank", "Never share your OTP."],
+      }),
+    ).toEqual({
+      risk: "medium",
+      score: 44,
+      reasons: ["Banks do not ask for KYC by link"],
+      advice: "Check directly with the bank. Never share your OTP.",
+    });
+  });
+
   it("tolerates unexpected shapes", () => {
-    expect(parseResult({ risk: "safe", reasons: [1, "x"] })).toEqual({ risk: "unknown", reasons: ["x"], score: undefined, advice: undefined });
+    expect(parseResult({ verdict: "safe", reasons: [1, { message: "x" }, null] })).toEqual({ risk: "unknown", reasons: ["x"], score: undefined, advice: undefined });
   });
 });
 

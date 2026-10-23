@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 283 / 293 subtasks completed**
+**Overall progress: 284 / 293 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -120,8 +120,8 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
 | 11 | Reliability, backups and disaster recovery | 31 | 27 |
-| 12 | Polish, documentation and launch | 18 | 14 |
-| | **Total** | **293** | **283** |
+| 12 | Polish, documentation and launch | 18 | 15 |
+| | **Total** | **293** | **284** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -451,7 +451,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 - ✅ **12.11** Data retention CronJob
 - ✅ **12.12** Privacy policy and disclaimer
 - ✅ **12.13** Architecture document with diagrams
-- ❌ **12.14** Update the README with screenshots and a demo GIF — *pending: needs the deployed app to capture real screenshots*
+- ✅ **12.14** Update the README with screenshots and a demo GIF
 - ✅ **12.16** Write the launch blog post
 - ❌ **12.17** Launch to family, college and residents' association groups — *pending: real-world launch by you*
 - ❌ **12.18** Track weekly active users, scans and the helpful-rating rate — *pending: needs live usage after launch (run `scripts/kpi-report.sh`)*
