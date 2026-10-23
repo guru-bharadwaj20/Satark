@@ -1,4 +1,4 @@
-# Argo CD Application: Grafana Loki in single-binary mode (task 6.2).
+# Argo CD Application: Grafana Loki in single-binary mode.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

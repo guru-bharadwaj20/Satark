@@ -49,8 +49,7 @@ Use **pull-based GitOps with Argo CD**.
   a refresh or webhook is sent.
 - Argo CD is another critical component to run, upgrade and back up.
 - Image tag bumps add bot commits to `main`.
-- Secrets cannot live in Git as plain text; we need Sealed Secrets
-  (phase 9).
+- Secrets cannot live in Git as plain text; we need Sealed Secrets.
 
 ## Why Argo CD over Flux
 

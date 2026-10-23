@@ -1,5 +1,5 @@
 # Monthly cost budget with email alerts. Apply this module before any other
-# resource so a runaway bill is noticed early (task 5.2).
+# resource so a runaway bill is noticed early.
 
 terraform {
   required_version = ">= 1.9.0"

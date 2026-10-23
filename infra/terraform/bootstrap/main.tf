@@ -1,7 +1,7 @@
-# Bootstrap stack (task 5.3).
+# Bootstrap stack.
 #
 # Creates the S3 bucket that holds Terraform state for every other stack, and
-# the cost budget (task 5.2) so it exists before anything else is billed.
+# the cost budget so it exists before anything else is billed.
 #
 # This stack uses LOCAL state on purpose: it creates the bucket a remote
 # backend would need. Keep the resulting terraform.tfstate out of git (it is

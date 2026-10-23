@@ -1,4 +1,4 @@
-# Scale sandbox capacity with the scan queue (task 8.21).
+# Scale sandbox capacity with the scan queue.
 #
 # Every operator replica runs a job intake that keeps at most
 # --max-active-scans (5) sandbox pods running, so replicas = capacity / 5.

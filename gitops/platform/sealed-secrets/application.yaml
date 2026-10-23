@@ -1,4 +1,4 @@
-# Sealed Secrets controller (task 9.11). Secrets are encrypted with the
+# Sealed Secrets controller. Secrets are encrypted with the
 # controller's public key (`kubeseal`) and committed as SealedSecret
 # resources; only the in-cluster controller can decrypt them.
 # The private sealing key must be backed up out of band (see SOP-03).

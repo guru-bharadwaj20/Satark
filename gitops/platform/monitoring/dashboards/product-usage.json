@@ -5,7 +5,7 @@
     "satark",
     "product"
   ],
-  "description": "How people use Satark: scans by channel, kind, verdict and scam category. Counts only; no user data (task 6.9).",
+  "description": "How people use Satark: scans by channel, kind, verdict and scam category. Counts only; no user data.",
   "editable": false,
   "schemaVersion": 39,
   "version": 1,

@@ -1,5 +1,5 @@
 # Public Gateway for Satark. Traffic reaches it from the AWS edge proxy over
-# WireGuard (Phase 5). TLS is terminated here with a certificate issued by
+# WireGuard. TLS is terminated here with a certificate issued by
 # cert-manager into Secret satark-public-tls; plain HTTP only redirects.
 # Routes are attached by the service charts (HTTPRoute in satark / satark-dev).
 # Replace the example hostnames with the real domain in gitops/envs.

@@ -53,7 +53,7 @@ templates; the explanation never changes the score.
 
 - Positive: verdicts stay explainable and reproducible from the rules; LLM failure
   degrades quality, not availability; injection can at most fail to raise a score.
-- Positive: the bound makes the eval gate (task 10.12) meaningful: rule changes and
+- Positive: the bound makes the eval gate meaningful: rule changes and
   prompt changes are measured separately.
 - Negative: a scam the rules miss entirely can be raised by only 15 points, so it may
   stay in a lower bucket. We accept this and grow the rules from evaluation misses.

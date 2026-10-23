@@ -2,7 +2,7 @@
 # Deploy the Satark MVP (gateway-api, text-analyzer, qr-decoder, telegram-bot)
 # with Helm, then run the smoke tests.
 #
-# Prerequisites: tasks 3.1-3.4, 3.7, 3.15-3.16 applied to the cluster.
+# Prerequisites: the data layer, ingress and gateway from gitops/platform applied to the cluster.
 # Usage: NAMESPACE=satark-dev IMAGE_TAG=<sha> TELEGRAM_BOT_TOKEN=... scripts/deploy-mvp.sh
 # On the Vagrant lab without GHCR images, run IMAGE_TAG=lab
 # scripts/load-lab-images.sh first and deploy with IMAGE_TAG=lab.

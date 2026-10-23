@@ -1,4 +1,4 @@
-# kube-prometheus-stack values for Satark (task 6.1).
+# kube-prometheus-stack values for Satark.
 fullnameOverride: kps
 
 crds:
@@ -17,7 +17,7 @@ kubeProxy:
 
 prometheus:
   prometheusSpec:
-    retention: 35d   # covers the 30d SLO window (task 6.12)
+    retention: 35d   # covers the 30d SLO window
     retentionSize: 18GB
     scrapeInterval: 30s
     evaluationInterval: 30s
@@ -38,7 +38,7 @@ prometheus:
             requests:
               storage: 20Gi
 
-# Alert routing to the Telegram ops channel (task 6.15).
+# Alert routing to the Telegram ops channel.
 # The bot token lives in Secret monitoring/alertmanager-telegram (key
 # bot-token), created out of band and mounted at
 # /etc/alertmanager/secrets/alertmanager-telegram/. Replace chat_id with the
@@ -124,7 +124,7 @@ grafana:
   persistence:
     enabled: true
     size: 2Gi
-  # Dashboards and datasources come only from Git (task 6.16): the sidecars
+  # Dashboards and datasources come only from Git: the sidecars
   # load ConfigMaps labelled grafana_dashboard / grafana_datasource, and UI
   # edits are not persisted back.
   sidecar:

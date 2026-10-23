@@ -1,4 +1,4 @@
-# Kubernetes API server audit policy (task 9.14, CIS 1.2.16-1.2.19, 3.2.1).
+# Kubernetes API server audit policy (CIS 1.2.16-1.2.19, 3.2.1).
 # First matching rule wins. Secret payloads are never logged.
 apiVersion: audit.k8s.io/v1
 kind: Policy

@@ -1,9 +1,9 @@
-# Edge security group (task 5.9). Inbound is limited to:
+# Edge security group. Inbound is limited to:
 #   80/tcp     HTTP (redirect to HTTPS, ACME HTTP-01 fallback)
 #   443/tcp    HTTPS, passed through by SNI to the cluster
 #   51820/udp  WireGuard from the on-prem worker
 # There is deliberately no port 22: shell access goes through SSM Session
-# Manager (task 5.11).
+# Manager.
 
 locals {
   ingress_rules = {

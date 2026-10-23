@@ -1,6 +1,6 @@
 ---
 # Argo CD release installed by the bootstrap role. After the first sync,
-# Argo CD manages its own installation from gitops/platform/argocd (task 4.6),
+# Argo CD manages its own installation from gitops/platform/argocd,
 # so keep this version in step with that Application.
 argocd_bootstrap_version: "v3.5.3"
 argocd_bootstrap_namespace: argocd

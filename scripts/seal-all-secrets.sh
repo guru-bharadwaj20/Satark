@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Seal every secret in gitops/envs/secrets-inventory.yaml for one environment
-# (task 9.12). Values come from a local, git-ignored directory with one
+#. Values come from a local, git-ignored directory with one
 # <name>.env file (KEY=VALUE lines) per secret.
 #
 #   scripts/seal-all-secrets.sh dev ~/satark-secrets/dev

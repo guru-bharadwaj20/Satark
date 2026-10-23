@@ -45,7 +45,7 @@ spec:
 
   storage:
     size: 10Gi
-    # local-path is the default StorageClass on-prem (task 1.19).
+    # local-path is the default StorageClass on-prem.
     storageClass: local-path
   walStorage:
     size: 5Gi
@@ -64,5 +64,5 @@ spec:
     podAntiAffinityType: preferred
 
   monitoring:
-    # Enable once the Prometheus Operator CRDs exist (Phase 6).
+    # Enable once the Prometheus Operator CRDs exist.
     enablePodMonitor: false

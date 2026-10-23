@@ -1,4 +1,4 @@
-# kube-bench CIS Kubernetes Benchmark Jobs (task 9.8): one on a control-plane
+# kube-bench CIS Kubernetes Benchmark Jobs: one on a control-plane
 # node (all sections) and one on a worker (section 4, worker node).
 # kube-bench must read host config files and see host processes, so it runs
 # in its own `kube-bench` namespace with PSA `privileged`; application

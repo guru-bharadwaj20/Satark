@@ -20,7 +20,7 @@ messages. 172 English, 80 Hindi, 48 Kannada.
 Every message is **synthetic and clearly fake**. Phone numbers are masked
 (`98XXXXXX21`), UPI IDs are masked (`xy***@examplebank`), links use `.test`/`example`
 domains, and banks and couriers are fictional (`ExampleBank`, `DemoPost`). Never add
-real messages without masking them to this standard first (see CONTRIBUTING.md).
+real messages without masking them to this standard first.
 
 ## Labelling guide
 

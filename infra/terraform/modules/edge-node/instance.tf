@@ -1,4 +1,4 @@
-# Edge EC2 instance (task 5.10): Graviton (arm64), IMDSv2 required, encrypted
+# Edge EC2 instance: Graviton (arm64), IMDSv2 required, encrypted
 # gp3 root volume, and an Elastic IP so DNS records stay stable across
 # instance replacement.
 

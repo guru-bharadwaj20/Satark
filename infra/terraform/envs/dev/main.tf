@@ -1,4 +1,4 @@
-# Composition for this environment (task 5.14): storage buckets, the edge
+# Composition for this environment: storage buckets, the edge
 # node, DNS and the cert-manager DNS-01 identity. The budget and the CI roles
 # live in ../../bootstrap.
 

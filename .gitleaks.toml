@@ -1,4 +1,4 @@
-# gitleaks configuration (task 9.13). Used by the pre-commit hook and by
+# gitleaks configuration. Used by the pre-commit hook and by
 # .github/workflows/gitleaks.yml. Extends the upstream default rule set.
 title = "Satark gitleaks config"
 
