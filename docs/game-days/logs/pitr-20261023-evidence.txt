@@ -1,0 +1,33 @@
+# restored cluster satark-pg-pitr
+NAME             AGE   INSTANCES   READY   STATUS                     PRIMARY
+satark-pg-pitr   50s   1           1       Cluster in healthy state   satark-pg-pitr-1
+
+# pitr_probe rows in restored cluster
+         id          | kind |              at               
+---------------------+------+-------------------------------
+ pitr-1792762691     | good | 2026-10-23 13:38:12.174597+00
+ pitr-1792762691-bad | bad  | 2026-10-23 13:38:16.818354+00
+ pitr-1792764142     | good | 2026-10-23 14:02:23.598807+00
+ pitr-1792764142-bad | bad  | 2026-10-23 14:02:28.3048+00
+ pitr-1792764263     | good | 2026-10-23 14:04:24.423709+00
+ pitr-1792764263-bad | bad  | 2026-10-23 14:04:29.329061+00
+ pitr-1792764349     | good | 2026-10-23 14:05:51.062038+00
+(7 rows)
+
+# pitr_probe rows in source satark-pg
+         id          | kind |              at               
+---------------------+------+-------------------------------
+ pitr-1792762691     | good | 2026-10-23 13:38:12.174597+00
+ pitr-1792762691-bad | bad  | 2026-10-23 13:38:16.818354+00
+ pitr-1792764142     | good | 2026-10-23 14:02:23.598807+00
+ pitr-1792764142-bad | bad  | 2026-10-23 14:02:28.3048+00
+ pitr-1792764263     | good | 2026-10-23 14:04:24.423709+00
+ pitr-1792764263-bad | bad  | 2026-10-23 14:04:29.329061+00
+ pitr-1792764349     | good | 2026-10-23 14:05:51.062038+00
+ pitr-1792764349-bad | bad  | 2026-10-23 14:05:55.748927+00
+(8 rows)
+
+# backups
+NAME                           PHASE       BEGIN                  END                    BEGIN_WAL                  END_WAL
+satark-pg-lab-20261023140202   completed   2026-10-23T14:02:03Z   2026-10-23T14:02:12Z   000000090000000000000053   000000090000000000000054
+# recovery log (target reached)

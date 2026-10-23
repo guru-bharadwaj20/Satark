@@ -1,0 +1,76 @@
+# Lab-only S3 stand-in for the PITR test (task 11.2). The on-prem cluster has
+# no AWS bucket, so CNPG archives WAL and base backups here instead.
+# SeaweedFS, because MinIO no longer publishes container images. The S3 keys
+# are in the `s3-config` Secret that setup.sh creates.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: satark-backup
+  labels:
+    app.kubernetes.io/part-of: satark
+    pod-security.kubernetes.io/enforce: restricted
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: s3-data
+  namespace: satark-backup
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seaweedfs
+  namespace: satark-backup
+  labels: {app: seaweedfs}
+spec:
+  replicas: 1
+  strategy: {type: Recreate}
+  selector:
+    matchLabels: {app: seaweedfs}
+  template:
+    metadata:
+      labels: {app: seaweedfs}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: seaweedfs
+          image: chrislusf/seaweedfs:4.48
+          args: [server, -dir=/data, -s3, -s3.port=9000, -s3.config=/etc/seaweedfs/s3.json]
+          ports:
+            - {name: s3, containerPort: 9000}
+          readinessProbe:
+            tcpSocket: {port: s3}
+          resources:
+            requests: {cpu: 100m, memory: 256Mi}
+            limits: {memory: 1Gi}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - {name: data, mountPath: /data}
+            - {name: config, mountPath: /etc/seaweedfs, readOnly: true}
+      volumes:
+        - name: data
+          persistentVolumeClaim: {claimName: s3-data}
+        - name: config
+          secret: {secretName: s3-config}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seaweedfs
+  namespace: satark-backup
+spec:
+  selector: {app: seaweedfs}
+  ports:
+    - {name: s3, port: 9000, targetPort: s3}

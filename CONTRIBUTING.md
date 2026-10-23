@@ -102,7 +102,7 @@ Be respectful and constructive. Critique ideas, not people. Harassment or discri
 
 The project is split into 13 phases. Each subtask is marked ✅ (completed) or ❌ (not completed yet). Want to help? Pick a ❌ task, open an issue that references its number (for example `Task 2.12`), and say you're working on it.
 
-**Overall progress: 282 / 293 subtasks completed**
+**Overall progress: 283 / 293 subtasks completed**
 
 The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-world action. Their scripts, procedures and report templates are already in the repo.
 
@@ -119,9 +119,9 @@ The ❌ tasks left need a live cluster, cloud account, GitHub settings or real-w
 | 8 | Sandbox operator | 25 | 25 |
 | 9 | Security and compliance | 20 | 19 |
 | 10 | GenAI | 25 | 25 |
-| 11 | Reliability, backups and disaster recovery | 31 | 26 |
+| 11 | Reliability, backups and disaster recovery | 31 | 27 |
 | 12 | Polish, documentation and launch | 18 | 14 |
-| | **Total** | **293** | **282** |
+| | **Total** | **293** | **283** |
 
 Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR codes, running on a GitOps-managed on-prem cluster.
 
@@ -405,7 +405,7 @@ Phases 0–4 produce a working MVP: a Telegram bot that checks messages and QR c
 ### Phase 11: Reliability, backups and disaster recovery
 
 - ✅ **11.1** CNPG WAL archiving and base backups to S3
-- ❌ **11.2** Test point-in-time recovery for Postgres — *pending: needs CNPG and S3 backups running*
+- ✅ **11.2** Test point-in-time recovery for Postgres
 - ✅ **11.3** Install Velero with the S3 backend
 - ✅ **11.4** Daily Velero schedule, including file-system backups of volumes
 - ✅ **11.5** Role `etcd_backup`: systemd timer that uploads etcd snapshots to S3
