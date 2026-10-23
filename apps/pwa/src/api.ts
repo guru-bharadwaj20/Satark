@@ -41,7 +41,7 @@ export function parseResult(body: unknown): CheckResult {
     risk,
     score: typeof b.risk_score === "number" ? b.risk_score : undefined,
     reasons,
-    advice: steps.length ? steps.join(" ") : undefined,
+    advice: steps.length ? steps.map((x) => (/[.!?)]$/.test(x.trim()) ? x.trim() : `${x.trim()}.`)).join(" ") : undefined,
   };
 }
 

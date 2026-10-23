@@ -37,7 +37,7 @@ describe("parseResult", () => {
         verdict: "suspicious",
         risk_score: 44,
         reasons: [{ code: "kyc.update", message: "Banks do not ask for KYC by link", weight: 30 }],
-        next_steps: ["Check directly with the bank.", "Never share your OTP."],
+        next_steps: ["Check directly with the bank", "Never share your OTP."],
       }),
     ).toEqual({
       risk: "medium",
