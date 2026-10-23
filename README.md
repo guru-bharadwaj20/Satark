@@ -7,7 +7,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](apps/text-analyzer/pyproject.toml)
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-kubeadm-326CE5?logo=kubernetes&logoColor=white)](infra/ansible)
 [![Terraform](https://img.shields.io/badge/Terraform-AWS-844FBA?logo=terraform&logoColor=white)](infra/terraform)
-[![Progress](https://img.shields.io/badge/subtasks-284%2F293-informational)](CONTRIBUTING.md#project-timeline)
+[![Progress](https://img.shields.io/badge/subtasks-285%2F293-informational)](CONTRIBUTING.md#project-timeline)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Forward a suspicious SMS, link, QR code, phone number or UPI ID to Satark. In a
@@ -29,7 +29,7 @@ seconds *before* someone taps the link or scans the code.
 | [Architecture](#architecture) | Product layer, platform layer, hybrid cloud |
 | [How a check travels](#how-a-check-travels) | Redact, analyse, sandbox, score |
 | [Quick start](#quick-start) | The API on your laptop, then the full cluster |
-| [Project status](#project-status) | Every phase, and the nine open items |
+| [Project status](#project-status) | Every phase, and the eight open items |
 | [Design decisions](#design-decisions) | The tradeoffs, and why |
 | [Repository layout](#repository-layout) | Where things live |
 | [Documentation](#documentation) | Which file answers which question |
@@ -235,7 +235,7 @@ run two nodes.
 
 ## Project status
 
-**284 of 293 subtasks are complete.** Phases 0–4 produce a working MVP: a
+**285 of 293 subtasks are complete.** Phases 0–4 produce a working MVP: a
 Telegram bot that checks messages and QR codes, running on a GitOps-managed
 on-prem cluster.
 
@@ -275,17 +275,17 @@ gantt
 | 8 | Sandbox operator | ✅ 25/25 |
 | 9 | Security and compliance | 19/20 |
 | 10 | GenAI | ✅ 25/25 |
-| 11 | Reliability, backups and disaster recovery | 27/31 |
+| 11 | Reliability, backups and disaster recovery | 28/31 |
 | 12 | Polish, documentation and launch | 15/18 |
 
-**The nine open items are not code.** Each needs a live cluster, a cloud
+**The eight open items are not code.** Each needs a live cluster, a cloud
 account or a real-world action; its script, procedure and report template are
 already in the repo.
 
 | Kind | Items |
 |---|---|
 | Needs the AWS account | 5.1 account setup · 9.17 IAM Access Analyzer |
-| Needs the live cluster and backups | 11.15 DR drill · 11.20 and 11.27 game days · 11.30 opsbot time-to-diagnose |
+| Needs the live cluster and backups | 11.15 DR drill · 11.27 game day · 11.30 opsbot time-to-diagnose |
 | Needs a person or live usage | 12.17 launch · 12.18 KPIs · 12.19 monthly scam-trends report |
 
 ### What the load tests found
