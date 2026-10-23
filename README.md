@@ -219,7 +219,7 @@ run two nodes.
 
 ## Project status
 
-**282 of 294 subtasks are complete.** Phases 0–4 produce a working MVP: a
+**283 of 293 subtasks are complete.** Phases 0–4 produce a working MVP: a
 Telegram bot that checks messages and QR codes, running on a GitOps-managed
 on-prem cluster.
 
@@ -259,18 +259,18 @@ gantt
 | 8 | Sandbox operator | ✅ 25/25 |
 | 9 | Security and compliance | 19/20 |
 | 10 | GenAI | ✅ 25/25 |
-| 11 | Reliability, backups and disaster recovery | 26/31 |
-| 12 | Polish, documentation and launch | 14/19 |
+| 11 | Reliability, backups and disaster recovery | 27/31 |
+| 12 | Polish, documentation and launch | 14/18 |
 
-**The twelve open items are not code.** Each needs a live cluster, a cloud
+**The ten open items are not code.** Each needs a live cluster, a cloud
 account or a real-world action; its script, procedure and report template are
 already in the repo.
 
 | Kind | Items |
 |---|---|
 | Needs the AWS account | 5.1 account setup · 9.17 IAM Access Analyzer |
-| Needs the live cluster and backups | 11.2 Postgres PITR · 11.15 DR drill · 11.20 and 11.27 game days · 11.30 opsbot time-to-diagnose |
-| Needs the deployed app or a person | 12.14 screenshots · 12.15 demo video · 12.17 launch · 12.18 KPIs · 12.19 monthly scam-trends report |
+| Needs the live cluster and backups | 11.15 DR drill · 11.20 and 11.27 game days · 11.30 opsbot time-to-diagnose |
+| Needs the deployed app or a person | 12.14 screenshots · 12.17 launch · 12.18 KPIs · 12.19 monthly scam-trends report |
 
 ### What the load tests found
 
