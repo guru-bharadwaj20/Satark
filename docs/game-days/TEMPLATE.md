@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Status | Planned / Executed on YYYY-MM-DD |
+| Status | Executed on YYYY-MM-DD |
 | Facilitator | |
 | Responder(s) | |
 | Script | `tests/chaos/gd-NN-*.sh` |

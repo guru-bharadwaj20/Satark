@@ -1,4 +1,4 @@
-# Two CI roles (task 5.7):
+# Two CI roles:
 #
 #   plan  - read-only. Assumable from pull requests and from main. Can read
 #           every resource and the state, and write only the state lock files.

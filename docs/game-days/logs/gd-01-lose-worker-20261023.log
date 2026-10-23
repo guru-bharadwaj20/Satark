@@ -1,0 +1,37 @@
+2026-10-23T14:17:55Z [gd-01-lose-worker] snapshot: before
+NAME       STATUS   ROLES           AGE    VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION              CONTAINER-RUNTIME
+cp-1       Ready    control-plane   6d9h   v1.36.5   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-1   Ready    worker          6d9h   v1.36.5   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-2   Ready    worker          6d9h   v1.36.5   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+No resources found
+2026-10-23T14:17:57Z [gd-01-lose-worker] baseline: worker-2 holds satark-pg-1 (primary), valkey-0, envoy proxy rgzlx, text-analyzer 7pjzg
+2026-10-23T14:23:48Z [gd-01-lose-worker] inject: worker-2 hard power-off (VBoxManage controlvm poweroff, by operator)
+2026-10-23T14:33:00Z [gd-01-lose-worker] observe: NotReady 14:24:23, CNPG primary satark-pg-1 -> satark-pg-3 by 14:24:29; evictions ~14:28:40
+2026-10-23T14:33:00Z [gd-01-lose-worker] observe: envoy proxy and text-analyzer replacements Pending (worker-1 at 97% memory / 94% cpu requested); valkey-0 stuck Terminating (StatefulSet, node unreachable)
+2026-10-23T14:33:00Z [gd-01-lose-worker] snapshot: observe-143300
+NAME       STATUS     ROLES           AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION              CONTAINER-RUNTIME
+cp-1       Ready      control-plane   6d10h   v1.36.5   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-1   Ready      worker          6d9h    v1.36.5   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-2   NotReady   worker          6d9h    v1.36.5   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+NAMESPACE              NAME                                                              READY   STATUS    RESTARTS   AGE     IP       NODE     NOMINATED NODE   READINESS GATES
+envoy-gateway-system   envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5   0/2     Pending   0          3m40s   <none>   <none>   <none>           <none>
+satark-dev             text-analyzer-5d58b5fbd4-g5xjf                                    0/1     Pending   0          3m40s   <none>   <none>   <none>           <none>
+T                      NS                     OBJ
+2026-10-23T14:29:21Z   envoy-gateway-system   envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx
+2026-10-23T14:30:49Z   envoy-gateway-system   envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx
+2026-10-23T14:29:21Z   satark-data            satark-pg-1
+2026-10-23T14:30:49Z   satark-data            satark-pg-1
+2026-10-23T14:29:21Z   satark-data            valkey-0
+2026-10-23T14:30:49Z   satark-data            valkey-0
+2026-10-23T14:29:21Z   satark-dev             text-analyzer-5d58b5fbd4-7pjzg
+2026-10-23T14:30:49Z   satark-dev             text-analyzer-5d58b5fbd4-7pjzg
+2026-10-23T14:33:54Z [gd-01-lose-worker] revert: worker-2 powered on (VBoxManage startvm, by operator)
+2026-10-23T14:49:58Z [gd-01-lose-worker] revert: worker-2 hung in initramfs (Loading essential drivers) for 12 min after power-on; operator reset the VM
+2026-10-23T14:51:09Z [gd-01-lose-worker] worker-2 Ready 14:51:03
+2026-10-23T14:51:36Z [gd-01-lose-worker] all pods Running, satark-pg 3/3 at 14:51:26
+2026-10-23T14:51:36Z [gd-01-lose-worker] snapshot: after
+NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP     EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION              CONTAINER-RUNTIME
+cp-1       Ready    control-plane   6d10h   v1.36.5   192.168.56.10   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-1   Ready    worker          6d10h   v1.36.5   192.168.56.11   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+worker-2   Ready    worker          6d10h   v1.36.5   192.168.56.12   <none>        Ubuntu 24.04.3 LTS   6.8.0-147-generic (amd64)   containerd://2.2.1
+No resources found

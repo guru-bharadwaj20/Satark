@@ -1,4 +1,4 @@
-# Ship Kubernetes API audit logs to Loki (task 9.14). A dedicated Grafana
+# Ship Kubernetes API audit logs to Loki. A dedicated Grafana
 # Alloy DaemonSet runs only on control-plane nodes, tails the JSON audit log
 # written by kube-apiserver and pushes it to Loki with the label
 # {job="kubernetes-audit"}. It is separate from the main Alloy log pipeline

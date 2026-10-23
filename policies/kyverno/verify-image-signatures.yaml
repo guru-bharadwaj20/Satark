@@ -1,4 +1,4 @@
-# Task 9.5: only admit Satark images signed keylessly by our GitHub Actions
+# Only admit Satark images signed keylessly by our GitHub Actions
 # release workflow (cosign + Sigstore Fulcio/Rekor). The certificate subject
 # must be a workflow in this repository running on a tag or on main.
 apiVersion: kyverno.io/v1

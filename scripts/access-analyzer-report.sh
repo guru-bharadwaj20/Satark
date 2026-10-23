@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Export active IAM Access Analyzer findings to a Markdown table (task 9.17).
+# Export active IAM Access Analyzer findings to a Markdown table.
 # Requires the AWS CLI with read access (access-analyzer:List*/Get*).
 #
 #   scripts/access-analyzer-report.sh dev > docs/compliance/access-analyzer-$(date +%F).md

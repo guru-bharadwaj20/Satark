@@ -1,4 +1,4 @@
-# Bucket-scoped IAM users for Velero and CloudNativePG backups (task 9.16).
+# Bucket-scoped IAM users for Velero and CloudNativePG backups.
 #
 # Each consumer gets its own IAM user whose only permissions are object
 # read/write/list on its own bucket (and prefix). No wildcard resources, no

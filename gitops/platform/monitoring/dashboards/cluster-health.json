@@ -5,7 +5,7 @@
     "satark",
     "cluster"
   ],
-  "description": "Kubernetes control plane, workloads and capacity (task 6.8).",
+  "description": "Kubernetes control plane, workloads and capacity.",
   "editable": false,
   "schemaVersion": 39,
   "version": 1,

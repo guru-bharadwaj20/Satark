@@ -1,5 +1,5 @@
 # Application namespaces with Pod Security Admission enforced at the
-# `restricted` level (task 9.1). `warn` and `audit` are pinned to the same
+# `restricted` level. `warn` and `audit` are pinned to the same
 # level so violations are surfaced to kubectl users and to the audit log.
 apiVersion: v1
 kind: Namespace

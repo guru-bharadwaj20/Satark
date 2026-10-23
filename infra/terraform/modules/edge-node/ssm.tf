@@ -1,4 +1,4 @@
-# SSM agent and Session Manager access (task 5.11). Ubuntu AMIs ship the SSM
+# SSM agent and Session Manager access. Ubuntu AMIs ship the SSM
 # agent as a snap; it only needs an instance profile with
 # AmazonSSMManagedInstanceCore. Connect with:
 #

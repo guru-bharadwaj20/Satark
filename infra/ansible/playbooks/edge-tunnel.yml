@@ -1,5 +1,5 @@
 ---
-# Brings up the WireGuard tunnel between worker-1 and the AWS edge (task 5.15).
+# Brings up the WireGuard tunnel between worker-1 and the AWS edge.
 #
 # The edge has no SSH. Reach it with the SSM connection plugin, for example
 # with an inventory entry like:

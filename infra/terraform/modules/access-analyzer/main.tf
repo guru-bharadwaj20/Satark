@@ -1,4 +1,4 @@
-# IAM Access Analyzer (task 9.17): an external-access analyzer flags any
+# IAM Access Analyzer: an external-access analyzer flags any
 # bucket, key or role reachable from outside the account, and an
 # unused-access analyzer flags IAM users/roles with stale keys or
 # permissions (e.g. the backup users from the backup-iam module).

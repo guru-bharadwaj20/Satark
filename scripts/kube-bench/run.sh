@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Run the kube-bench CIS benchmark Jobs and save their JSON reports (task 9.8).
+# Run the kube-bench CIS benchmark Jobs and save their JSON reports.
 # Writes kube-bench-<stamp>-control-plane.json and kube-bench-<stamp>-worker.json.
 # Usage: scripts/kube-bench/run.sh [output-dir]   (default docs/compliance/kube-bench)
 set -euo pipefail

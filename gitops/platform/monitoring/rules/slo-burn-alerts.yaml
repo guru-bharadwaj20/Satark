@@ -1,4 +1,4 @@
-# Multi-window, multi-burn-rate SLO alerts (task 6.13), per the Google SRE
+# Multi-window, multi-burn-rate SLO alerts, per the Google SRE
 # workbook: each alert needs both a long and a short window above the burn
 # threshold, so it fires fast and resets fast once the problem is fixed.
 apiVersion: monitoring.coreos.com/v1

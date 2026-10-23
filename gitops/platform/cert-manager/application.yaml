@@ -1,4 +1,4 @@
-# cert-manager (task 5.17), installed from the Jetstack Helm chart by Argo CD.
+# cert-manager, installed from the Jetstack Helm chart by Argo CD.
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

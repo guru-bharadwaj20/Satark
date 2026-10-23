@@ -1,6 +1,6 @@
 # Helm values for the CloudNativePG operator (chart cnpg/cloudnative-pg).
-# The chart version is pinned in scripts/platform/install-cnpg.sh and, from
-# Phase 4, in the Argo CD Application that replaces the script.
+# The chart version is pinned in scripts/platform/install-cnpg.sh and in the
+# Argo CD Application that replaces the script.
 replicaCount: 1
 
 crds:
@@ -11,7 +11,7 @@ config:
   clusterWide: true
 
 monitoring:
-  # PodMonitor for the operator (needs Prometheus Operator CRDs, Phase 6).
+  # PodMonitor for the operator (needs Prometheus Operator CRDs).
   podMonitorEnabled: false
   grafanaDashboard:
     create: false

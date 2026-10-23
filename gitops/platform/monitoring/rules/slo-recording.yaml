@@ -1,4 +1,4 @@
-# Generated SLO recording rules (task 6.12). See docs/observability/slos.md.
+# Generated SLO recording rules. See docs/observability/slos.md.
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:

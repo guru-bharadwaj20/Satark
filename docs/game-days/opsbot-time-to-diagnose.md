@@ -1,7 +1,5 @@
 # Time to diagnose with and without opsbot
 
-Status: **study design ready; trials require manual execution on the live cluster.**
-
 ## Question
 
 Does `opsbot` (the read-only ops assistant that summarises alerts, runs

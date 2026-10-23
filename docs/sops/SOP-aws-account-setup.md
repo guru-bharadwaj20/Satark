@@ -1,7 +1,7 @@
-# AWS account setup (task 5.1)
+# AWS account setup
 
 One-time, manual procedure. Terraform cannot do it, because this step creates
-the identities Terraform runs as later. Finish it before task 5.2.
+the identities Terraform runs as later. Finish it before
 
 ## 1. Root user
 
@@ -13,7 +13,7 @@ the identities Terraform runs as later. Finish it before task 5.2.
 3. Make sure the root user has **no access keys**. Delete any that exist.
 4. Set the alternate contacts for billing, operations and security.
 5. Turn on **IAM user and role access to Billing information** under Account
-   settings, so the admin identity can see the budget created in task 5.2.
+   settings, so the admin identity can see the budget created in
 
 After this step, only use the root user for tasks that AWS reserves for root.
 
@@ -54,5 +54,5 @@ only if you really need them, and rotate them every 90 days.
 - [ ] The account-level S3 public access block is on
 - [ ] Default EBS encryption is on
 
-Next: apply `infra/terraform/modules/budget-alarm` (task 5.2) before any other
+Next: apply `infra/terraform/modules/budget-alarm` before any other
 resource.

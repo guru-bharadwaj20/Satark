@@ -1,6 +1,6 @@
-# Phase 3 MVP deployment report (task 3.18)
+# MVP deployment report
 
-The MVP deployed with Helm to the on-prem lab cluster from task 1.22, then
+The MVP deployed with Helm to the on-prem lab cluster, then
 checked with `scripts/smoke-test.sh`.
 
 | Field | Value |

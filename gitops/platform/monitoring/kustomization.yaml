@@ -8,7 +8,7 @@ resources:
   - rules/slo-burn-alerts.yaml
   - rules/satark-alerts.yaml
 
-# Dashboards as code (task 6.16): JSON is rendered by
+# Dashboards as code: JSON is rendered by
 # scripts/dashboards/generate.py and shipped as ConfigMaps that the Grafana
 # dashboard sidecar loads into the "Satark" folder.
 generatorOptions:

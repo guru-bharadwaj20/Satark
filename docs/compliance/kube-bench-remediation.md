@@ -1,7 +1,6 @@
 # kube-bench remediation log
 
-Tracks how high-severity CIS Kubernetes Benchmark findings are fixed
-(task 9.10). Findings are produced by `scripts/kube-bench/run.sh`, filed as
+Tracks how high-severity CIS Kubernetes Benchmark findings are fixed. Findings are produced by `scripts/kube-bench/run.sh`, filed as
 issues by `scripts/kube-bench/file_issues.py`, and fixed in code by
 `infra/ansible/playbooks/cis-hardening.yml`.
 
@@ -46,7 +45,7 @@ kubelet settings from `roles/kubeadm_cp/templates/kubeadm-config.yaml.j2`.
 | 1.2.5 | Kubelet serving certs not verified | `--kubelet-certificate-authority=/etc/kubernetes/pki/ca.crt` |
 | 1.2.14 | NodeRestriction admission | `--enable-admission-plugins=NodeRestriction` |
 | 1.2.15, 1.3.2, 1.4.1 | Profiling enabled | `--profiling=false` on API server, controller-manager, scheduler |
-| 1.2.16-1.2.19 | No audit logging | Audit policy and log flags, see task 9.14 |
+| 1.2.16-1.2.19 | No audit logging | Audit policy and log flags (`infra/ansible/playbooks/k8s-audit-logging.yml`) |
 | 1.2.21, 1.2.22, 1.2.29 | Request timeout, SA lookup, TLS floor | `--request-timeout=60s`, `--service-account-lookup=true`, `--tls-min-version=VersionTLS12` |
 | 1.2.30 | Service account tokens extended past their expiry | `--service-account-extend-token-expiration=false` |
 | 1.3.1 | Terminated pods never garbage collected | `--terminated-pod-gc-threshold=1000` |

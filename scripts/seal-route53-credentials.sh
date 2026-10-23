@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Create an access key for the cert-manager DNS-01 IAM user and write it as
-# a SealedSecret for gitops/platform/cert-manager/issuers (task 5.17).
+# a SealedSecret for gitops/platform/cert-manager/issuers.
 #
 # Usage: scripts/seal-route53-credentials.sh <iam-user-name> [aws-profile]
 # Requires: aws, kubectl, kubeseal, and a cluster running sealed-secrets.

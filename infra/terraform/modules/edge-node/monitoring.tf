@@ -1,4 +1,4 @@
-# CloudWatch agent support for the edge (task 5.23). The agent itself and the
+# CloudWatch agent support for the edge. The agent itself and the
 # WireGuard handshake-age publisher are installed by the Ansible role
 # infra/ansible/roles/cloudwatch-agent. It emits the gauge
 # wireguard_handshake_age_seconds in the metric namespace below.

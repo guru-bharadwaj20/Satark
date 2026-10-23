@@ -96,7 +96,7 @@ def qvar(name, query, label, multi=True, include_all=True):
 
 def cluster_health():
     d = Dash("satark-cluster-health", "Satark / Cluster health", ["cluster"],
-             "Kubernetes control plane, workloads and capacity (task 6.8).")
+             "Kubernetes control plane, workloads and capacity.")
     d.row("Overview")
     d.stat("Nodes Ready", 'sum(kube_node_status_condition{condition="Ready",status="true"})')
     d.stat("Nodes NotReady", 'sum(kube_node_status_condition{condition="Ready",status=~"false|unknown"})',
@@ -137,7 +137,7 @@ def cluster_health():
 def node_linux():
     node = qvar("node", 'label_values(node_uname_info, nodename)', "Node")
     d = Dash("satark-node-linux", "Satark / Node and Linux", ["cluster", "node"],
-             "Per-node Linux metrics from node-exporter (task 6.8).", [node])
+             "Per-node Linux metrics from node-exporter.", [node])
     sel = 'instance=~"$instance"'
     # Hidden variable: maps the chosen node names to node-exporter instances.
     d.vars.append(qvar("instance", 'label_values(node_uname_info{nodename=~"$node"}, instance)', "Instance"))
@@ -172,7 +172,7 @@ def node_linux():
 def product_usage():
     ch = qvar("channel", 'label_values(satark_scans_total, channel)', "Channel")
     d = Dash("satark-product-usage", "Satark / Product usage", ["product"],
-             "How people use Satark: scans by channel, kind, verdict and scam category. Counts only; no user data (task 6.9).", [ch])
+             "How people use Satark: scans by channel, kind, verdict and scam category. Counts only; no user data.", [ch])
     f = 'channel=~"$channel"'
     d.row("Today")
     d.stat("Scans (24h)", f'sum(increase(satark_scans_total{{{f}}}[24h]))')
@@ -196,7 +196,7 @@ def product_usage():
 def scan_pipeline():
     svc = qvar("service", 'label_values(satark_http_requests_total, service)', "Service")
     d = Dash("satark-scan-pipeline", "Satark / Scan pipeline", ["pipeline", "red"],
-             "RED metrics per service, LLM and cache behaviour, and error logs (task 6.10).", [svc])
+             "RED metrics per service, LLM and cache behaviour, and error logs.", [svc])
     s = 'service=~"$service"'
     d.row("RED per service")
     d.ts("Request rate", [(f'sum by (service) (rate(satark_http_requests_total{{{s}}}[$__rate_interval]))', "{{service}}")], unit="reqps", w=8)
@@ -224,7 +224,7 @@ def scan_pipeline():
 def slo():
     d = Dash("satark-slo", "Satark / SLOs and error budget", ["slo"],
              "Gateway API availability (99.5%) and latency (95% under 800 ms) over 30 days. "
-             "Built on slo:* recording rules (task 6.11).")
+             "Built on slo:* recording rules.")
     for name, label in (("availability", "Availability"), ("latency", "Latency")):
         f = f'slo="{name}",service="gateway-api"'
         d.row(f"{label} SLO")

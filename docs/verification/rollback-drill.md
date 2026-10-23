@@ -1,4 +1,4 @@
-# Phase 4 rollback drill (task 4.17)
+# Rollback drill
 
 A bad release of gateway-api in dev was rolled back with `git revert`, timed
 by `scripts/rollback-drill.sh`. This is the procedure in SOP-04.
@@ -7,7 +7,7 @@ by `scripts/rollback-drill.sh`. This is the procedure in SOP-04.
 |---|---|
 | Date | 2026-10-17 |
 | Operator | guru-bharadwaj20 |
-| Cluster | on-prem lab, kubeadm v1.35.9 (task 1.22), MVP from task 3.18 |
+| Cluster | on-prem lab, kubeadm v1.35.9, MVP from the MVP deploy |
 | Argo CD | v3.5.3, installed from `gitops/platform/argocd` (annotation tracking, 180 s reconcile) |
 | Application | `gateway-api-dev`: same spec the `satark-services` ApplicationSet generates |
 | Bad release | `4b08839` sets dev tag `0.1.1` (never built, so `ErrImagePull`) |

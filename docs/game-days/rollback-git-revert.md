@@ -3,7 +3,7 @@
 **Goal:** prove that undoing a bad release is one Git operation, and measure
 how long it takes from `git revert` to a healthy rollout.
 
-**Status:** not run yet. Fill in the results table after the drill.
+Results of the lab run: [docs/verification/rollback-drill.md](../verification/rollback-drill.md).
 
 ## Setup
 

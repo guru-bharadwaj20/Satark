@@ -1,4 +1,4 @@
-# Private S3 bucket with safe defaults (task 5.4): encryption, versioning,
+# Private S3 bucket with safe defaults: encryption, versioning,
 # public access block, TLS-only bucket policy, owner-enforced ACLs and
 # lifecycle rules.
 

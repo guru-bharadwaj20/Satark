@@ -2,7 +2,7 @@ package identifier
 
 import "testing"
 
-// Fixtures use obviously synthetic numbers and VPAs (see CONTRIBUTING.md).
+// Fixtures use obviously synthetic numbers and VPAs, never real personal data.
 func TestNormalize(t *testing.T) {
 	cases := []struct {
 		k        Kind

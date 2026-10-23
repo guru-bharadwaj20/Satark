@@ -1,5 +1,5 @@
 # Cilium Helm values that enable Hubble Relay, the Hubble UI and Hubble
-# flow metrics (task 6.3). Cilium itself is installed during cluster bootstrap
+# flow metrics. Cilium itself is installed during cluster bootstrap
 # (Ansible); these values are layered on top with `helm upgrade --reuse-values`
 # by scripts/enable-hubble.sh so the CNI is never re-installed from scratch.
 hubble:

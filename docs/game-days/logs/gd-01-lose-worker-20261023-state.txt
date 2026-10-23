@@ -1,0 +1,2401 @@
+== 14:17:57
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:02
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:08
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:13
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:19
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:24
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:29
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:35
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:40
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:45
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:51
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:18:56
+Unable to;
+Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+Unable/to connect to
+== 14:19:14
+Unable to;
+Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+== 14:19:28
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:19:33
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:19:39
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:19:44
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:19:50
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:19:55
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:00
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:06
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:11
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:17
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:22
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:27
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:33
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:38
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:43
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:49
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:20:54
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:00
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:05
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:10
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:16
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:21
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:26
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:33
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:38
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:44
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:49
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:21:54
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:00
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:05
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:11
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:16
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:21
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:27
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:32
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:37
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:43
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:48
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:54
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:22:59
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:04
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:10
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:15
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:20
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:26
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:31
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:37
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:42
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:47
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:53
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:23:58
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:24:03
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:24:09
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+Unable/to connect to
+== 14:24:18
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-1 ready=3 phase=Cluster in healthy state
+== 14:24:23
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-1 ready=3 phase=Failing over
+== 14:24:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:24:34
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:24:40
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:24:45
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:24:50
+Unable to;
+Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+== 14:25:05
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:10
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:15
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:21
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:26
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:32
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:37
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:42
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:48
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:53
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:25:58
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:04
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:09
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:15
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:20
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:31
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:36
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:42
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:47
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:26:58
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:03
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:09
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:36
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:27:57
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:11
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:16
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:22
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:27
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:33
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:38
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:43
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:49
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:54
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:28:59
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:29:05
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:29:10
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:29:15
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+== 14:29:21
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=3 phase=Failing over
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:26
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:32
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:37
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:42
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:48
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:53
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:29:58
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:04
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:09
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:20
+Unable to;
+Unable to connect to the server: context deadline exceeded
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:36
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:30:57
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:03
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:08
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:13
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:24
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:40
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:51
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:31:56
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:02
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:07
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:13
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:18
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:23
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:34
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:39
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:45
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:50
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:32:55
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:01
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:12
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:17
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:22
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:28
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:33
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:38
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:44
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:33:49
+Unable to;
+Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+Unable/to connect to
+== 14:34:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+satark/linkscan-operator-controller-manager-6b5fbb45f4-8fn5b 0/1 CrashLoopBackOff
+== 14:34:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+cnpg-system/cnpg-cloudnative-pg-7c49578bc8-ktd82 0/1 CrashLoopBackOff
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+kube-system/kube-controller-manager-cp-1 0/1 Error
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+cnpg-system/cnpg-cloudnative-pg-7c49578bc8-ktd82 0/1 CrashLoopBackOff
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:47
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:34:57
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:03
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:08
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:36
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:35:57
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:03
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:08
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:13
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:24
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:40
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:51
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:36:56
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:02
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:07
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:12
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:18
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:23
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:34
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:39
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:45
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:50
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:37:55
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:01
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:12
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:17
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:22
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:28
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:33
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:38
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:44
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:49
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:38:55
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:00
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:05
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:11
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:16
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:22
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:27
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:32
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:38
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:43
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:49
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:54
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:39:59
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:05
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:10
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:15
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:21
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:26
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:31
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:37
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:42
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:48
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:53
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:40:58
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:04
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:09
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:20
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:31
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:36
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:47
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:52
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:41:58
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:03
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:08
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:14
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:51
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:42:57
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:02
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:08
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:13
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:19
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:24
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:40
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:46
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:51
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:43:56
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:02
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:07
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:12
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:18
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:23
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:29
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:34
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:39
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:45
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:50
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:44:56
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:01
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:12
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:17
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:23
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:28
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:33
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:39
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:44
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:50
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:45:55
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:00
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:06
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:11
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:17
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:22
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:27
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:33
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:38
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:43
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:49
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:46:54
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:00
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:05
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:10
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:16
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:21
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:27
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:32
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:37
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:43
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:48
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:53
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:47:59
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:04
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:10
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:15
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:20
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:26
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:31
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:37
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:42
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:47
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:48:53
+Unable to;
+Unable to connect to the server: context deadline exceeded
+Unable/to connect to
+== 14:49:10
+Unable to;
+Unable to connect to the server: context deadline exceeded
+Unable/to connect to
+== 14:49:27
+Unable to;
+Unable to connect to the server: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+Unable/to connect to
+== 14:49:45
+Unable to;
+Unable to connect to the server: context deadline exceeded
+Unable/to connect to
+== 14:50:02
+Unable to;
+Unable to connect to the server: context deadline exceeded (Client.Timeout exceeded while awaiting headers)
+Unable/to connect to
+== 14:50:19
+cp-1 NotReady;worker-1 NotReady;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:25
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:30
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:35
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:41
+cp-1 Ready;worker-1 Ready;worker-2 NotReady;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 2/2 Terminating
+satark-data/satark-pg-1 1/1 Terminating
+satark-data/valkey-0 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 1/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:46
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 0/2 Terminating
+kube-system/cilium-df56q 0/1 Unknown
+kube-system/cilium-envoy-qfx6q 0/1 Unknown
+metallb-system/metallb-speaker-v6nt9 0/4 Unknown
+satark-data/satark-pg-1 0/1 Terminating
+satark-data/valkey-0 0/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 0/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:52
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 0/2 Terminating
+kube-system/cilium-df56q 0/1 Unknown
+satark-data/satark-pg-1 0/1 Terminating
+satark-data/valkey-0 0/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 0/1 Terminating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:50:57
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 Pending
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4rgzlx 0/2 Unknown
+satark-data/satark-pg-1 0/1 Unknown
+satark-data/valkey-0 0/1 Unknown
+satark-dev/text-analyzer-5d58b5fbd4-7pjzg 0/1 Unknown
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 Pending
+== 14:51:02
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+envoy-gateway-system/envoy-envoy-gateway-system-satark-public-6e504ee0-fdccddd4662l5 0/2 ContainerCreating
+satark-data/satark-pg-1 0/1 Init:0/1
+satark-data/valkey-0 0/1 ContainerCreating
+satark-dev/text-analyzer-5d58b5fbd4-g5xjf 0/1 ContainerCreating
+== 14:51:08
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+== 14:51:13
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+metallb-system/metallb-speaker-v6nt9 3/4 Error
+== 14:51:19
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=2 phase=Waiting for the instances to become active
+metallb-system/metallb-speaker-v6nt9 3/4 CrashLoopBackOff
+== 14:51:24
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=3 phase=Cluster in healthy state
+== 14:51:30
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=3 phase=Cluster in healthy state
+== 14:51:35
+cp-1 Ready;worker-1 Ready;worker-2 Ready;
+pg primary=satark-pg-3 ready=3 phase=Cluster in healthy state

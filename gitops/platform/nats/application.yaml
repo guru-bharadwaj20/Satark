@@ -1,4 +1,4 @@
-# NATS with JetStream for the link-scan pipeline (task 8.14).
+# NATS with JetStream for the link-scan pipeline.
 # url-intel publishes to scan.jobs.<id>; linkscan-operator publishes to
 # scan.results.<id>. Streams are created by the PostSync Job in streams-job.yaml.
 apiVersion: argoproj.io/v1alpha1

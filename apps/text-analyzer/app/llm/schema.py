@@ -33,7 +33,7 @@ class Category(StrEnum):
     LEGITIMATE = "legitimate"
 
 
-# Phrases user-facing text must never contain (CONTRIBUTING.md privacy and safety rules).
+# Phrases user-facing text must never contain: no "100% safe", never call a person a "scammer".
 # Also rejects output that echoes the system prompt (a sign the model was hijacked).
 _FORBIDDEN = re.compile(
     r"100\s*%\s*safe|completely safe|\bscammers?\b|\bfraudsters?\b"

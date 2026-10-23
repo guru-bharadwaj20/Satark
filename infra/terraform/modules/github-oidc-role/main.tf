@@ -1,4 +1,4 @@
-# IAM role that GitHub Actions assumes through OIDC (task 5.6), so CI never
+# IAM role that GitHub Actions assumes through OIDC, so CI never
 # holds long-lived AWS keys. The trust policy pins the audience and restricts
 # the `sub` claim to the given repository refs/environments.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fail if any alerting rule under gitops/ lacks a runbook_url annotation, or
-# points at a runbook file that does not exist in docs/runbooks (task 6.14).
+# points at a runbook file that does not exist in docs/runbooks.
 # Requires: yq v4.
 set -euo pipefail
 cd "$(dirname "$0")/.."

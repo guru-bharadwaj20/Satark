@@ -1,4 +1,4 @@
-# Lab-only S3 stand-in for the PITR test (task 11.2). The on-prem cluster has
+# Lab-only S3 stand-in for the PITR test. The on-prem cluster has
 # no AWS bucket, so CNPG archives WAL and base backups here instead.
 # SeaweedFS, because MinIO no longer publishes container images. The S3 keys
 # are in the `s3-config` Secret that setup.sh creates.
